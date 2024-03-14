@@ -69,6 +69,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-vulnhub-LAMPSecurity-CTF5-external" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" class="article-date">
+  <time class="dt-published" datetime="2024-03-14T15:03:51.000Z" itemprop="datePublished">2024-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/">vulnhub-LAMPSecurity-CTF5-external</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h1 id="CTF5靶机探索"><a href="#CTF5靶机探索" class="headerlink" title="CTF5靶机探索"></a>CTF5靶机探索</h1><h2 id="1-Email用户注册处存在SQL注入"><a href="#1-Email用户注册处存在SQL注入" class="headerlink" title="1. Email用户注册处存在SQL注入"></a>1. Email用户注册处存在SQL注入</h2><p>​	访问<code>http://192.168.134.152/list/</code>可以看到这是一个Phake Organization的注册界面，BurpSuite抓包发现在当前注册功能点处用明文传输，且测试后发现存在SQL注入，以下是采用sqlmap来进行验证：</p>
+<p><img src="/images/image-20230322102625939.png" alt="image-20230322102625939"></p>
+<p><img src="/images/image-20230322102759639.png" alt="image-20230322102759639"></p>
+<h2 id="2-远程数据库链接"><a href="#2-远程数据库链接" class="headerlink" title="2. 远程数据库链接"></a>2. 远程数据库链接</h2><h3 id="2-1-通过读取配置文件获取数据库配置信息"><a href="#2-1-通过读取配置文件获取数据库配置信息" class="headerlink" title="2.1 通过读取配置文件获取数据库配置信息"></a>2.1 通过读取配置文件获取数据库配置信息</h3><p>​		默认情况下，Linux环境下站点都是搭建在<code>/var/www/html</code>文件路径下的，一般默认情况下数据库等文件的配置路径也是会存放在这个路径下，依次访问该路径下的不同文件，可以发现在<code>/var/www/html/list</code>路径下的index.php中存放了数据库的连接账号密码</p>
+<p><img src="/images/image-20230322100010898.png" alt="image-20230322100010898"></p>
+<p>​		上是对数据库进行远程登录</p>
+<blockquote>
+<p>mysql -h 192.168.134.152 -u root -p</p>
+<p>输入数据库的账号、密码</p>
+</blockquote>
+<p><img src="/images/image-20230322100446473.png" alt="image-20230322100446473"></p>
+<blockquote>
+<p>在 drupal 数据库users表中获取到用户信息</p>
+</blockquote>
+<p>​		将密码进行md5解密，并使用crackmapexec进行SSH链接密码喷射，但是都链接失败</p>
+<p><img src="/images/image-20230322100618078.png" alt="image-20230322100618078"></p>
+<h3 id="2-2-通过sql注入获取登录信息"><a href="#2-2-通过sql注入获取登录信息" class="headerlink" title="2.2 通过sql注入获取登录信息"></a>2.2 通过sql注入获取登录信息</h3><blockquote>
+<p>sqlmap -r register.txt –banner –password</p>
+</blockquote>
+<p><img src="/images/image-20240314161227649.png" alt="image-20240314161227649"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="cltrd4oe5000300vddpsl1x3b" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-vulnhub-LAMPSecurity-CTF5-md" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" class="article-date">
@@ -204,7 +265,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="cltr5rwh90003pbvd8pqdh84x" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="cltrd4oe9000500vd92z73j4p" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -324,7 +385,7 @@
 <p><img src="/images/image-20230317151548630.png" alt="image-20230317151548630"></p>
 <p>​		尝试使用上面的用户名和密码进行SSH链接</p>
 <blockquote>
-<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#x73;&#116;&#x65;&#x76;&#x65;&#110;&#115;&#64;&#49;&#57;&#x32;&#x2e;&#x31;&#x36;&#x38;&#46;&#49;&#51;&#x34;&#46;&#x31;&#x33;&#54;">&#x64;&#x73;&#116;&#x65;&#x76;&#x65;&#110;&#115;&#64;&#49;&#57;&#x32;&#x2e;&#x31;&#x36;&#x38;&#46;&#49;&#51;&#x34;&#46;&#x31;&#x33;&#54;</a></p>
+<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#115;&#116;&#x65;&#118;&#x65;&#110;&#115;&#x40;&#x31;&#57;&#50;&#46;&#49;&#54;&#56;&#46;&#49;&#51;&#52;&#46;&#x31;&#51;&#54;">&#x64;&#115;&#116;&#x65;&#118;&#x65;&#110;&#115;&#x40;&#x31;&#57;&#50;&#46;&#49;&#54;&#56;&#46;&#49;&#51;&#52;&#46;&#x31;&#51;&#54;</a></p>
 </blockquote>
 <p><img src="/images/image-20230317144444254.png" alt="image-20230317144444254"></p>
 <p>​		成功连接上主机，可以发现我们是一个低权限账号，下面我们就该提权限了</p>
@@ -341,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="cltr5rwh50001pbvdcy3zccvp" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="cltrd4oe0000100vdg46ea4b7" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -398,6 +459,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/">vulnhub-LAMPSecurity-CTF5-external</a>
+          </li>
         
           <li>
             <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/">vulnhub-LAMPSecurity-CTF5.md</a>
