@@ -69,6 +69,154 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-tools-netdiscover" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/15/tools-netdiscover/" class="article-date">
+  <time class="dt-published" datetime="2024-03-15T02:38:07.000Z" itemprop="datePublished">2024-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/15/tools-netdiscover/">tools-netdiscover</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="工具–Netdiscover"><a href="#工具–Netdiscover" class="headerlink" title="工具–Netdiscover"></a>工具–Netdiscover</h1><h2 id="0-Netdiscover-基本概念"><a href="#0-Netdiscover-基本概念" class="headerlink" title="0. Netdiscover 基本概念"></a>0. Netdiscover 基本概念</h2><p>​	ARP 侦查工具 Netdiscover Netdiscover 是一个主动 &#x2F; 被动的 ARP 侦查工具。该工具在不使用 DHCP 的无线网络上非常有用。使用 Netdiscover 工具可以在网络上扫描 IP 地址， ARP 侦查工具 Netdiscover 检查在线主机或搜索为它们发送的 ARP 请求</p>
+<h2 id="1-Netdiscover-常见参数解析"><a href="#1-Netdiscover-常见参数解析" class="headerlink" title="1. Netdiscover 常见参数解析"></a>1. Netdiscover 常见参数解析</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-i device</td>
+<td>网络设备，网卡的设置</td>
+</tr>
+<tr>
+<td>-r range</td>
+<td>扫描给定的IP地址范围(可以通过CIDR表示)</td>
+</tr>
+<tr>
+<td>-l file</td>
+<td>扫描包含在文件中的IP地址范围</td>
+</tr>
+<tr>
+<td>-p passive</td>
+<td>(被动扫描)不发送任何内容，只发送嗅探针</td>
+</tr>
+<tr>
+<td>-m file</td>
+<td>扫描已知MAC地址和主机名的列表</td>
+</tr>
+<tr>
+<td>-F filter</td>
+<td>自定义pcap filter表达式(默认是’arp‘)</td>
+</tr>
+<tr>
+<td>-s time</td>
+<td>每个ARP请求之间的休眠时间(ms)</td>
+</tr>
+<tr>
+<td>-c count</td>
+<td>发送每个ARP请求的次数(对于丢失数据包的网络而言)</td>
+</tr>
+<tr>
+<td>-n node</td>
+<td>用于扫描的最后一个源IP八位字节(2-253)</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>忽略自动扫描和快速模式的主配置文件</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>启动快速模式扫描，节省大量时间，建议使用auto</td>
+</tr>
+<tr>
+<td>-P</td>
+<td>打印结果的格式适用于另一个程序的解析，并在活动扫描后停止</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>类似于-P，但在活动扫描完成后继续监听</td>
+</tr>
+<tr>
+<td>-N</td>
+<td>不打印页眉，仅当启用-P或者-L时有效</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>启用每个请求之间的休眠时间抑制(硬核模式)，扫描速度很快</td>
+</tr>
+</tbody></table>
+<h2 id="2-Netdiscover-使用"><a href="#2-Netdiscover-使用" class="headerlink" title="2. Netdiscover 使用"></a>2. Netdiscover 使用</h2><h3 id="2-1-主动发现"><a href="#2-1-主动发现" class="headerlink" title="2.1 主动发现"></a>2.1 主动发现</h3><p>​	遵循 ARP 协议</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24</p>
+</blockquote>
+<p><img src="/images/image-20240315101411455.png" alt="image-20240315101411455"></p>
+<h3 id="2-2-被动发现"><a href="#2-2-被动发现" class="headerlink" title="2.2 被动发现"></a>2.2 被动发现</h3><p>​	遵循 SSDP协议</p>
+<blockquote>
+<p>netdiscover -p</p>
+</blockquote>
+<p><img src="/images/image-20240315103449746.png" alt="image-20240315103449746"></p>
+<h3 id="2-3-扫描后停止扫描"><a href="#2-3-扫描后停止扫描" class="headerlink" title="2.3 扫描后停止扫描"></a>2.3 扫描后停止扫描</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -P</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -P</p>
+</blockquote>
+<p><img src="/images/image-20240315101932699.png" alt="image-20240315101932699"></p>
+<h3 id="2-4-扫描后继续监听"><a href="#2-4-扫描后继续监听" class="headerlink" title="2.4 扫描后继续监听"></a>2.4 扫描后继续监听</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -L</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -L</p>
+</blockquote>
+<p><img src="/images/image-20240315102223897.png" alt="image-20240315102223897"></p>
+<h3 id="2-5-结果无页眉修饰"><a href="#2-5-结果无页眉修饰" class="headerlink" title="2.5 结果无页眉修饰"></a>2.5 结果无页眉修饰</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -N</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -P -N</p>
+</blockquote>
+<p><img src="/images/image-20240315102529860.png" alt="image-20240315102529860"></p>
+<h3 id="2-6-重复发送请求"><a href="#2-6-重复发送请求" class="headerlink" title="2.6 重复发送请求"></a>2.6 重复发送请求</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -c [numbers]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -c 5</p>
+</blockquote>
+<p>​	对于每个扫描目标发送numbers次ARP请求</p>
+<p><img src="/images/image-20240315102902227.png" alt="image-20240315102902227"></p>
+<blockquote>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="clts22eia00005zvd5r0r3jp7" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-vulnhub-LAMPSecurity-CTF5-external" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" class="article-date">
@@ -429,7 +577,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
     </div>
   </div>
 
@@ -439,7 +587,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/vulnhub/" style="font-size: 10px;">vulnhub</a> <a href="/tags/web/" style="font-size: 10px;">web</a>
+      <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 20px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
     </div>
   </div>
 
@@ -459,6 +607,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/03/15/tools-netdiscover/">tools-netdiscover</a>
+          </li>
         
           <li>
             <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/">vulnhub-LAMPSecurity-CTF5-external</a>
