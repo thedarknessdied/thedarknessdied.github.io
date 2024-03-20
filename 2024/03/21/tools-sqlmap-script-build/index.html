@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>tools-sqlmap-script-build | thedarknessdied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="SQLMAP tamper 的编写0. 关于 sqlmap 的 tamper​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。 1. 标准 tamper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tools-sqlmap-script-build">
+<meta property="og:url" content="http://example.com/2024/03/21/tools-sqlmap-script-build/index.html">
+<meta property="og:site_name" content="thedarknessdied">
+<meta property="og:description" content="SQLMAP tamper 的编写0. 关于 sqlmap 的 tamper​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。 1. 标准 tamper">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20240321003450311.png">
+<meta property="og:image" content="http://example.com/images/image-20240321004123079.png">
+<meta property="og:image" content="http://example.com/images/image-20240321004443797.png">
+<meta property="article:published_time" content="2024-03-20T16:49:32.000Z">
+<meta property="article:modified_time" content="2024-03-20T16:50:58.903Z">
+<meta property="article:author" content="R0seK1llere">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20240321003450311.png">
+  
+    <link rel="alternate" href="/atom.xml" title="thedarknessdied" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">thedarknessdied</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">R0seK1ller</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-tools-sqlmap-script-build" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/21/tools-sqlmap-script-build/" class="article-date">
+  <time class="dt-published" datetime="2024-03-20T16:49:32.000Z" itemprop="datePublished">2024-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      tools-sqlmap-script-build
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="SQLMAP-tamper-的编写"><a href="#SQLMAP-tamper-的编写" class="headerlink" title="SQLMAP tamper 的编写"></a>SQLMAP tamper 的编写</h1><h2 id="0-关于-sqlmap-的-tamper"><a href="#0-关于-sqlmap-的-tamper" class="headerlink" title="0. 关于 sqlmap 的 tamper"></a>0. 关于 sqlmap 的 tamper</h2><p>​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。</p>
+<h2 id="1-标准-tamper-脚本结构"><a href="#1-标准-tamper-脚本结构" class="headerlink" title="1. 标准 tamper 脚本结构"></a>1. 标准 tamper 脚本结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Copyright (c) 2006-2016 sqlmap developers (http://sqlmap.org/)</span><br><span class="line">See the file &#x27;doc/COPYING&#x27; for copying permission</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">from lib.core.enums import PRIORITY</span><br><span class="line"># 当前脚本调用优先等级</span><br><span class="line">__priority__ = PRIORITY.LOW </span><br><span class="line"></span><br><span class="line"># 声明当前脚本适用/不适用的范围，可以为空。</span><br><span class="line">def dependencies(): </span><br><span class="line">  pass</span><br><span class="line"></span><br><span class="line"># 用于篡改Payload、以及请求头的主要函数</span><br><span class="line">def tamper(payload, **kwargs): </span><br><span class="line">  return payload</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-重要部分解析"><a href="#1-1-重要部分解析" class="headerlink" title="1.1 重要部分解析"></a>1.1 重要部分解析</h3><h4 id="1-1-1-priority-Param"><a href="#1-1-1-priority-Param" class="headerlink" title="1.1.1 priority [Param]"></a>1.1.1 priority [Param]</h4><p>​	priority定义脚本的优先级，用于在测试过程中选用多个tamper脚本的情况下测试的先后顺序。谁的优先级高，谁被优先使用。（优先级共有七个，分别为；LOWEST、LOWER、LOW、NORMAL、HIGH、HIGHER、HIGHEST）</p>
+<h4 id="1-1-2-dependencies-Fuction"><a href="#1-1-2-dependencies-Fuction" class="headerlink" title="1.1.2 dependencies [Fuction]"></a>1.1.2 dependencies [Fuction]</h4><p>​	dependencies函数声明该脚本适用&#x2F;不适用的范围，可以为空。</p>
+<h4 id="1-1-3-tamper-Fuction"><a href="#1-1-3-tamper-Fuction" class="headerlink" title="1.1.3 tamper [Fuction]"></a>1.1.3 tamper [Fuction]</h4><p>​	tamper是主要的函数，接受的参数为payload和**kwargs，返回值为替换后的payload。</p>
+<p>​	payload 拼接查询语句</p>
+<p>​	**kwargs 存储的是 HTTP REQUEST 请求头中的内容， 多数存储在 kwargs[‘headers’] 中</p>
+<h2 id="2-编写测试脚本并验证"><a href="#2-编写测试脚本并验证" class="headerlink" title="2. 编写测试脚本并验证"></a>2. 编写测试脚本并验证</h2><h3 id="2-1-开启HTTP服务"><a href="#2-1-开启HTTP服务" class="headerlink" title="2.1 开启HTTP服务"></a>2.1 开启HTTP服务</h3><p>​	在虚拟机中开启 HTTP 服务，模拟存在SQL注入的web服务</p>
+<p><img src="/images/image-20240321003450311.png" alt="image-20240321003450311"></p>
+<h3 id="2-2-编写测试脚本"><a href="#2-2-编写测试脚本" class="headerlink" title="2.2 编写测试脚本"></a>2.2 编写测试脚本</h3><p>​	我们尝试在每次发送的请求URL最后都加上fregment，其内容为”#just-for-test”，并设置请求头headers中”X-Forwarded-For”字段的数值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># self2test.py</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Copyright (c) 2006-2024 sqlmap developers (https://sqlmap.org/)</span></span><br><span class="line"><span class="string">See the file &#x27;LICENSE&#x27; for copying permission</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.LOWEST</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dependencies</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tamper</span>(<span class="params">payload, **kwargs</span>):</span><br><span class="line">    <span class="keyword">if</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>) <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="keyword">not</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>):</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>].setdefault(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;127.0.0.1&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>][<span class="string">&quot;X-Forwarded-For&quot;</span>] = <span class="string">&quot;8.8.8.8&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&#123;&#125;#just-for-test&quot;</span>.<span class="built_in">format</span>(payload) <span class="keyword">if</span> payload <span class="keyword">else</span> payload</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-BurpSuite-抓包监听"><a href="#2-3-BurpSuite-抓包监听" class="headerlink" title="2.3 BurpSuite 抓包监听"></a>2.3 BurpSuite 抓包监听</h3><p>​	设置 Bp 监听本地8080端口</p>
+<h3 id="2-4-运行脚本"><a href="#2-4-运行脚本" class="headerlink" title="2.4 运行脚本"></a>2.4 运行脚本</h3><blockquote>
+<p>python sqlmap.py –proxy&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a> –tamper&#x3D;self2test -u “<a target="_blank" rel="noopener" href="http://192.168.70.196:8000/?id=1">http://192.168.70.196:8000/?id=1</a>*”</p>
+</blockquote>
+<p>​	使用--proxy参数指定代理地址为<a href="http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察">http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察</a></p>
+<p><img src="/images/image-20240321004123079.png" alt="image-20240321004123079"></p>
+<p>​	在流量包的数据中我们可以很清楚的看见URL中多出了个内容为”#just-for-test”的fregment，并且在请求头headers中”X-Forwarded-For”字段的数值也被设置了</p>
+<p><img src="/images/image-20240321004443797.png" alt="image-20240321004443797"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu01k36d000acuvdbxsyaumz" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">pwn-stackoverflow-ret2shellcode</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 13.33px;">pwn</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 16.67px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16.67px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/21/tools-sqlmap-script-build/">tools-sqlmap-script-build</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/">pwn-stackoverflow-ret2shellcode</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/20/pwn-stackoverflow-ret2text/">pwn-stackoverflow-ret2text</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/17/tools-cs-msf-exchange/">tools_cs_msf_exchange</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/15/protocol-arp/">protocol-arp</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 R0seK1llere<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
