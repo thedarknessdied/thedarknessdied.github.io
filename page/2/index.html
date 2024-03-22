@@ -75,6 +75,279 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-protocol-arp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/15/protocol-arp/" class="article-date">
+  <time class="dt-published" datetime="2024-03-15T05:49:01.000Z" itemprop="datePublished">2024-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/15/protocol-arp/">protocol-arp</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h1><h2 id="0-ARP-协议基本概念"><a href="#0-ARP-协议基本概念" class="headerlink" title="0. ARP 协议基本概念"></a>0. ARP 协议基本概念</h2><p>​	地址解析协议，即ARP（Address Resolution Protocol），是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间，下次请求时直接查询ARP缓存以节约资源。</p>
+<h2 id="1-ARP-数据包格式解析"><a href="#1-ARP-数据包格式解析" class="headerlink" title="1. ARP 数据包格式解析"></a>1. ARP 数据包格式解析</h2><h3 id="1-1-以太网帧封装的ARP数据包"><a href="#1-1-以太网帧封装的ARP数据包" class="headerlink" title="1.1 以太网帧封装的ARP数据包"></a>1.1 以太网帧封装的ARP数据包</h3><p><img src="/images/image-20240315124206322.png" alt="image-20240315124206322"></p>
+<p>​	ARP是个独立的三层协议，并不需要IP协议封装，而是直接生成自己的报文，到达数据链路层后，由数据链路层协议进行封装，一般是以太网协议。封装的过程，就是在ARP报文的前面加上以太网帧头，再加上4字节的冗余校验码结尾，校验码用于检验数据传输是否出现损坏。</p>
+<blockquote>
+<p>主要参数 :</p>
+<p>​	以太网目的地址：6字节，如果是ARP请求报文，该字段为广播MAC地址(FF:FF:FF:FF:FF:FF)</p>
+<p>​	以太网源地址：6字节</p>
+<p>​	帧类型：2字节，0x0806表示是ARP协议</p>
+<p>​	以太网帧尾： 4字节</p>
+</blockquote>
+<p><strong>注：以太网帧最小长度是64个字节，最长1518个字节。封装后的ARP帧，实际就是一个最小以太网帧，包含14个字节的以太网帧头，28个字节的ARP报文，4个字节的以太网帧尾，一共是46个字节，其余18个字节用0来填充，共计64个字节。</strong></p>
+<h3 id="1-2-ARP-数据包报文"><a href="#1-2-ARP-数据包报文" class="headerlink" title="1.2 ARP 数据包报文"></a>1.2 ARP 数据包报文</h3><p><img src="/images/image-20240315122951442.png" alt="image-20240315122951442"></p>
+<blockquote>
+<p>主要参数 :</p>
+<p>​	硬件类型：2字节，值为1表示以太网地址</p>
+<p>​	协议类型：2字节，0x0800表示IP地址</p>
+<p>​	硬件地址长度：1字节，数值为6</p>
+<p>​	协议地址长度：1字节，数值为4</p>
+<p>​	操作代码：2字节，1表示请求报文，2表示应答报文</p>
+<p>​	源MAC地址：6字节</p>
+<p>​	源IP地址：4节字</p>
+<p>​	目的MAC地址：6字节	</p>
+<p>·	目的IP地址：4节字</p>
+</blockquote>
+<h2 id="2-ARP-协议工作流程"><a href="#2-ARP-协议工作流程" class="headerlink" title="2. ARP 协议工作流程"></a>2. ARP 协议工作流程</h2><h3 id="2-1-ARP-协议工作流程原理简述"><a href="#2-1-ARP-协议工作流程原理简述" class="headerlink" title="2.1 ARP 协议工作流程原理简述"></a>2.1 ARP 协议工作流程原理简述</h3><p>​	(以下图主机A与主机C之间进行通信为例)</p>
+<p><img src="/images/image-20240315125654168.png" alt="image-20240315125654168"></p>
+<pre><code> 1. 主机A想要发送数据包到主机C，首先会检查**本地ARP缓存**，即ARP缓存表，搜索目标IP地址是否存在对应的MAC地址
+ 2. 如果ARP表中目标IP地址已有对应的MAC地址，则直接使用该地址进行数据包发送
+ 3. 如果ARP表中不存在目标IP地址对应的MAC地址，则向**本地网络中广播ARP请求**（ARP Request）数据包，请求其它主机回复该IP地址所对应的MAC地址
+ 4. 凡是收到ARP请求数据包的主机，都比较其自身拥有的IP地址和ARP请求数据包中的目标IP地址是否匹配。若匹配，则向主机A发送ARP响应（ARP Reply）数据包，其中包含其自己的MAC地址
+ 5. 主机A收到ARP响应数据包后，即可根据目标IP地址和对应的MAC地址进行数据包的发送
+</code></pre>
+<h3 id="2-2-ARP-协议工作流程实验简述"><a href="#2-2-ARP-协议工作流程实验简述" class="headerlink" title="2.2 ARP 协议工作流程实验简述"></a>2.2 ARP 协议工作流程实验简述</h3><h4 id="2-2-1-主机A在本地ARP缓存表中查找对应的MAC地址"><a href="#2-2-1-主机A在本地ARP缓存表中查找对应的MAC地址" class="headerlink" title="2.2.1 主机A在本地ARP缓存表中查找对应的MAC地址"></a>2.2.1 主机A在本地ARP缓存表中查找对应的MAC地址</h4><p><img src="/images/image-20240315125853205.png" alt="image-20240315125853205"></p>
+<h4 id="2-2-2-发送请求包"><a href="#2-2-2-发送请求包" class="headerlink" title="2.2.2 发送请求包"></a>2.2.2 发送请求包</h4><p>​	主机A在ARP表中找不到对应的MAC地址，则将缓存该数据报文，然后以广播方式发送一个ARP请求报文</p>
+<p><img src="/images/image-20240315130345973.png" alt="image-20240315130345973"></p>
+<table>
+<thead>
+<tr>
+<th>目的IP</th>
+<th>源IP</th>
+<th>目的MAC</th>
+<th>源MAC</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.0.3</td>
+<td>192.168.0.1</td>
+<td>FF-FF-FF-FF-FF-FF</td>
+<td>54-89-98-80-72-D7</td>
+<td>Request</td>
+</tr>
+</tbody></table>
+<h4 id=""><a href="#" class="headerlink" title=""></a><img src="/images/image-20240315130905425.png" alt="image-20240315130905425"></h4><h4 id="2-2-3-接受响应包"><a href="#2-2-3-接受响应包" class="headerlink" title="2.2.3 接受响应包"></a>2.2.3 接受响应包</h4><p>​	由于ARP请求报文以广播方式发送，该网段上的所有主机都可以接收到该请求，但只有被请求的主机（即主机C）会对该请求进行处理</p>
+<p>​	主机C比较自己的IP地址和ARP请求报文中的目标IP地址，当两者相同时进行如下处理：将ARP请求报文中的发送端（即主机A）的IP地址和MAC地址存入自己的ARP表中。之后以单播方式发送ARP响应报文给主机A，其中包含了自己的MAC地址。</p>
+<p><img src="/images/image-20240315130436795.png" alt="image-20240315130436795"></p>
+<table>
+<thead>
+<tr>
+<th>目的IP</th>
+<th>源IP</th>
+<th>目的MAC</th>
+<th>源MAC</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.0.1</td>
+<td>192.168.0.3</td>
+<td>54-89-98-80-72-D7</td>
+<td>54-89-98-B7-0B-E8</td>
+<td>Reply</td>
+</tr>
+</tbody></table>
+<p><img src="/images/image-20240315130929464.png" alt="image-20240315130929464"></p>
+<h4 id="2-2-4-ARP-缓存"><a href="#2-2-4-ARP-缓存" class="headerlink" title="2.2.4 ARP 缓存"></a>2.2.4 ARP 缓存</h4><p>​	为了避免重复发送ARP请求，产生大量的广播包，每台主机都有一个ARP缓存列表，当源主机得到 ARP 响应后，将目标主机的 IP 地址和物理地址存入本机 ARP 缓存中，并保留一定时间。下次请求 MAC 地址时，直接查询 ARP 缓存，而无须再发送 ARP 请求，从而节约了网络资源。当缓存生存期结束后，才会再次发送ARP请求报文。</p>
+<h2 id="3-ARP-的应用场景"><a href="#3-ARP-的应用场景" class="headerlink" title="3. ARP 的应用场景"></a>3. ARP 的应用场景</h2><ul>
+<li>ARP的主要应用在局域网中，用于寻找目标主机的MAC地址，以实现数据包的发送和接收</li>
+<li>ARP是广泛应用在TCP&#x2F;IP协议栈中的重要协议，为网络通信提供了必要的支持</li>
+<li>ARP还可以用于攻击，ARP欺骗可以伪装成另一个主机的MAC地址，欺骗路由器或其它主机发送信息</li>
+</ul>
+<h2 id="4-ARP-的优缺点"><a href="#4-ARP-的优缺点" class="headerlink" title="4.  ARP 的优缺点"></a>4.  ARP 的优缺点</h2><ul>
+<li>ARP能在目标MAC地址未知的情况下实现数据包的发送和接收，使通信更加方便</li>
+<li>ARP对网络协议和硬件无特殊要求，适用范围广泛</li>
+<li>ARP有可能存在缓存污染攻击等安全风险，需要加强安全防护</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu22vweb00033svd7zd4f3az" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tools-netdiscover" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/15/tools-netdiscover/" class="article-date">
+  <time class="dt-published" datetime="2024-03-15T02:38:07.000Z" itemprop="datePublished">2024-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/15/tools-netdiscover/">tools-netdiscover</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="工具–Netdiscover"><a href="#工具–Netdiscover" class="headerlink" title="工具–Netdiscover"></a>工具–Netdiscover</h1><h2 id="0-Netdiscover-基本概念"><a href="#0-Netdiscover-基本概念" class="headerlink" title="0. Netdiscover 基本概念"></a>0. Netdiscover 基本概念</h2><p>​	ARP 侦查工具 Netdiscover Netdiscover 是一个主动 &#x2F; 被动的 ARP 侦查工具。该工具在不使用 DHCP 的无线网络上非常有用。使用 Netdiscover 工具可以在网络上扫描 IP 地址， ARP 侦查工具 Netdiscover 检查在线主机或搜索为它们发送的 ARP 请求</p>
+<h2 id="1-Netdiscover-常见参数解析"><a href="#1-Netdiscover-常见参数解析" class="headerlink" title="1. Netdiscover 常见参数解析"></a>1. Netdiscover 常见参数解析</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-i device</td>
+<td>网络设备，网卡的设置</td>
+</tr>
+<tr>
+<td>-r range</td>
+<td>扫描给定的IP地址范围(可以通过CIDR表示)</td>
+</tr>
+<tr>
+<td>-l file</td>
+<td>扫描包含在文件中的IP地址范围</td>
+</tr>
+<tr>
+<td>-p passive</td>
+<td>(被动扫描)不发送任何内容，只发送嗅探针</td>
+</tr>
+<tr>
+<td>-m file</td>
+<td>扫描已知MAC地址和主机名的列表</td>
+</tr>
+<tr>
+<td>-F filter</td>
+<td>自定义pcap filter表达式(默认是’arp‘)</td>
+</tr>
+<tr>
+<td>-s time</td>
+<td>每个ARP请求之间的休眠时间(ms)</td>
+</tr>
+<tr>
+<td>-c count</td>
+<td>发送每个ARP请求的次数(对于丢失数据包的网络而言)</td>
+</tr>
+<tr>
+<td>-n node</td>
+<td>用于扫描的最后一个源IP八位字节(2-253)</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>忽略自动扫描和快速模式的主配置文件</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>启动快速模式扫描，节省大量时间，建议使用auto</td>
+</tr>
+<tr>
+<td>-P</td>
+<td>打印结果的格式适用于另一个程序的解析，并在活动扫描后停止</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>类似于-P，但在活动扫描完成后继续监听</td>
+</tr>
+<tr>
+<td>-N</td>
+<td>不打印页眉，仅当启用-P或者-L时有效</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>启用每个请求之间的休眠时间抑制(硬核模式)，扫描速度很快</td>
+</tr>
+</tbody></table>
+<h2 id="2-Netdiscover-使用"><a href="#2-Netdiscover-使用" class="headerlink" title="2. Netdiscover 使用"></a>2. Netdiscover 使用</h2><h3 id="2-1-主动发现"><a href="#2-1-主动发现" class="headerlink" title="2.1 主动发现"></a>2.1 主动发现</h3><p>​	遵循 ARP 协议</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24</p>
+</blockquote>
+<p><img src="/images/image-20240315101411455.png" alt="image-20240315101411455"></p>
+<h3 id="2-2-被动发现"><a href="#2-2-被动发现" class="headerlink" title="2.2 被动发现"></a>2.2 被动发现</h3><blockquote>
+<p>netdiscover -p</p>
+</blockquote>
+<p><img src="/images/image-20240315103449746.png" alt="image-20240315103449746"></p>
+<h3 id="2-3-扫描后停止扫描"><a href="#2-3-扫描后停止扫描" class="headerlink" title="2.3 扫描后停止扫描"></a>2.3 扫描后停止扫描</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -P</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -P</p>
+</blockquote>
+<p><img src="/images/image-20240315101932699.png" alt="image-20240315101932699"></p>
+<h3 id="2-4-扫描后继续监听"><a href="#2-4-扫描后继续监听" class="headerlink" title="2.4 扫描后继续监听"></a>2.4 扫描后继续监听</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -L</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -L</p>
+</blockquote>
+<p><img src="/images/image-20240315102223897.png" alt="image-20240315102223897"></p>
+<h3 id="2-5-结果无页眉修饰"><a href="#2-5-结果无页眉修饰" class="headerlink" title="2.5 结果无页眉修饰"></a>2.5 结果无页眉修饰</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -N</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -P -N</p>
+</blockquote>
+<p><img src="/images/image-20240315102529860.png" alt="image-20240315102529860"></p>
+<h3 id="2-6-重复发送请求"><a href="#2-6-重复发送请求" class="headerlink" title="2.6 重复发送请求"></a>2.6 重复发送请求</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -c [numbers]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>netdiscover -r 192.168.70.0&#x2F;24 -c 5</p>
+</blockquote>
+<p>​	对于每个扫描目标发送numbers次ARP请求</p>
+<p><img src="/images/image-20240315102902227.png" alt="image-20240315102902227"></p>
+<blockquote>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="clu22vwei000a3svd1bmf8wtq" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-vulnhub-LAMPSecurity-CTF5-external" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" class="article-date">
@@ -122,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="clu10z7yt000e52vdaeks9t3y" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="clu22vwem000h3svd47yh33ko" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -271,7 +544,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="clu10z7yv000h52vd05dx1qls" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="clu22vwen000j3svd8kox5lfq" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -391,7 +664,7 @@
 <p><img src="/images/image-20230317151548630.png" alt="image-20230317151548630"></p>
 <p>​		尝试使用上面的用户名和密码进行SSH链接</p>
 <blockquote>
-<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#100;&#115;&#x74;&#101;&#x76;&#x65;&#x6e;&#115;&#64;&#49;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#46;&#49;&#51;&#x34;&#x2e;&#49;&#x33;&#54;">&#100;&#115;&#x74;&#101;&#x76;&#x65;&#x6e;&#115;&#64;&#49;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#46;&#49;&#51;&#x34;&#x2e;&#49;&#x33;&#54;</a></p>
+<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#x64;&#115;&#116;&#x65;&#118;&#x65;&#x6e;&#115;&#x40;&#49;&#x39;&#x32;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#49;&#x33;&#x34;&#46;&#x31;&#x33;&#54;">&#x64;&#115;&#116;&#x65;&#118;&#x65;&#x6e;&#115;&#x40;&#49;&#x39;&#x32;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#49;&#x33;&#x34;&#46;&#x31;&#x33;&#54;</a></p>
 </blockquote>
 <p><img src="/images/image-20230317144444254.png" alt="image-20230317144444254"></p>
 <p>​		成功连接上主机，可以发现我们是一个低权限账号，下面我们就该提权限了</p>
@@ -408,7 +681,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="clu10z7ys000c52vd5l3lg2b6" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="clu22vwek000e3svd2i9nce5m" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -472,6 +745,14 @@
       <ul>
         
           <li>
+            <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/">web-XSS-FlashXss-xss-labs</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/22/tools-Chrome-OldVersion/">tools-Chrome-OldVersion</a>
+          </li>
+        
+          <li>
             <a href="/2024/03/21/program-PHP-Memory-Trojan/">program-PHP-Memory-Trojan</a>
           </li>
         
@@ -481,14 +762,6 @@
         
           <li>
             <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7/">vulnhub-LAMPSecurity-CTF7</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/">vulnhub-LAMPSecurity-CTF7-external</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/21/tools-sqlmap-script-build/">tools-sqlmap-script-build</a>
           </li>
         
       </ul>

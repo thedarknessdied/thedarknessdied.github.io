@@ -75,6 +75,171 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-web-XSS-FlashXss-xss-labs" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/" class="article-date">
+  <time class="dt-published" datetime="2024-03-22T03:03:16.000Z" itemprop="datePublished">2024-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/22/web-XSS-FlashXss-xss-labs/">web-XSS-FlashXss-xss-labs</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h1 id="Flash-poc"><a href="#Flash-poc" class="headerlink" title="Flash-poc"></a>Flash-poc</h1><h2 id="0-靶场环境"><a href="#0-靶场环境" class="headerlink" title="0. 靶场环境"></a>0. 靶场环境</h2><pre><code>访问靶场: http://localhost:8080/xss/level19.php?arg01=a&amp;arg02=b
+</code></pre>
+<p><img src="/images/image-20240321202115815.png" alt="image-20240321202115815"></p>
+<h2 id="1-后端代码审计"><a href="#1-后端代码审计" class="headerlink" title="1. 后端代码审计"></a>1. 后端代码审计</h2><p><img src="/images/image-20240322104404913.png" alt="image-20240322104404913"></p>
+<p>​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf03.swf调用的键和值，访问<code>http://127.0.0.1:8080/xss/level19.php?arg01=a&amp;arg02=b</code>验证，打开控制台，查看内容发现没有突破点</p>
+<p><img src="/images/image-20240321202220244.png" alt="image-20240321202220244"></p>
+<p>​	通过阅读报错信息，可以看到flash报错里面提示sifr.js是没有定义的，不过xsf03.swf在页面显示过程中仅仅以图片的形式展示，所以我们需要对该文件进行反编译查看源码</p>
+<h2 id="2-flash-反编译"><a href="#2-flash-反编译" class="headerlink" title="2. flash 反编译"></a>2. flash 反编译</h2><p>​	使用 [jpexs-decompiler][<a target="_blank" rel="noopener" href="https://github.com/jindrapetrik/jpexs-decompiler]">https://github.com/jindrapetrik/jpexs-decompiler]</a> 工具反编译xsf03.swf</p>
+<p><img src="/images/image-20240321203736853.png" alt="image-20240321203736853"></p>
+<h3 id="2-1-VERSION-WARNING-变量追踪"><a href="#2-1-VERSION-WARNING-变量追踪" class="headerlink" title="2.1 VERSION_WARNING 变量追踪"></a>2.1 VERSION_WARNING 变量追踪</h3><p>​	在其中的代码段，我们搜索报错信息”Movie ..”，可以看见在<code>static var VERSION_WARNING</code> 变量中定义了这串内容</p>
+<p><img src="/images/image-20240321204707602.png" alt="image-20240321204707602"></p>
+<p>​	那么接下来肯定有数据拼接的地方，所以我们按照关键字搜索<code>VERSION_WARNING</code> ，可以发现以下逻辑，首先根据”%s”字符对<code>VERSION_WARNING</code> 进行了分割，然后根据_root.version的内容将分割后的数据拼接起来</p>
+<p><img src="/images/image-20240321204840700.png" alt="image-20240321204840700"></p>
+<p>​	要想执行到这儿，就必须满足:</p>
+<ul>
+<li>_loc5_ 变量的值为真</li>
+<li>_root.version 从文件对象上获取到的 version 数值不等于默认数值</li>
+</ul>
+<p><img src="/images/image-20240322093218253.png" alt="image-20240322093218253"></p>
+<h3 id="2-2-root-预定义全局对象"><a href="#2-2-root-预定义全局对象" class="headerlink" title="2.2 _root 预定义全局对象"></a>2.2 _root 预定义全局对象</h3><p>​	首先先要搞懂什么是_root</p>
+<p>​	_root 是一个预定义的全局对象，代表舞台（Stage）的根级别。它提供对 Flash 动画中的顶级元素和属性的访问。</p>
+<p>通过 _root 对象，可以访问舞台的属性、变量和方法，以及舞台上的其他对象。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">在 Flash 中，<span class="emphasis">_root 对象通常包含以下一些预定义的变量：</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_width：舞台的宽度（以像素为单位）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_height：舞台的高度（以像素为单位）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_xmouse：鼠标在舞台上的 X 坐标位置（以舞台左上角为原点）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_ymouse：鼠标在舞台上的 Y 坐标位置（以舞台左上角为原点）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_framesloaded：已加载的帧数。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_totalframes：场景中的总帧数。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_url：当前 SWF 文件的 URL 地址。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_parent：舞台的父级对象（通常为空，因为舞台是顶级对象）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_global：用于访问全局变量和函数。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-loc4-利用条件限制绕过"><a href="#2-3-loc4-利用条件限制绕过" class="headerlink" title="2.3 _loc4_ 利用条件限制绕过"></a>2.3 _loc4_ 利用条件限制绕过</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">function</span> <span class="title function_">checkDomain</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">    	如果未绑定限制该flash使用域名贼直接返回true </span></span><br><span class="line"><span class="comment">    	因为我们是默认环境，所以直接忽略这个函数就行</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">	<span class="keyword">if</span>(sIFR.<span class="property">domains</span>.<span class="property">length</span> == <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> _loc2_ = <span class="keyword">new</span> <span class="title class_">LocalConnection</span>().<span class="title function_">domain</span>();</span><br><span class="line">    <span class="keyword">var</span> _loc3_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(_loc3_ &lt; sIFR.<span class="property">domains</span>.<span class="property">length</span>)&#123;</span><br><span class="line">         <span class="keyword">var</span> _loc4_ = sIFR.<span class="property">domains</span>[_loc3_];</span><br><span class="line">         <span class="keyword">if</span>(_loc4_ == <span class="string">&quot;*&quot;</span> || _loc4_ == _loc2_)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">var</span> _loc5_ = _loc4_.<span class="title function_">lastIndexOf</span>(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">         <span class="keyword">if</span>(_loc5_ &gt; -<span class="number">1</span>)&#123;</span><br><span class="line">            _loc4_ = _loc4_.<span class="title function_">substr</span>(_loc5_ + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">var</span> _loc6_ = _loc2_.<span class="title function_">lastIndexOf</span>(_loc4_);</span><br><span class="line">            <span class="keyword">if</span>(_loc6_ &gt; -<span class="number">1</span> &amp;&amp; _loc6_ + _loc4_.<span class="property">length</span> == _loc2_.<span class="property">length</span>)&#123;</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  			&#125;</span><br><span class="line">        &#125;</span><br><span class="line">		_loc3_ = _loc3_ + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">function</span> <span class="title function_">checkLocation</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	判断在请求swf的文件中是否有存在?</span></span><br><span class="line"><span class="comment">    	因为在一般情况下在URL请求行中出现?，那么在他后面跟着的、形式为&quot;x=x&quot;的、以&quot;&amp;&quot;拼接的就被当做是查询字符串</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">	<span class="keyword">return</span> _root.<span class="property">_url</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;?&quot;</span>) == -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​	那么就需要审计上面的那几个 if 条件判断了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">var _loc4_ = sIFR.DEFAULT_TEXT;</span><br><span class="line">var _loc5_ = true;</span><br><span class="line"></span><br><span class="line">if(sIFR.checkLocation() &amp;&amp; sIFR.checkDomain())&#123;</span><br><span class="line">	_loc4_ = sIFR.unescapeUnicode(_root.content);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(_loc4_ == &quot;undefined&quot; || _loc4_ == &quot;&quot;)&#123;</span><br><span class="line">	var _loc6_ = flash.external.ExternalInterface.call(&quot;sIFR.__resetBrokenMovies&quot;);</span><br><span class="line">    if(_loc6_)&#123;</span><br><span class="line">    	return undefined;</span><br><span class="line">    &#125;</span><br><span class="line">    _loc4_ = sIFR.DEFAULT_TEXT;</span><br><span class="line">    _loc5_ = false;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(_loc5_ &amp;&amp; _root.version != sIFR.VERSION)&#123;</span><br><span class="line">	_loc4_ = sIFR.VERSION_WARNING.split(&quot;%s&quot;).join(_root.version);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">	重新渲染对象，将对象的content属性赋值为 _loc4_</span><br><span class="line">	因为这里调用了new sIRF生成sIRF对象，那么机会重新执行</span><br><span class="line">	this.setupEvents();</span><br><span class="line">    this.write(content);</span><br><span class="line">    this.repaint();</span><br><span class="line">*/</span><br><span class="line">sIFR.instance = new sIFR(_loc3_.txtF,_loc4_);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>要是在请求的swf文件中不存在查询字符串，那么 <code>sIFR.checkLocation()</code> 返回为false，_loc4将会获取到默认值sIFR.DEFAULT_TEXT，但是默认定义中：</p>
+<p><img src="/images/image-20240322094956319.png" alt="image-20240322094956319"></p>
+<p>其数值必然不满足<code>_root.version != sIFR.VERSION</code>，所以无法进入if语句块去格式化字符串</p>
+</li>
+<li><p>所以就需要传入查询字符串，<code>_root.content</code>会获取查询字符串的内容，<code>sIFR.unescapeUnicode</code>将会把字符串内容解码，只要传入了查询字符串，那么<code>_loc4_ == &quot;undefined&quot; || _loc4_ == &quot;&quot;</code>就不会成功，会直接进入第三个if判断</p>
+</li>
+<li><p>第三个就很简单，当你第二个if判断不进入if语句块，就能保证<code>_loc5_ </code>为true，那么接下来就该处理<code>_root.version != sIFR.VERSION</code>，因为我们需要渲染<code>_loc4_</code>使其获得<code>sIFR.VERSION_WARNING.split(&quot;%s&quot;).join(_root.version)</code>拼接结果从而导致xss漏洞，所以传入的参数不能为<code>?version=436</code></p>
+</li>
+</ol>
+<h3 id="2-4-事件绑定与数据写入"><a href="#2-4-事件绑定与数据写入" class="headerlink" title="2.4 事件绑定与数据写入"></a>2.4 事件绑定与数据写入</h3><p>​	重新选然后将会执行<code>this.setupEvents();</code>绑定事件</p>
+<p>​	然后再执行 <code>this.write(content);</code>重新写入内容</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">setupEvents</span>(<span class="params"></span>)&#123;</span><br><span class="line">	<span class="keyword">if</span>(_root.<span class="property">fixhover</span> == <span class="string">&quot;true&quot;</span> &amp;&amp; <span class="variable language_">this</span>.<span class="title function_">contentIsLink</span>())&#123;</span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOver</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">			sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOver&quot;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOut</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">            sIFR.<span class="property">instance</span>.<span class="title function_">fixHover</span>();</span><br><span class="line">            sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOut&quot;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">            sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRelease&quot;</span>);</span><br><span class="line">            <span class="title function_">getURL</span>(sIFR.<span class="property">instance</span>.<span class="property">primaryLink</span>,sIFR.<span class="property">instance</span>.<span class="property">primaryLinkTarget</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        sIFR.<span class="property">menu</span>.<span class="property">customItems</span> = sIFR.<span class="property">menuItems</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(_root.<span class="property">events</span> == <span class="string">&quot;true&quot;</span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOver</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOver&quot;</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOut</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOut&quot;</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRelease&quot;</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(_root.<span class="property">cursor</span> == <span class="string">&quot;pointer&quot;</span>)&#123;</span><br><span class="line">               <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">            	<span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOver</span>;</span><br><span class="line">			<span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOut</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		sIFR.<span class="property">menu</span>.<span class="property">customItems</span> = [];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">write</span>(<span class="params">content</span>)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	this.textField.htmlText 控制的是文字组件在html中输出展示的内容</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">htmlText</span> = [<span class="string">&quot;&lt;p class=\&quot;&quot;</span>,sIFR.<span class="property">CSS_ROOT_CLASS</span>,<span class="string">&quot;\&quot;&gt;&quot;</span>,content,<span class="string">&quot;&lt;/p&gt;&quot;</span>].<span class="title function_">join</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​	重点观察<code>this.textField._parent.onRelease</code>:</p>
+<blockquote>
+<p>​	<code>this.textField._parent.onRelease</code> 是一个事件处理代码，用于处理 Flash 中的按钮或可交互对象的释放（release）事件。</p>
+<p>具体作用如下：</p>
+<ul>
+<li><code>this.textField</code> 是一个文本字段对象。</li>
+<li><code>_parent</code> 是该文本字段对象的父级对象，也就是包含它的容器对象。</li>
+<li><code>onRelease</code> 是一个事件处理函数，它会在用户释放（点击并释放）与该按钮或可交互对象关联的区域时触发。</li>
+</ul>
+<p>​	通过将代码 <code>this.textField._parent.onRelease</code> 与按钮或可交互对象关联，当用户释放该对象时，相关的操作或代码块将被执行。在这个特定的代码中，<code>this.textField._parent.onRelease</code> 被用作按钮或可交互对象的释放事件处理程序，可能会触发一些交互行为或执行其他相关的功能。</p>
+</blockquote>
+<p>​	具体的页面生命周期可能会因不同的实现方式和技术而有所不同，但通常情况下，包含SWF文件的网页在加载时会创建一个SWF对象并将其嵌入到网页的指定位置。SWF对象会被浏览器解析、渲染和执行，呈现给用户。用户与SWF对象进行交互时，事件处理代码会被触发执行相应的逻辑。</p>
+<p>​	当用户离开该页面或浏览器关闭页面时，浏览器会销毁SWF对象，释放相关的内存和资源。这确保了页面加载和交互的正常进行，并避免了内存泄漏和资源浪费的问题。</p>
+<p>​	所以要想在浏览过程中正确的触发加载swf文件，需要让<code>this.textField._parent.onRelease = function()&#123;sIFR.call(&quot;fireEvent&quot;,&quot;onRelease&quot;);&#125;;</code>这段内容生效，所以我们需使得<code>_root.fixhover == &quot;true&quot; &amp;&amp; this.contentIsLink())</code>成真</p>
+<ol>
+<li><p><code>_root.fixhover</code> 估计是页面的某个cursor操作，正常情况下是true的</p>
+</li>
+<li><p>那么就需要观察<code>this.contentIsLink())</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">contentIsLink</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	其实判断内容是否是链接就是判断是不是用&lt;a&gt;标签传输的</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;&lt;a &quot;</span>) == <span class="number">0</span> &amp;&amp; (<span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;&lt;a &quot;</span>) == <span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">lastIndexOf</span>(<span class="string">&quot;&lt;a &quot;</span>) &amp;&amp; <span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;&lt;/a&gt;&quot;</span>) == <span class="variable language_">this</span>.<span class="property">content</span>.<span class="property">length</span> - <span class="number">4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>​	至此分析结束，</p>
+<h2 id="3-POC构造"><a href="#3-POC构造" class="headerlink" title="3. POC构造"></a>3. POC构造</h2><blockquote>
+<p>?version&#x3D;&lt;a href&#x3D;”javascript:alert(1)”&gt;123</a></p>
+</blockquote>
+<p><img src="/images/image-20240322105506147.png" alt="image-20240322105506147"></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充:"></a>补充:</h2><h3 id="关于-getURL-sIFR-instance-primaryLink-sIFR-instance-primaryLinkTarget"><a href="#关于-getURL-sIFR-instance-primaryLink-sIFR-instance-primaryLinkTarget" class="headerlink" title="关于 getURL(sIFR.instance.primaryLink,sIFR.instance.primaryLinkTarget)"></a>关于 getURL(sIFR.instance.primaryLink,sIFR.instance.primaryLinkTarget)</h3><p>​	<code>getURL(sIFR.instance.primaryLink,sIFR.instance.primaryLinkTarget);</code>	</p>
+<blockquote>
+<p>​	<code>getURL(sIFR.instance.primaryLink, sIFR.instance.primaryLinkTarget)</code>是一个已被废弃的 ActionScript 2 函数，用于在 Flash 应用程序中执行页面导航操作。</p>
+<p>具体作用如下：</p>
+<ul>
+<li><code>sIFR.instance.primaryLink</code> 是一个字符串，表示要导航到的目标 URL。</li>
+<li><code>sIFR.instance.primaryLinkTarget</code> 是一个字符串，指定了链接应如何在浏览器中打开，例如 <code>_self</code> 表示在当前窗口打开，<code>_blank</code> 表示在新窗口打开。</li>
+</ul>
+<p><code>getURL()</code> 函数将根据提供的 URL 和目标参数执行相应的页面导航操作。在这个特定的代码中，它被用于根据 <code>sIFR.instance.primaryLink</code> 和 <code>sIFR.instance.primaryLinkTarget</code> 的值执行一个页面跳转操作，可能会打开一个新的浏览器窗口或在当前窗口中加载新的 URL。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/" data-id="clu22vwey000q3svd2h2xccys" data-title="web-XSS-FlashXss-xss-labs" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tools-Chrome-OldVersion" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/22/tools-Chrome-OldVersion/" class="article-date">
+  <time class="dt-published" datetime="2024-03-22T03:00:31.000Z" itemprop="datePublished">2024-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/22/tools-Chrome-OldVersion/">tools-Chrome-OldVersion</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Chrome历史版本获取"><a href="#Chrome历史版本获取" class="headerlink" title="Chrome历史版本获取"></a>Chrome历史版本获取</h1><p>​	在平时测试过程中需要使用到不同版本的Chrome浏览器版本</p>
+<p>​	我们可以通过访问下面站点获取不同版本的Chrome</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.slimjet.com/chrome/google-chrome-old-version.php">https://www.slimjet.com/chrome/google-chrome-old-version.php</a></p>
+</blockquote>
+<p><img src="/images/image-20240321195820376.png" alt="image-20240321195820376">i</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/22/tools-Chrome-OldVersion/" data-id="clu22vweg00073svdew775991" data-title="tools-Chrome-OldVersion" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-program-PHP-Memory-Trojan" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/21/program-PHP-Memory-Trojan/" class="article-date">
@@ -167,7 +332,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu10z7ye000152vd74v23dnq" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu22vwe700013svd60dxdyf4" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -237,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu10z7z5000l52vdbiwg84pt" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu22vwew000n3svdeb8z9ypb" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -381,7 +546,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu10z7z7000n52vda0u54mka" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu22vwex000p3svdczcm9ti0" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -433,7 +598,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu10z7yw000j52vd81gp8nht" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu22vweu000l3svdbt3c7t32" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -494,7 +659,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu10z7yr000a52vd4si43lo6" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu22vwej000c3svd3np827w5" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -587,7 +752,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu10z7ym000552vd97hw77de" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu22vwee00053svd773b85rd" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -687,7 +852,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu10z7yn000652vddn3qhqdo" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu22vwef00063svd70wfdvjd" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -753,284 +918,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu10z7yp000752vd2cwefn9l" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu22vweh00093svd5s0tht5l" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-protocol-arp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/15/protocol-arp/" class="article-date">
-  <time class="dt-published" datetime="2024-03-15T05:49:01.000Z" itemprop="datePublished">2024-03-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/15/protocol-arp/">protocol-arp</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h1><h2 id="0-ARP-协议基本概念"><a href="#0-ARP-协议基本概念" class="headerlink" title="0. ARP 协议基本概念"></a>0. ARP 协议基本概念</h2><p>​	地址解析协议，即ARP（Address Resolution Protocol），是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间，下次请求时直接查询ARP缓存以节约资源。</p>
-<h2 id="1-ARP-数据包格式解析"><a href="#1-ARP-数据包格式解析" class="headerlink" title="1. ARP 数据包格式解析"></a>1. ARP 数据包格式解析</h2><h3 id="1-1-以太网帧封装的ARP数据包"><a href="#1-1-以太网帧封装的ARP数据包" class="headerlink" title="1.1 以太网帧封装的ARP数据包"></a>1.1 以太网帧封装的ARP数据包</h3><p><img src="/images/image-20240315124206322.png" alt="image-20240315124206322"></p>
-<p>​	ARP是个独立的三层协议，并不需要IP协议封装，而是直接生成自己的报文，到达数据链路层后，由数据链路层协议进行封装，一般是以太网协议。封装的过程，就是在ARP报文的前面加上以太网帧头，再加上4字节的冗余校验码结尾，校验码用于检验数据传输是否出现损坏。</p>
-<blockquote>
-<p>主要参数 :</p>
-<p>​	以太网目的地址：6字节，如果是ARP请求报文，该字段为广播MAC地址(FF:FF:FF:FF:FF:FF)</p>
-<p>​	以太网源地址：6字节</p>
-<p>​	帧类型：2字节，0x0806表示是ARP协议</p>
-<p>​	以太网帧尾： 4字节</p>
-</blockquote>
-<p><strong>注：以太网帧最小长度是64个字节，最长1518个字节。封装后的ARP帧，实际就是一个最小以太网帧，包含14个字节的以太网帧头，28个字节的ARP报文，4个字节的以太网帧尾，一共是46个字节，其余18个字节用0来填充，共计64个字节。</strong></p>
-<h3 id="1-2-ARP-数据包报文"><a href="#1-2-ARP-数据包报文" class="headerlink" title="1.2 ARP 数据包报文"></a>1.2 ARP 数据包报文</h3><p><img src="/images/image-20240315122951442.png" alt="image-20240315122951442"></p>
-<blockquote>
-<p>主要参数 :</p>
-<p>​	硬件类型：2字节，值为1表示以太网地址</p>
-<p>​	协议类型：2字节，0x0800表示IP地址</p>
-<p>​	硬件地址长度：1字节，数值为6</p>
-<p>​	协议地址长度：1字节，数值为4</p>
-<p>​	操作代码：2字节，1表示请求报文，2表示应答报文</p>
-<p>​	源MAC地址：6字节</p>
-<p>​	源IP地址：4节字</p>
-<p>​	目的MAC地址：6字节	</p>
-<p>·	目的IP地址：4节字</p>
-</blockquote>
-<h2 id="2-ARP-协议工作流程"><a href="#2-ARP-协议工作流程" class="headerlink" title="2. ARP 协议工作流程"></a>2. ARP 协议工作流程</h2><h3 id="2-1-ARP-协议工作流程原理简述"><a href="#2-1-ARP-协议工作流程原理简述" class="headerlink" title="2.1 ARP 协议工作流程原理简述"></a>2.1 ARP 协议工作流程原理简述</h3><p>​	(以下图主机A与主机C之间进行通信为例)</p>
-<p><img src="/images/image-20240315125654168.png" alt="image-20240315125654168"></p>
-<pre><code> 1. 主机A想要发送数据包到主机C，首先会检查**本地ARP缓存**，即ARP缓存表，搜索目标IP地址是否存在对应的MAC地址
- 2. 如果ARP表中目标IP地址已有对应的MAC地址，则直接使用该地址进行数据包发送
- 3. 如果ARP表中不存在目标IP地址对应的MAC地址，则向**本地网络中广播ARP请求**（ARP Request）数据包，请求其它主机回复该IP地址所对应的MAC地址
- 4. 凡是收到ARP请求数据包的主机，都比较其自身拥有的IP地址和ARP请求数据包中的目标IP地址是否匹配。若匹配，则向主机A发送ARP响应（ARP Reply）数据包，其中包含其自己的MAC地址
- 5. 主机A收到ARP响应数据包后，即可根据目标IP地址和对应的MAC地址进行数据包的发送
-</code></pre>
-<h3 id="2-2-ARP-协议工作流程实验简述"><a href="#2-2-ARP-协议工作流程实验简述" class="headerlink" title="2.2 ARP 协议工作流程实验简述"></a>2.2 ARP 协议工作流程实验简述</h3><h4 id="2-2-1-主机A在本地ARP缓存表中查找对应的MAC地址"><a href="#2-2-1-主机A在本地ARP缓存表中查找对应的MAC地址" class="headerlink" title="2.2.1 主机A在本地ARP缓存表中查找对应的MAC地址"></a>2.2.1 主机A在本地ARP缓存表中查找对应的MAC地址</h4><p><img src="/images/image-20240315125853205.png" alt="image-20240315125853205"></p>
-<h4 id="2-2-2-发送请求包"><a href="#2-2-2-发送请求包" class="headerlink" title="2.2.2 发送请求包"></a>2.2.2 发送请求包</h4><p>​	主机A在ARP表中找不到对应的MAC地址，则将缓存该数据报文，然后以广播方式发送一个ARP请求报文</p>
-<p><img src="/images/image-20240315130345973.png" alt="image-20240315130345973"></p>
-<table>
-<thead>
-<tr>
-<th>目的IP</th>
-<th>源IP</th>
-<th>目的MAC</th>
-<th>源MAC</th>
-<th>类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>192.168.0.3</td>
-<td>192.168.0.1</td>
-<td>FF-FF-FF-FF-FF-FF</td>
-<td>54-89-98-80-72-D7</td>
-<td>Request</td>
-</tr>
-</tbody></table>
-<h4 id=""><a href="#" class="headerlink" title=""></a><img src="/images/image-20240315130905425.png" alt="image-20240315130905425"></h4><h4 id="2-2-3-接受响应包"><a href="#2-2-3-接受响应包" class="headerlink" title="2.2.3 接受响应包"></a>2.2.3 接受响应包</h4><p>​	由于ARP请求报文以广播方式发送，该网段上的所有主机都可以接收到该请求，但只有被请求的主机（即主机C）会对该请求进行处理</p>
-<p>​	主机C比较自己的IP地址和ARP请求报文中的目标IP地址，当两者相同时进行如下处理：将ARP请求报文中的发送端（即主机A）的IP地址和MAC地址存入自己的ARP表中。之后以单播方式发送ARP响应报文给主机A，其中包含了自己的MAC地址。</p>
-<p><img src="/images/image-20240315130436795.png" alt="image-20240315130436795"></p>
-<table>
-<thead>
-<tr>
-<th>目的IP</th>
-<th>源IP</th>
-<th>目的MAC</th>
-<th>源MAC</th>
-<th>类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>192.168.0.1</td>
-<td>192.168.0.3</td>
-<td>54-89-98-80-72-D7</td>
-<td>54-89-98-B7-0B-E8</td>
-<td>Reply</td>
-</tr>
-</tbody></table>
-<p><img src="/images/image-20240315130929464.png" alt="image-20240315130929464"></p>
-<h4 id="2-2-4-ARP-缓存"><a href="#2-2-4-ARP-缓存" class="headerlink" title="2.2.4 ARP 缓存"></a>2.2.4 ARP 缓存</h4><p>​	为了避免重复发送ARP请求，产生大量的广播包，每台主机都有一个ARP缓存列表，当源主机得到 ARP 响应后，将目标主机的 IP 地址和物理地址存入本机 ARP 缓存中，并保留一定时间。下次请求 MAC 地址时，直接查询 ARP 缓存，而无须再发送 ARP 请求，从而节约了网络资源。当缓存生存期结束后，才会再次发送ARP请求报文。</p>
-<h2 id="3-ARP-的应用场景"><a href="#3-ARP-的应用场景" class="headerlink" title="3. ARP 的应用场景"></a>3. ARP 的应用场景</h2><ul>
-<li>ARP的主要应用在局域网中，用于寻找目标主机的MAC地址，以实现数据包的发送和接收</li>
-<li>ARP是广泛应用在TCP&#x2F;IP协议栈中的重要协议，为网络通信提供了必要的支持</li>
-<li>ARP还可以用于攻击，ARP欺骗可以伪装成另一个主机的MAC地址，欺骗路由器或其它主机发送信息</li>
-</ul>
-<h2 id="4-ARP-的优缺点"><a href="#4-ARP-的优缺点" class="headerlink" title="4.  ARP 的优缺点"></a>4.  ARP 的优缺点</h2><ul>
-<li>ARP能在目标MAC地址未知的情况下实现数据包的发送和接收，使通信更加方便</li>
-<li>ARP对网络协议和硬件无特殊要求，适用范围广泛</li>
-<li>ARP有可能存在缓存污染攻击等安全风险，需要加强安全防护</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu10z7yj000352vdd5840w4b" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tools-netdiscover" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/15/tools-netdiscover/" class="article-date">
-  <time class="dt-published" datetime="2024-03-15T02:38:07.000Z" itemprop="datePublished">2024-03-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/15/tools-netdiscover/">tools-netdiscover</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="工具–Netdiscover"><a href="#工具–Netdiscover" class="headerlink" title="工具–Netdiscover"></a>工具–Netdiscover</h1><h2 id="0-Netdiscover-基本概念"><a href="#0-Netdiscover-基本概念" class="headerlink" title="0. Netdiscover 基本概念"></a>0. Netdiscover 基本概念</h2><p>​	ARP 侦查工具 Netdiscover Netdiscover 是一个主动 &#x2F; 被动的 ARP 侦查工具。该工具在不使用 DHCP 的无线网络上非常有用。使用 Netdiscover 工具可以在网络上扫描 IP 地址， ARP 侦查工具 Netdiscover 检查在线主机或搜索为它们发送的 ARP 请求</p>
-<h2 id="1-Netdiscover-常见参数解析"><a href="#1-Netdiscover-常见参数解析" class="headerlink" title="1. Netdiscover 常见参数解析"></a>1. Netdiscover 常见参数解析</h2><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>简介</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-i device</td>
-<td>网络设备，网卡的设置</td>
-</tr>
-<tr>
-<td>-r range</td>
-<td>扫描给定的IP地址范围(可以通过CIDR表示)</td>
-</tr>
-<tr>
-<td>-l file</td>
-<td>扫描包含在文件中的IP地址范围</td>
-</tr>
-<tr>
-<td>-p passive</td>
-<td>(被动扫描)不发送任何内容，只发送嗅探针</td>
-</tr>
-<tr>
-<td>-m file</td>
-<td>扫描已知MAC地址和主机名的列表</td>
-</tr>
-<tr>
-<td>-F filter</td>
-<td>自定义pcap filter表达式(默认是’arp‘)</td>
-</tr>
-<tr>
-<td>-s time</td>
-<td>每个ARP请求之间的休眠时间(ms)</td>
-</tr>
-<tr>
-<td>-c count</td>
-<td>发送每个ARP请求的次数(对于丢失数据包的网络而言)</td>
-</tr>
-<tr>
-<td>-n node</td>
-<td>用于扫描的最后一个源IP八位字节(2-253)</td>
-</tr>
-<tr>
-<td>-d</td>
-<td>忽略自动扫描和快速模式的主配置文件</td>
-</tr>
-<tr>
-<td>-f</td>
-<td>启动快速模式扫描，节省大量时间，建议使用auto</td>
-</tr>
-<tr>
-<td>-P</td>
-<td>打印结果的格式适用于另一个程序的解析，并在活动扫描后停止</td>
-</tr>
-<tr>
-<td>-L</td>
-<td>类似于-P，但在活动扫描完成后继续监听</td>
-</tr>
-<tr>
-<td>-N</td>
-<td>不打印页眉，仅当启用-P或者-L时有效</td>
-</tr>
-<tr>
-<td>-S</td>
-<td>启用每个请求之间的休眠时间抑制(硬核模式)，扫描速度很快</td>
-</tr>
-</tbody></table>
-<h2 id="2-Netdiscover-使用"><a href="#2-Netdiscover-使用" class="headerlink" title="2. Netdiscover 使用"></a>2. Netdiscover 使用</h2><h3 id="2-1-主动发现"><a href="#2-1-主动发现" class="headerlink" title="2.1 主动发现"></a>2.1 主动发现</h3><p>​	遵循 ARP 协议</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24</p>
-</blockquote>
-<p><img src="/images/image-20240315101411455.png" alt="image-20240315101411455"></p>
-<h3 id="2-2-被动发现"><a href="#2-2-被动发现" class="headerlink" title="2.2 被动发现"></a>2.2 被动发现</h3><blockquote>
-<p>netdiscover -p</p>
-</blockquote>
-<p><img src="/images/image-20240315103449746.png" alt="image-20240315103449746"></p>
-<h3 id="2-3-扫描后停止扫描"><a href="#2-3-扫描后停止扫描" class="headerlink" title="2.3 扫描后停止扫描"></a>2.3 扫描后停止扫描</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -P</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -P</p>
-</blockquote>
-<p><img src="/images/image-20240315101932699.png" alt="image-20240315101932699"></p>
-<h3 id="2-4-扫描后继续监听"><a href="#2-4-扫描后继续监听" class="headerlink" title="2.4 扫描后继续监听"></a>2.4 扫描后继续监听</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -L</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -L</p>
-</blockquote>
-<p><img src="/images/image-20240315102223897.png" alt="image-20240315102223897"></p>
-<h3 id="2-5-结果无页眉修饰"><a href="#2-5-结果无页眉修饰" class="headerlink" title="2.5 结果无页眉修饰"></a>2.5 结果无页眉修饰</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -N</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -P -N</p>
-</blockquote>
-<p><img src="/images/image-20240315102529860.png" alt="image-20240315102529860"></p>
-<h3 id="2-6-重复发送请求"><a href="#2-6-重复发送请求" class="headerlink" title="2.6 重复发送请求"></a>2.6 重复发送请求</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -c [numbers]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -c 5</p>
-</blockquote>
-<p>​	对于每个扫描目标发送numbers次ARP请求</p>
-<p><img src="/images/image-20240315102902227.png" alt="image-20240315102902227"></p>
-<blockquote>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="clu10z7yq000952vdcxg80xj1" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
 
     </footer>
   </div>
@@ -1090,6 +982,14 @@
       <ul>
         
           <li>
+            <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/">web-XSS-FlashXss-xss-labs</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/22/tools-Chrome-OldVersion/">tools-Chrome-OldVersion</a>
+          </li>
+        
+          <li>
             <a href="/2024/03/21/program-PHP-Memory-Trojan/">program-PHP-Memory-Trojan</a>
           </li>
         
@@ -1099,14 +999,6 @@
         
           <li>
             <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7/">vulnhub-LAMPSecurity-CTF7</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/">vulnhub-LAMPSecurity-CTF7-external</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/21/tools-sqlmap-script-build/">tools-sqlmap-script-build</a>
           </li>
         
       </ul>
