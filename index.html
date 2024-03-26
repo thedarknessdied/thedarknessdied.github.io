@@ -106,7 +106,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="clu7r07bu000sgwvda20b0w6p" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="clu7re9ki000s4bvdcrwi036z" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -152,7 +152,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-1/" data-id="clu7r07bt000qgwvd606c6agw" data-title="tools-windows-fs-ntfs-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-1/" data-id="clu7re9kh000q4bvd5pgsdzci" data-title="tools-windows-fs-ntfs-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -188,17 +188,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="multiprocessing多子进程调用出错"><a href="#multiprocessing多子进程调用出错" class="headerlink" title="multiprocessing多子进程调用出错"></a>multiprocessing多子进程调用出错</h1><h2 id="0-BUG出现入口"><a href="#0-BUG出现入口" class="headerlink" title="0. BUG出现入口"></a>0. BUG出现入口</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"></span><br><span class="line">tunnel = multiprocessing.Queue()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Consumer</span>(multiprocessing.Process):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, q</span>):</span><br><span class="line">        <span class="built_in">super</span>(Consumer, self).__init__()</span><br><span class="line">        self.q = q</span><br><span class="line">        self.start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            data = self.q.get()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;当前获取到数据<span class="subst">&#123;data&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Producer</span>(multiprocessing.Process):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, q</span>):</span><br><span class="line">        <span class="built_in">super</span>(Producer, self).__init__()</span><br><span class="line">        self.q = q</span><br><span class="line">        self.start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">import</span> random</span><br><span class="line">        <span class="keyword">import</span> time</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line">            data = random.randint(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;当前产生了数据<span class="subst">&#123;data&#125;</span>&quot;</span>)</span><br><span class="line">            self.q.put(data)</span><br><span class="line"></span><br><span class="line">Consumer(tunnel)</span><br><span class="line">Producer(tunnel)</span><br></pre></td></tr></table></figure>
-
-<p>​	在多进程执行的过程中出现了如下的错误:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">RuntimeError: </span><br><span class="line">        An attempt has been made to start a new process before the</span><br><span class="line">        current process has finished its bootstrapping phase.</span><br><span class="line"></span><br><span class="line">        This probably means that you are <span class="keyword">not</span> using fork to start your</span><br><span class="line">        child processes <span class="keyword">and</span> you have forgotten to use the proper idiom</span><br><span class="line">        <span class="keyword">in</span> the main module:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">                freeze_support()</span><br><span class="line">                ...</span><br><span class="line"></span><br><span class="line">        The <span class="string">&quot;freeze_support()&quot;</span> line can be omitted <span class="keyword">if</span> the program</span><br><span class="line">        <span class="keyword">is</span> <span class="keyword">not</span> going to be frozen to produce an executable.</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20240325194416832.png" alt="image-20240325194416832"></p>
-<blockquote>
-<p>这个错误是由于在启动子进程之前，当前进程尚未完成引导阶段导致的。这通常发生在使用多进程编程时，而且没有正确使用<code>fork</code>来启动子进程，并且在主模块中忘记使用正确的惯用法。</p>
-</blockquote>
-<p>​	其实通俗的将就是windows环境下不能直接多子进程调用程序</p>
-<h2 id="1-解决方法"><a href="#1-解决方法" class="headerlink" title="1. 解决方法"></a>1. 解决方法</h2><h3 id="1-1-修改多进程参数"><a href="#1-1-修改多进程参数" class="headerlink" title="1.1 修改多进程参数"></a>1.1 修改多进程参数</h3>
+        <h1 id="multiprocessing多子进程调用出错"><a href="#multiprocessing多子进程调用出错" class="headerlink" title="multiprocessing多子进程调用出错"></a>multiprocessing多子进程调用出错</h1><h2 id="0-BUG出现入口"><a href="#0-BUG出现入口" class="headerlink" title="0. BUG出现入口"></a>0. BUG出现入口</h2>
         
           <p class="article-more-link">
             <a href="/2024/03/25/program-Python-calling-multiprocessing-intial-error/#more">Read More</a>
@@ -207,7 +197,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/program-Python-calling-multiprocessing-intial-error/" data-id="clu7r07b10005gwvd2nc0dxks" data-title="program-Python-calling-multiprocessing-intial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/program-Python-calling-multiprocessing-intial-error/" data-id="clu7re9jg00054bvda3oi7on9" data-title="program-Python-calling-multiprocessing-intial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -244,20 +234,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="生产者消费者模型"><a href="#生产者消费者模型" class="headerlink" title="生产者消费者模型"></a>生产者消费者模型</h1><h2 id="0-生产者消费者模型的基本概念"><a href="#0-生产者消费者模型的基本概念" class="headerlink" title="0. 生产者消费者模型的基本概念"></a>0. 生产者消费者模型的基本概念</h2><p>​	一个或多个生产者线程生成数据，并将其放入共享缓冲区中，而一个或多个消费者线程从共享缓冲区中获取数据并进行处理。有了这个队列，生产者就只需要关注生产，而不用管消费者的消费行为，更不用等待消费者线程执行完；消费者也只管消费，不用管生产者是怎么生产的，更不用等着生产者生产。这种模型可以有效地解耦生产者和消费者之间的耦合关系，使它们能够独立地进行操作</p>
-<h2 id="1-生产者消费者模型的作用"><a href="#1-生产者消费者模型的作用" class="headerlink" title="1. 生产者消费者模型的作用"></a>1. 生产者消费者模型的作用</h2><ul>
-<li>解耦生产者和消费者：生产者和消费者之间通过共享缓冲区进行通信，彼此之间不需要直接的依赖关系，从而实现了解耦</li>
-<li>并发处理：生产者和消费者可以并发执行，从而提高系统的吞吐量和效率</li>
-<li>缓冲和同步：共享缓冲区提供了一个缓冲区域，使得生产者和消费者可以以不同的速度进行操作，同时通过同步机制确保线程安全</li>
-</ul>
-<h2 id="2-生产者消费者模型的优势和缺点"><a href="#2-生产者消费者模型的优势和缺点" class="headerlink" title="2. 生产者消费者模型的优势和缺点"></a>2. 生产者消费者模型的优势和缺点</h2><h3 id="2-1-优势"><a href="#2-1-优势" class="headerlink" title="2.1 优势"></a>2.1 优势</h3><ul>
-<li>解耦性：生产者和消费者可以独立进行开发和优化，不需要了解彼此的具体实现细节。</li>
-<li>并发性：生产者和消费者可以并行执行，提高系统的并发性和响应性。</li>
-<li>灵活性：可以根据需求调整生产者和消费者的数量，并控制缓冲区的大小。</li>
-</ul>
-<h3 id="2-2-劣势"><a href="#2-2-劣势" class="headerlink" title="2.2 劣势"></a>2.2 劣势</h3><ul>
-<li>同步和互斥开销：在实现生产者消费者模型时，需要使用同步和互斥机制来保证线程安全，这可能引入一定的开销和额外的复杂性。</li>
-<li>死锁和饥饿：如果同步和互斥机制不正确地实现，可能会导致死锁（Deadlock）或饥饿（Starvation）等并发问题。</li>
-</ul>
         
           <p class="article-more-link">
             <a href="/2024/03/25/program-Python-Producer-Consumer/#more">Read More</a>
@@ -266,7 +242,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/program-Python-Producer-Consumer/" data-id="clu7r07ax0003gwvd85f2a30f" data-title="program-Python-Producer-Consumer" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/program-Python-Producer-Consumer/" data-id="clu7re9jc00034bvd6guif2s3" data-title="program-Python-Producer-Consumer" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -306,12 +282,6 @@
 <blockquote>
 <p>net user hello$ 123456 &#x2F;add</p>
 </blockquote>
-<p><img src="/images/clipboard.png" alt="img"></p>
-<p>​	此时运行“ net user ” 命令是看不到新建的” hello$ “ 用户的。</p>
-<p><img src="/images/clipboard-1711359229934-50.png" alt="img"></p>
-<p>​	但是可以在用户管理界面查看到刚刚建立的用户，也可以切换用户查看到该账号</p>
-<p><img src="/images/clipboard-1711359229934-51.png" alt="img"></p>
-<h2 id="2-隐藏用户管理界面影子账号的显示"><a href="#2-隐藏用户管理界面影子账号的显示" class="headerlink" title="2. 隐藏用户管理界面影子账号的显示"></a>2. 隐藏用户管理界面影子账号的显示</h2>
         
           <p class="article-more-link">
             <a href="/2024/03/25/tools-CMD-backdoor-user/#more">Read More</a>
@@ -320,7 +290,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/tools-CMD-backdoor-user/" data-id="clu7r07b8000cgwvd1kdmbt8j" data-title="tools-CMD-backdoor-user" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/tools-CMD-backdoor-user/" data-id="clu7re9jw000c4bvdgoer5gdc" data-title="tools-CMD-backdoor-user" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -372,7 +342,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/tools-CMD-net-user/" data-id="clu7r07bb000hgwvd29nt3u1z" data-title="tools-CMD-net-user" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/tools-CMD-net-user/" data-id="clu7re9k5000h4bvd33o4e4z8" data-title="tools-CMD-net-user" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -409,17 +379,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="隐藏命令行黑框"><a href="#隐藏命令行黑框" class="headerlink" title="隐藏命令行黑框"></a>隐藏命令行黑框</h1><p>​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏</p>
-<h2 id="1-基于-Wscript-Shell-的隐藏命令行黑框方法"><a href="#1-基于-Wscript-Shell-的隐藏命令行黑框方法" class="headerlink" title="1. 基于 Wscript.Shell 的隐藏命令行黑框方法"></a>1. 基于 Wscript.Shell 的隐藏命令行黑框方法</h2><h3 id="1-1-使用-vbscript-脚本"><a href="#1-1-使用-vbscript-脚本" class="headerlink" title="1.1 使用 vbscript 脚本"></a>1.1 使用 vbscript 脚本</h3><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Set</span> objShell = WScript.<span class="built_in">CreateObject</span>(<span class="string">&quot;WScript.Shell&quot;</span>)</span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C frpc.exe -c frpc.ini&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C attrib +s +h +r /s /d *&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">WScript.Quit</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/image-20240325141016145.png" alt="image-20240325141016145"></p>
-<h3 id="1-2-使用-powershell-脚本"><a href="#1-2-使用-powershell-脚本" class="headerlink" title="1.2 使用 powershell 脚本"></a>1.2 使用 powershell 脚本</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$shell</span> = <span class="built_in">New-Object</span> <span class="literal">-ComObject</span> WScript.Shell</span><br><span class="line"><span class="variable">$shell</span>.Run(<span class="string">&quot;frpc.exe -c frpc.ini&quot;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="variable">$shell</span>.Run(<span class="string">&quot;attrib +s +h +r /s /d *&quot;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">Exit</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/image-20240325142222704.png" alt="image-20240325142222704"></p>
-<h3 id="1-3-使用批处理脚本"><a href="#1-3-使用批处理脚本" class="headerlink" title="1.3 使用批处理脚本"></a>1.3 使用批处理脚本</h3>
         
           <p class="article-more-link">
             <a href="/2024/03/25/tools-CMD-hidden-cmdline/#more">Read More</a>
@@ -428,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/" data-id="clu7r07b9000egwvdazo782rw" data-title="tools-CMD-hidden-cmdline" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/" data-id="clu7re9k3000e4bvd20587pl0" data-title="tools-CMD-hidden-cmdline" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -465,74 +424,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="批处理命令attrib"><a href="#批处理命令attrib" class="headerlink" title="批处理命令attrib"></a>批处理命令attrib</h1><h2 id="0-概念"><a href="#0-概念" class="headerlink" title="0. 概念"></a>0. 概念</h2><p>​	attrib是attribute的缩写，显示或更改文件（夹）属性的意思，是一个外部命令</p>
-<h2 id="1-帮助文档"><a href="#1-帮助文档" class="headerlink" title="1. 帮助文档"></a>1. 帮助文档</h2><blockquote>
-<p>ATTRIB [+R | -R] [+A | -A] [+S | -S] [+H | -H] [+O | -O] [+I | -I] [+X | -X] [+P | -P] [+U | -U]<br>[drive:][path][filename] [&#x2F;S [&#x2F;D]] [&#x2F;L]</p>
-</blockquote>
-<h3 id="1-1-属性修改"><a href="#1-1-属性修改" class="headerlink" title="1.1 属性修改"></a>1.1 属性修改</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>+</td>
-<td>设置属性</td>
-</tr>
-<tr>
-<td>-</td>
-<td>清楚属性</td>
-</tr>
-</tbody></table>
-<h3 id="1-2-属性类别"><a href="#1-2-属性类别" class="headerlink" title="1.2 属性类别"></a>1.2 属性类别</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>R</td>
-<td>只读文档属性</td>
-</tr>
-<tr>
-<td>A</td>
-<td>存档文档属性</td>
-</tr>
-<tr>
-<td>S</td>
-<td>系统文件属性</td>
-</tr>
-<tr>
-<td>H</td>
-<td>隐藏文件属性</td>
-</tr>
-<tr>
-<td>O</td>
-<td>脱机属性</td>
-</tr>
-<tr>
-<td>I</td>
-<td>无内容索引文件属性</td>
-</tr>
-<tr>
-<td>X</td>
-<td>无清理文件属性</td>
-</tr>
-<tr>
-<td>V</td>
-<td>完整性属性</td>
-</tr>
-<tr>
-<td>P</td>
-<td>固定属性</td>
-</tr>
-<tr>
-<td>U</td>
-<td>非固定属性</td>
-</tr>
-</tbody></table>
-<h4 id="1-2-1-存档属性"><a href="#1-2-1-存档属性" class="headerlink" title="1.2.1 存档属性"></a>1.2.1 存档属性</h4>
         
           <p class="article-more-link">
             <a href="/2024/03/25/tools-CMD-attrib/#more">Read More</a>
@@ -541,7 +432,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/tools-CMD-attrib/" data-id="clu7r07b7000agwvd5c2hf9mx" data-title="tools-CMD-attrib" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/tools-CMD-attrib/" data-id="clu7re9jr000a4bvd0xet4b0x" data-title="tools-CMD-attrib" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -578,10 +469,6 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="PDF-XSS"><a href="#PDF-XSS" class="headerlink" title="PDF-XSS"></a>PDF-XSS</h1><h2 id="0-原理"><a href="#0-原理" class="headerlink" title="0. 原理"></a>0. 原理</h2><p>​	PDF-XSS(Portable Document Format Cross-Site Scripting)是一种利用PDF文件中的漏洞实现的跨站点脚本攻击。PDF文件是一种常见的电子文档格式，其中包含了丰富的内容，包括图像、文本、链接等等。攻击者可以通过在PDF文件中插入恶意代码，例如JavaScript脚本，来实现PDF XSS攻击。PDF XSS攻击可以在用户打开PDF文件时触发，当用户点击恶意链接或执行特定操作时，恶意代码就会被执行。攻击者可以利用PDF XSS攻击来窃取用户敏感信息、篡改网站内容、实施网络钓鱼。</p>
-<h2 id="1-漏洞利用"><a href="#1-漏洞利用" class="headerlink" title="1. 漏洞利用"></a>1. 漏洞利用</h2><p>​	找到一处可以上传pdf文件的上传点，然后我们上传一个精心构造的pdf文件。如果网站允许我们在浏览器中访问pdf，那么该pdf文件就会弹出警告框。	</p>
-<h2 id="2-利用方式"><a href="#2-利用方式" class="headerlink" title="2. 利用方式"></a>2. 利用方式</h2><h3 id="2-1-PDF-编辑器"><a href="#2-1-PDF-编辑器" class="headerlink" title="2.1 PDF 编辑器"></a>2.1 PDF 编辑器</h3><p>​	</p>
-<p><img src="/images/image-20240322151303122.png" alt="image-20240322151303122"></p>
-<p>​	在页面的属性里面新增<code>动作</code>选择<code>运行 JavaScript</code>然后插入 JS 即可：</p>
         
           <p class="article-more-link">
             <a href="/2024/03/25/web-XSS-FlashXss-xss-PDF/#more">Read More</a>
@@ -590,7 +477,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/web-XSS-FlashXss-xss-PDF/" data-id="clu7r07c10016gwvddt4za5iu" data-title="web-XSS-FlashXss-xss-PDF" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/web-XSS-FlashXss-xss-PDF/" data-id="clu7re9kp00164bvd1jrgfiu5" data-title="web-XSS-FlashXss-xss-PDF" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -629,11 +516,6 @@
         <p>[toc]</p>
 <h1 id="Flash-poc"><a href="#Flash-poc" class="headerlink" title="Flash-poc"></a>Flash-poc</h1><h2 id="0-靶场环境"><a href="#0-靶场环境" class="headerlink" title="0. 靶场环境"></a>0. 靶场环境</h2><pre><code>访问靶场: http://localhost:8080/xss/level20.php?arg01=a&amp;arg02=b
 </code></pre>
-<p><img src="/images/image-20240322112000750.png" alt="image-20240322112000750"></p>
-<h2 id="1-后端代码审计"><a href="#1-后端代码审计" class="headerlink" title="1. 后端代码审计"></a>1. 后端代码审计</h2><p><img src="/images/image-20240322112126316.png" alt="image-20240322112126316"></p>
-<p>​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf04.swf调用的键和值，访问<code>http://127.0.0.1:8080/xss/level20.php?arg01=a&amp;arg02=b</code>验证，打开控制台，查看内容发现没有突破点</p>
-<p>​	当前页面也不存在报错，所以我们只能直接对xsf04.swf进行调试了</p>
-<h2 id="2-flash-反编译"><a href="#2-flash-反编译" class="headerlink" title="2. flash 反编译"></a>2. flash 反编译</h2>
         
           <p class="article-more-link">
             <a href="/2024/03/22/web-XSS-FlashXss-xss-labs20/#more">Read More</a>
@@ -642,7 +524,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs20/" data-id="clu7r07c3001bgwvdbv3sftv2" data-title="web-XSS-FlashXss-xss-labs20" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs20/" data-id="clu7re9kr001b4bvdbr9w0jnt" data-title="web-XSS-FlashXss-xss-labs20" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

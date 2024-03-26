@@ -6,12 +6,12 @@
   
   <title>vulnhub-LAMPSecurity-CTF4.md | thedarknessdied</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="CTF4 靶场0. 环境配置   主机 IP    攻击机 192.168.134.1   靶机 192.168.134.136   1. netdiscover 同段主机存活主机探测 sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24   2. Nmap主机开放服务探测2.1  mini-rate 快速探测主机开放服务 sudo nmap –min">
+  <meta name="description" content="CTF4 靶场0. 环境配置   主机 IP    攻击机 192.168.134.1   靶机 192.168.134.136">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vulnhub-LAMPSecurity-CTF4.md">
 <meta property="og:url" content="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/index.html">
 <meta property="og:site_name" content="thedarknessdied">
-<meta property="og:description" content="CTF4 靶场0. 环境配置   主机 IP    攻击机 192.168.134.1   靶机 192.168.134.136   1. netdiscover 同段主机存活主机探测 sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24   2. Nmap主机开放服务探测2.1  mini-rate 快速探测主机开放服务 sudo nmap –min">
+<meta property="og:description" content="CTF4 靶场0. 环境配置   主机 IP    攻击机 192.168.134.1   靶机 192.168.134.136">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20230317130307367.png">
 <meta property="og:image" content="http://example.com/images/image-20230317131853119.png">
@@ -41,7 +41,7 @@
 <meta property="og:image" content="http://example.com/images/image-20240314123021307.png">
 <meta property="og:image" content="http://example.com/images/image-20230317153014419.png">
 <meta property="article:published_time" content="2024-03-14T06:14:26.000Z">
-<meta property="article:modified_time" content="2024-03-14T11:09:29.517Z">
+<meta property="article:modified_time" content="2024-03-26T02:26:59.363Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="vulnhub">
@@ -143,6 +143,7 @@
 <td>192.168.134.136</td>
 </tr>
 </tbody></table>
+<span id="more"></span>
 <h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
 <p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
 </blockquote>
@@ -211,7 +212,7 @@
 <p><img src="/images/image-20230317151548630.png" alt="image-20230317151548630"></p>
 <p>​		尝试使用上面的用户名和密码进行SSH链接</p>
 <blockquote>
-<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#100;&#115;&#116;&#101;&#118;&#x65;&#x6e;&#115;&#x40;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#x38;&#x2e;&#49;&#51;&#x34;&#x2e;&#x31;&#51;&#x36;">&#100;&#115;&#116;&#101;&#118;&#x65;&#x6e;&#115;&#x40;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#x38;&#x2e;&#49;&#51;&#x34;&#x2e;&#x31;&#51;&#x36;</a></p>
+<p>ssh -oKexAlgorithms&#x3D;+diffie-hellman-group1-sha1 -oHostKeyAlgorithms&#x3D;+ssh-dss -oCiphers&#x3D;+3des-cbc <a href="mailto:&#100;&#115;&#116;&#101;&#118;&#x65;&#110;&#x73;&#x40;&#49;&#57;&#x32;&#x2e;&#49;&#54;&#56;&#x2e;&#49;&#51;&#x34;&#46;&#x31;&#x33;&#x36;">&#100;&#115;&#116;&#101;&#118;&#x65;&#110;&#x73;&#x40;&#49;&#57;&#x32;&#x2e;&#49;&#54;&#56;&#x2e;&#49;&#51;&#x34;&#46;&#x31;&#x33;&#x36;</a></p>
 </blockquote>
 <p><img src="/images/image-20230317144444254.png" alt="image-20230317144444254"></p>
 <p>​		成功连接上主机，可以发现我们是一个低权限账号，下面我们就该提权限了</p>
@@ -228,7 +229,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="clu7r07h6000tgvvd99md17wi" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF4-md/" data-id="clu7re9kj000t4bvd3yyb9ehj" data-title="vulnhub-LAMPSecurity-CTF4.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

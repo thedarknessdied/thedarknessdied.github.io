@@ -6,18 +6,18 @@
   
   <title>tools-CMD-hidden-cmdline | thedarknessdied</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="隐藏命令行黑框​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏 1. 基于 Wscript.Shell 的隐藏命令行黑框方法1.1 使用 vbscript 脚本1234Set objShell &#x3D; WScript.CreateObject(&quot;WScript.Shell&quot;)objShell.">
+  <meta name="description" content="隐藏命令行黑框​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tools-CMD-hidden-cmdline">
 <meta property="og:url" content="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/index.html">
 <meta property="og:site_name" content="thedarknessdied">
-<meta property="og:description" content="隐藏命令行黑框​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏 1. 基于 Wscript.Shell 的隐藏命令行黑框方法1.1 使用 vbscript 脚本1234Set objShell &#x3D; WScript.CreateObject(&quot;WScript.Shell&quot;)objShell.">
+<meta property="og:description" content="隐藏命令行黑框​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20240325141016145.png">
 <meta property="og:image" content="http://example.com/images/image-20240325142222704.png">
 <meta property="og:image" content="http://example.com/images/image-20240325143352718.png">
 <meta property="article:published_time" content="2024-03-25T06:52:31.000Z">
-<meta property="article:modified_time" content="2024-03-25T06:53:23.353Z">
+<meta property="article:modified_time" content="2024-03-26T02:25:47.691Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary">
@@ -103,6 +103,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="隐藏命令行黑框"><a href="#隐藏命令行黑框" class="headerlink" title="隐藏命令行黑框"></a>隐藏命令行黑框</h1><p>​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏</p>
+<span id="more"></span>
 <h2 id="1-基于-Wscript-Shell-的隐藏命令行黑框方法"><a href="#1-基于-Wscript-Shell-的隐藏命令行黑框方法" class="headerlink" title="1. 基于 Wscript.Shell 的隐藏命令行黑框方法"></a>1. 基于 Wscript.Shell 的隐藏命令行黑框方法</h2><h3 id="1-1-使用-vbscript-脚本"><a href="#1-1-使用-vbscript-脚本" class="headerlink" title="1.1 使用 vbscript 脚本"></a>1.1 使用 vbscript 脚本</h3><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Set</span> objShell = WScript.<span class="built_in">CreateObject</span>(<span class="string">&quot;WScript.Shell&quot;</span>)</span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C frpc.exe -c frpc.ini&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C attrib +s +h +r /s /d *&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">WScript.Quit</span><br></pre></td></tr></table></figure>
 
 
@@ -126,7 +127,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/" data-id="clu7r07gs000egvvd26gy9hm6" data-title="tools-CMD-hidden-cmdline" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/" data-id="clu7re9k3000e4bvd20587pl0" data-title="tools-CMD-hidden-cmdline" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

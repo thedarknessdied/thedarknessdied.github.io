@@ -6,12 +6,12 @@
   
   <title>web-XSS-FlashXss-xss-labs20 | thedarknessdied</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="[toc] Flash-poc0. 靶场环境访问靶场: http:&#x2F;&#x2F;localhost:8080&#x2F;xss&#x2F;level20.php?arg01&#x3D;a&amp;arg02&#x3D;b   1. 后端代码审计 ​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf04.swf调用的键和值，访问http:&#x2F;&#x2F;127.0.0.1:8080&#x2F;xss&#x2F;level20.php?arg01&#x3D;a&amp;a">
+  <meta name="description" content="[toc] Flash-poc0. 靶场环境访问靶场: http:&#x2F;&#x2F;localhost:8080&#x2F;xss&#x2F;level20.php?arg01&#x3D;a&amp;arg02&#x3D;b">
 <meta property="og:type" content="article">
 <meta property="og:title" content="web-XSS-FlashXss-xss-labs20">
 <meta property="og:url" content="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs20/index.html">
 <meta property="og:site_name" content="thedarknessdied">
-<meta property="og:description" content="[toc] Flash-poc0. 靶场环境访问靶场: http:&#x2F;&#x2F;localhost:8080&#x2F;xss&#x2F;level20.php?arg01&#x3D;a&amp;arg02&#x3D;b   1. 后端代码审计 ​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf04.swf调用的键和值，访问http:&#x2F;&#x2F;127.0.0.1:8080&#x2F;xss&#x2F;level20.php?arg01&#x3D;a&amp;a">
+<meta property="og:description" content="[toc] Flash-poc0. 靶场环境访问靶场: http:&#x2F;&#x2F;localhost:8080&#x2F;xss&#x2F;level20.php?arg01&#x3D;a&amp;arg02&#x3D;b">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20240322112000750.png">
 <meta property="og:image" content="http://example.com/images/image-20240322112126316.png">
@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://example.com/images/image-20240322140007291.png">
 <meta property="og:image" content="http://example.com/images/image-20240322140354439.png">
 <meta property="article:published_time" content="2024-03-22T06:04:38.000Z">
-<meta property="article:modified_time" content="2024-03-22T06:05:14.942Z">
+<meta property="article:modified_time" content="2024-03-26T02:29:30.283Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
@@ -111,6 +111,7 @@
         <p>[toc]</p>
 <h1 id="Flash-poc"><a href="#Flash-poc" class="headerlink" title="Flash-poc"></a>Flash-poc</h1><h2 id="0-靶场环境"><a href="#0-靶场环境" class="headerlink" title="0. 靶场环境"></a>0. 靶场环境</h2><pre><code>访问靶场: http://localhost:8080/xss/level20.php?arg01=a&amp;arg02=b
 </code></pre>
+<span id="more"></span>
 <p><img src="/images/image-20240322112000750.png" alt="image-20240322112000750"></p>
 <h2 id="1-后端代码审计"><a href="#1-后端代码审计" class="headerlink" title="1. 后端代码审计"></a>1. 后端代码审计</h2><p><img src="/images/image-20240322112126316.png" alt="image-20240322112126316"></p>
 <p>​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf04.swf调用的键和值，访问<code>http://127.0.0.1:8080/xss/level20.php?arg01=a&amp;arg02=b</code>验证，打开控制台，查看内容发现没有突破点</p>
@@ -168,7 +169,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs20/" data-id="clu7r07hi001bgvvd8rrvhqwk" data-title="web-XSS-FlashXss-xss-labs20" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs20/" data-id="clu7re9kr001b4bvdbr9w0jnt" data-title="web-XSS-FlashXss-xss-labs20" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

@@ -6,12 +6,12 @@
   
   <title>vulnhub-LAMPSecurity-CTF5-external | thedarknessdied</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="[toc] CTF5靶机探索1. Email用户注册处存在SQL注入​	访问http:&#x2F;&#x2F;192.168.134.152&#x2F;list&#x2F;可以看到这是一个Phake Organization的注册界面，BurpSuite抓包发现在当前注册功能点处用明文传输，且测试后发现存在SQL注入，以下是采用sqlmap来进行验证：   2. 远程数据库链接2.1 通过读取配置文件获取数据库配置信息​		默认情况下，">
+  <meta name="description" content="[toc] CTF5靶机探索1. Email用户注册处存在SQL注入">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vulnhub-LAMPSecurity-CTF5-external">
 <meta property="og:url" content="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/index.html">
 <meta property="og:site_name" content="thedarknessdied">
-<meta property="og:description" content="[toc] CTF5靶机探索1. Email用户注册处存在SQL注入​	访问http:&#x2F;&#x2F;192.168.134.152&#x2F;list&#x2F;可以看到这是一个Phake Organization的注册界面，BurpSuite抓包发现在当前注册功能点处用明文传输，且测试后发现存在SQL注入，以下是采用sqlmap来进行验证：   2. 远程数据库链接2.1 通过读取配置文件获取数据库配置信息​		默认情况下，">
+<meta property="og:description" content="[toc] CTF5靶机探索1. Email用户注册处存在SQL注入">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20230322102625939.png">
 <meta property="og:image" content="http://example.com/images/image-20230322102759639.png">
@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://example.com/images/image-20230322100618078.png">
 <meta property="og:image" content="http://example.com/images/image-20240314161227649.png">
 <meta property="article:published_time" content="2024-03-14T15:03:51.000Z">
-<meta property="article:modified_time" content="2024-03-14T15:05:31.421Z">
+<meta property="article:modified_time" content="2024-03-26T02:27:16.803Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="vulnhub">
@@ -107,7 +107,8 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>[toc]</p>
-<h1 id="CTF5靶机探索"><a href="#CTF5靶机探索" class="headerlink" title="CTF5靶机探索"></a>CTF5靶机探索</h1><h2 id="1-Email用户注册处存在SQL注入"><a href="#1-Email用户注册处存在SQL注入" class="headerlink" title="1. Email用户注册处存在SQL注入"></a>1. Email用户注册处存在SQL注入</h2><p>​	访问<code>http://192.168.134.152/list/</code>可以看到这是一个Phake Organization的注册界面，BurpSuite抓包发现在当前注册功能点处用明文传输，且测试后发现存在SQL注入，以下是采用sqlmap来进行验证：</p>
+<h1 id="CTF5靶机探索"><a href="#CTF5靶机探索" class="headerlink" title="CTF5靶机探索"></a>CTF5靶机探索</h1><h2 id="1-Email用户注册处存在SQL注入"><a href="#1-Email用户注册处存在SQL注入" class="headerlink" title="1. Email用户注册处存在SQL注入"></a>1. Email用户注册处存在SQL注入</h2><span id="more"></span>
+<p>​	访问<code>http://192.168.134.152/list/</code>可以看到这是一个Phake Organization的注册界面，BurpSuite抓包发现在当前注册功能点处用明文传输，且测试后发现存在SQL注入，以下是采用sqlmap来进行验证：</p>
 <p><img src="/images/image-20230322102625939.png" alt="image-20230322102625939"></p>
 <p><img src="/images/image-20230322102759639.png" alt="image-20230322102759639"></p>
 <h2 id="2-远程数据库链接"><a href="#2-远程数据库链接" class="headerlink" title="2. 远程数据库链接"></a>2. 远程数据库链接</h2><h3 id="2-1-通过读取配置文件获取数据库配置信息"><a href="#2-1-通过读取配置文件获取数据库配置信息" class="headerlink" title="2.1 通过读取配置文件获取数据库配置信息"></a>2.1 通过读取配置文件获取数据库配置信息</h3><p>​		默认情况下，Linux环境下站点都是搭建在<code>/var/www/html</code>文件路径下的，一般默认情况下数据库等文件的配置路径也是会存放在这个路径下，依次访问该路径下的不同文件，可以发现在<code>/var/www/html/list</code>路径下的index.php中存放了数据库的连接账号密码</p>
@@ -131,7 +132,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="clu7r07h7000vgvvd9zrq790o" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-external/" data-id="clu7re9kk000v4bvdd0ly1co3" data-title="vulnhub-LAMPSecurity-CTF5-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

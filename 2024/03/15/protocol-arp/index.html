@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://example.com/images/image-20240315130436795.png">
 <meta property="og:image" content="http://example.com/images/image-20240315130929464.png">
 <meta property="article:published_time" content="2024-03-15T05:49:01.000Z">
-<meta property="article:modified_time" content="2024-03-15T05:50:42.128Z">
+<meta property="article:modified_time" content="2024-03-26T02:21:55.835Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="protocol">
 <meta name="twitter:card" content="summary">
@@ -108,6 +108,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h1><h2 id="0-ARP-协议基本概念"><a href="#0-ARP-协议基本概念" class="headerlink" title="0. ARP 协议基本概念"></a>0. ARP 协议基本概念</h2><p>​	地址解析协议，即ARP（Address Resolution Protocol），是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间，下次请求时直接查询ARP缓存以节约资源。</p>
+<span id="more"></span>
 <h2 id="1-ARP-数据包格式解析"><a href="#1-ARP-数据包格式解析" class="headerlink" title="1. ARP 数据包格式解析"></a>1. ARP 数据包格式解析</h2><h3 id="1-1-以太网帧封装的ARP数据包"><a href="#1-1-以太网帧封装的ARP数据包" class="headerlink" title="1.1 以太网帧封装的ARP数据包"></a>1.1 以太网帧封装的ARP数据包</h3><p><img src="/images/image-20240315124206322.png" alt="image-20240315124206322"></p>
 <p>​	ARP是个独立的三层协议，并不需要IP协议封装，而是直接生成自己的报文，到达数据链路层后，由数据链路层协议进行封装，一般是以太网协议。封装的过程，就是在ARP报文的前面加上以太网帧头，再加上4字节的冗余校验码结尾，校验码用于检验数据传输是否出现损坏。</p>
 <blockquote>
@@ -197,7 +198,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu7r07gm0006gvvd8dwj1bc0" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu7re9jk00064bvd8fb967kk" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

@@ -6,18 +6,18 @@
   
   <title>tools-sqlmap-script-build | thedarknessdied</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="SQLMAP tamper 的编写0. 关于 sqlmap 的 tamper​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。 1. 标准 tamper">
+  <meta name="description" content="SQLMAP tamper 的编写0. 关于 sqlmap 的 tamper​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tools-sqlmap-script-build">
 <meta property="og:url" content="http://example.com/2024/03/21/tools-sqlmap-script-build/index.html">
 <meta property="og:site_name" content="thedarknessdied">
-<meta property="og:description" content="SQLMAP tamper 的编写0. 关于 sqlmap 的 tamper​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。 1. 标准 tamper">
+<meta property="og:description" content="SQLMAP tamper 的编写0. 关于 sqlmap 的 tamper​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20240321003450311.png">
 <meta property="og:image" content="http://example.com/images/image-20240321004123079.png">
 <meta property="og:image" content="http://example.com/images/image-20240321004443797.png">
 <meta property="article:published_time" content="2024-03-20T16:49:32.000Z">
-<meta property="article:modified_time" content="2024-03-20T16:50:58.903Z">
+<meta property="article:modified_time" content="2024-03-26T02:26:35.795Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="tools">
@@ -104,6 +104,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="SQLMAP-tamper-的编写"><a href="#SQLMAP-tamper-的编写" class="headerlink" title="SQLMAP tamper 的编写"></a>SQLMAP tamper 的编写</h1><h2 id="0-关于-sqlmap-的-tamper"><a href="#0-关于-sqlmap-的-tamper" class="headerlink" title="0. 关于 sqlmap 的 tamper"></a>0. 关于 sqlmap 的 tamper</h2><p>​	在sqlmap的目录下，可以看到一个名字为tamper的文件，这个文件中，存放着sqlmap自带的脚本，我们也可以在其中创建自己的脚本，然后去针对不同的网站进行不同的绕过策略。我们通过对脚本的编写，可以修改sqlmap在攻击时所使用的payload或修改Header的值来进行更有针对性的攻击。</p>
+<span id="more"></span>
 <h2 id="1-标准-tamper-脚本结构"><a href="#1-标准-tamper-脚本结构" class="headerlink" title="1. 标准 tamper 脚本结构"></a>1. 标准 tamper 脚本结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Copyright (c) 2006-2016 sqlmap developers (http://sqlmap.org/)</span><br><span class="line">See the file &#x27;doc/COPYING&#x27; for copying permission</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">from lib.core.enums import PRIORITY</span><br><span class="line"># 当前脚本调用优先等级</span><br><span class="line">__priority__ = PRIORITY.LOW </span><br><span class="line"></span><br><span class="line"># 声明当前脚本适用/不适用的范围，可以为空。</span><br><span class="line">def dependencies(): </span><br><span class="line">  pass</span><br><span class="line"></span><br><span class="line"># 用于篡改Payload、以及请求头的主要函数</span><br><span class="line">def tamper(payload, **kwargs): </span><br><span class="line">  return payload</span><br></pre></td></tr></table></figure>
 
 <h3 id="1-1-重要部分解析"><a href="#1-1-重要部分解析" class="headerlink" title="1.1 重要部分解析"></a>1.1 重要部分解析</h3><h4 id="1-1-1-priority-Param"><a href="#1-1-1-priority-Param" class="headerlink" title="1.1.1 priority [Param]"></a>1.1.1 priority [Param]</h4><p>​	priority定义脚本的优先级，用于在测试过程中选用多个tamper脚本的情况下测试的先后顺序。谁的优先级高，谁被优先使用。（优先级共有七个，分别为；LOWEST、LOWER、LOW、NORMAL、HIGH、HIGHER、HIGHEST）</p>
@@ -128,7 +129,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu7r07h0000pgvvd9sm45soa" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu7re9kg000p4bvdgzf9h6is" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

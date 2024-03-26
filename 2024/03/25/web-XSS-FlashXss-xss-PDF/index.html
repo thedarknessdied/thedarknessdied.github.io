@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://example.com/images/image-20240322151927872.png">
 <meta property="og:image" content="http://example.com/images/image-20240322151910170.png">
 <meta property="article:published_time" content="2024-03-25T04:35:55.000Z">
-<meta property="article:modified_time" content="2024-03-25T04:37:06.665Z">
+<meta property="article:modified_time" content="2024-03-26T02:29:43.691Z">
 <meta property="article:author" content="R0seK1llere">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
@@ -104,6 +104,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="PDF-XSS"><a href="#PDF-XSS" class="headerlink" title="PDF-XSS"></a>PDF-XSS</h1><h2 id="0-原理"><a href="#0-原理" class="headerlink" title="0. 原理"></a>0. 原理</h2><p>​	PDF-XSS(Portable Document Format Cross-Site Scripting)是一种利用PDF文件中的漏洞实现的跨站点脚本攻击。PDF文件是一种常见的电子文档格式，其中包含了丰富的内容，包括图像、文本、链接等等。攻击者可以通过在PDF文件中插入恶意代码，例如JavaScript脚本，来实现PDF XSS攻击。PDF XSS攻击可以在用户打开PDF文件时触发，当用户点击恶意链接或执行特定操作时，恶意代码就会被执行。攻击者可以利用PDF XSS攻击来窃取用户敏感信息、篡改网站内容、实施网络钓鱼。</p>
+<span id="more"></span>
 <h2 id="1-漏洞利用"><a href="#1-漏洞利用" class="headerlink" title="1. 漏洞利用"></a>1. 漏洞利用</h2><p>​	找到一处可以上传pdf文件的上传点，然后我们上传一个精心构造的pdf文件。如果网站允许我们在浏览器中访问pdf，那么该pdf文件就会弹出警告框。	</p>
 <h2 id="2-利用方式"><a href="#2-利用方式" class="headerlink" title="2. 利用方式"></a>2. 利用方式</h2><h3 id="2-1-PDF-编辑器"><a href="#2-1-PDF-编辑器" class="headerlink" title="2.1 PDF 编辑器"></a>2.1 PDF 编辑器</h3><p>​	</p>
 <p><img src="/images/image-20240322151303122.png" alt="image-20240322151303122"></p>
@@ -152,7 +153,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/web-XSS-FlashXss-xss-PDF/" data-id="clu7r07hg0016gvvdf58l5gcv" data-title="web-XSS-FlashXss-xss-PDF" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/web-XSS-FlashXss-xss-PDF/" data-id="clu7re9kp00164bvd1jrgfiu5" data-title="web-XSS-FlashXss-xss-PDF" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
