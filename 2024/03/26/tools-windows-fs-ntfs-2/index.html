@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>tools-windows-fs-ntfs-2 | thedarknessdied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="windows文件流–NTFS数据流(宿主文件)0. ADS 特性简述​	ADS 备用数据流是 Windows 引入的新技术文件系统（NTFS）的产物。传统上引入它是为了提供与 Macintosh 系统的旧分层文件系统（HFS）的文件共享的兼容性，其中数据可以分叉到不同的资源中，并存储称为元数据的文件的附加数据。它允许单独的数据流文件存在，同时也允许一个文件附着多个数据流，即除了主文件流之外还允许">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tools-windows-fs-ntfs-2">
+<meta property="og:url" content="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/index.html">
+<meta property="og:site_name" content="thedarknessdied">
+<meta property="og:description" content="windows文件流–NTFS数据流(宿主文件)0. ADS 特性简述​	ADS 备用数据流是 Windows 引入的新技术文件系统（NTFS）的产物。传统上引入它是为了提供与 Macintosh 系统的旧分层文件系统（HFS）的文件共享的兼容性，其中数据可以分叉到不同的资源中，并存储称为元数据的文件的附加数据。它允许单独的数据流文件存在，同时也允许一个文件附着多个数据流，即除了主文件流之外还允许">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20240326002159222.png">
+<meta property="og:image" content="http://example.com/images/image-20240326005735579.png">
+<meta property="og:image" content="http://example.com/images/image-20240326005815810.png">
+<meta property="og:image" content="http://example.com/images/image-20240326005859980.png">
+<meta property="og:image" content="http://example.com/images/image-20240326004921494.png">
+<meta property="og:image" content="http://example.com/images/image-20240326005215312.png">
+<meta property="og:image" content="http://example.com/images/image-20240326005420570.png">
+<meta property="og:image" content="http://example.com/images/image-20240326005414288.png">
+<meta property="article:published_time" content="2024-03-26T02:16:31.000Z">
+<meta property="article:modified_time" content="2024-03-26T02:17:33.871Z">
+<meta property="article:author" content="R0seK1llere">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20240326002159222.png">
+  
+    <link rel="alternate" href="/atom.xml" title="thedarknessdied" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">thedarknessdied</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">R0seK1ller</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-tools-windows-fs-ntfs-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/26/tools-windows-fs-ntfs-2/" class="article-date">
+  <time class="dt-published" datetime="2024-03-26T02:16:31.000Z" itemprop="datePublished">2024-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      tools-windows-fs-ntfs-2
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="windows文件流–NTFS数据流-宿主文件"><a href="#windows文件流–NTFS数据流-宿主文件" class="headerlink" title="windows文件流–NTFS数据流(宿主文件)"></a>windows文件流–NTFS数据流(宿主文件)</h1><h2 id="0-ADS-特性简述"><a href="#0-ADS-特性简述" class="headerlink" title="0. ADS 特性简述"></a>0. ADS 特性简述</h2><p>​	ADS 备用数据流是 Windows 引入的新技术文件系统（NTFS）的产物。传统上引入它是为了提供与 Macintosh 系统的旧分层文件系统（HFS）的文件共享的兼容性，其中数据可以分叉到不同的资源中，并存储称为元数据的文件的附加数据。它允许单独的数据流文件存在，同时也允许一个文件附着多个数据流，即除了主文件流之外还允许许多非主文件流寄生在主文件流之中，它使用资源派生的方式来维持与文件相关信息，并且这些寄生的数据流文件我们使用资源管理器是看不到的。</p>
+<span id="more"></span>
+
+<h2 id="1-指定宿主文件创建ADS数据流文件"><a href="#1-指定宿主文件创建ADS数据流文件" class="headerlink" title="1. 指定宿主文件创建ADS数据流文件"></a>1. 指定宿主文件创建ADS数据流文件</h2><h3 id="1-1-隐藏到文件夹"><a href="#1-1-隐藏到文件夹" class="headerlink" title="1.1 隐藏到文件夹"></a>1.1 隐藏到文件夹</h3><h4 id="1-1-1-基于当前文件夹的ADS数据流文件"><a href="#1-1-1-基于当前文件夹的ADS数据流文件" class="headerlink" title="1.1.1 基于当前文件夹的ADS数据流文件"></a>1.1.1 基于当前文件夹的ADS数据流文件</h4><blockquote>
+<p>echo hello &gt;&gt; &#x2F;:test.txt</p>
+</blockquote>
+<p>​	在其中 “&#x2F;“ 表示当前路径，这样可以创建一个基于当前路径的ADS文件</p>
+<p><img src="/images/image-20240326002159222.png" alt="image-20240326002159222"></p>
+<h4 id="1-1-2-基于上级文件夹的ADS数据流文件"><a href="#1-1-2-基于上级文件夹的ADS数据流文件" class="headerlink" title="1.1.2 基于上级文件夹的ADS数据流文件"></a>1.1.2 基于上级文件夹的ADS数据流文件</h4><blockquote>
+<p>echo hello world &gt; :test.txt</p>
+</blockquote>
+<p>​	创建之后在目录下无文件，也没有依赖的宿主文件</p>
+<p><img src="/images/image-20240326005735579.png" alt="image-20240326005735579"></p>
+<p>​	并且此类文件在当前目录命令行下是无法查看的，因为它是依赖于文件夹的ADS数据流文件</p>
+<blockquote>
+<p>notepad :test.txt</p>
+</blockquote>
+<p><img src="/images/image-20240326005815810.png" alt="image-20240326005815810"></p>
+<p>​	因此需要指定一个宿主对象，这里我们可以退到上级目录进行查看：</p>
+<blockquote>
+<p>cd ..&#x2F;<br>notepad test:mo.txt</p>
+</blockquote>
+<p><img src="/images/image-20240326005859980.png" alt="image-20240326005859980"></p>
+<h3 id="1-2-文本文件中隐藏其他类型文件"><a href="#1-2-文本文件中隐藏其他类型文件" class="headerlink" title="1.2 文本文件中隐藏其他类型文件"></a>1.2 文本文件中隐藏其他类型文件</h3><h4 id="1-2-1-文本文件中隐藏图像"><a href="#1-2-1-文本文件中隐藏图像" class="headerlink" title="1.2.1 文本文件中隐藏图像"></a>1.2.1 文本文件中隐藏图像</h4><blockquote>
+<p>echo helloworld &gt; 1.txt<br>type hong.jpg &gt; 1.txt:hong.jpg<br>del hong.jpg<br>dir &#x2F;r</p>
+</blockquote>
+<h4 id="1-2-2-文本文件中隐藏音频"><a href="#1-2-2-文本文件中隐藏音频" class="headerlink" title="1.2.2 文本文件中隐藏音频"></a>1.2.2 文本文件中隐藏音频</h4><blockquote>
+<p>echo Jay &gt; 1.txt<br>type Jay-baisefengche.mp3 &gt; 1.txt:Jay-baisefengche.mp3<br>del Jay-baisefengche.mp3<br>dir &#x2F;r</p>
+</blockquote>
+<p>​	还可以在文本文件中隐藏exe、vbs、ps1等类型文件</p>
+<h4 id="1-2-3-文本文件中隐藏exe"><a href="#1-2-3-文本文件中隐藏exe" class="headerlink" title="1.2.3 文本文件中隐藏exe"></a>1.2.3 文本文件中隐藏exe</h4><p>​	微软为了安全性，在windows-xp以后的操作系统(从win7开始)就不允许直接使用 start 打开 ntfs 数据流文件，而必须使用 mklink 命令来为流文件建立一个链接，然后通过这个链接文件来打开流文件,mklink 需要高权限</p>
+<blockquote>
+<p>start a.txt:calc.exe  # 无法直接访问运行，因为不存在符号链接</p>
+<p>mklink 2.exe 1.txt:1.exe # 使用mklink创建符号链接</p>
+<p>start 2.exe   </p>
+</blockquote>
+<p><img src="/images/image-20240326004921494.png" alt="image-20240326004921494"></p>
+<h2 id="2-访问原文件名获取ADS数据流内容"><a href="#2-访问原文件名获取ADS数据流内容" class="headerlink" title="2. 访问原文件名获取ADS数据流内容"></a>2. 访问原文件名获取ADS数据流内容</h2><h3 id="2-1Powershell-通过-Get-Content-获取内容"><a href="#2-1Powershell-通过-Get-Content-获取内容" class="headerlink" title="2.1Powershell  通过 Get-Content 获取内容"></a>2.1Powershell  通过 Get-Content 获取内容</h3><p>​	创建 ADS 文件，添加内容并隐藏</p>
+<p>​	如果将 ADS 文件从 NTFS 传输到 FAT32，将自动销毁替代数据流。</p>
+<p>​	就比如将文件传到U盘，一个 ADS 文件是在 NTFS 系统中创建的，但是一旦将它传输到 FAT32 闪存驱动器，就会看提示不允许使用 ADS 复制文件。这是因为 ADS 功能是在 NTFS 中引入的，而 FAT32 并不支持</p>
+<blockquote>
+<p>echo 123 &gt; 1.txt</p>
+<p>Set-Content .\1.txt -stream text</p>
+</blockquote>
+<p><img src="/images/image-20240326005215312.png" alt="image-20240326005215312"></p>
+<p><img src="/images/image-20240326005420570.png" alt="image-20240326005420570"></p>
+<blockquote>
+<p>Get-Content .\1.txt -stream text</p>
+</blockquote>
+<p><img src="/images/image-20240326005414288.png" alt="image-20240326005414288"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="clu7r07h5000sgvvdetho1m71" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/03/26/tools-windows-fs-ntfs-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">tools-windows-fs-ntfs-1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/error/" style="font-size: 12.5px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12.5px;">pwn</a> <a href="/tags/python/" style="font-size: 12.5px;">python</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 17.5px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 15px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/26/tools-windows-fs-ntfs-2/">tools-windows-fs-ntfs-2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/26/tools-windows-fs-ntfs-1/">tools-windows-fs-ntfs-1</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/25/program-Python-calling-multiprocessing-intial-error/">program-Python-calling-multiprocessing-intial-error</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/25/program-Python-Producer-Consumer/">program-Python-Producer-Consumer</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/25/tools-CMD-backdoor-user/">tools-CMD-backdoor-user</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 R0seK1llere<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

