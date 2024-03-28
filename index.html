@@ -114,13 +114,6 @@
 <td>192.168.134.138</td>
 </tr>
 </tbody></table>
-<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
-<p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
-</blockquote>
-<p><img src="/images/image-20230322103549772.png" alt="image-20230322103549772"></p>
-<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
-<p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.138</p>
-</blockquote>
         
           <p class="article-more-link">
             <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/#more">Read More</a>
@@ -129,7 +122,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/vulnhub-LAMPSecurity-CTF6/" data-id="cluavlnlg0017z8vd509j4pl8" data-title="vulnhub-LAMPSecurity-CTF6" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/vulnhub-LAMPSecurity-CTF6/" data-id="cluavwuoz00172hvdad585lh3" data-title="vulnhub-LAMPSecurity-CTF6" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -169,12 +162,6 @@
 <p>binwalk misc11.png</p>
 </blockquote>
 <p>​	查看文件发现有隐藏内容</p>
-<p><img src="/images/image-20240328110217990.png" alt="image-20240328110217990"></p>
-<p>​	但是直接使用<code>binwalk -e [:filename]</code> 获取到的文件并不能正常打开</p>
-<p><img src="/images/image-20240328110230894.png" alt="image-20240328110230894"></p>
-<p>​	在不直接分离数据的情况下可以猜测是存在多段数据段，所以使用<strong>TweakPNG</strong>查看PNG数据段，发现确实如分析那样存在多个数据段，删除第一个数据段就可以获取到flag</p>
-<p><img src="/images/image-20240328110159121.png" alt="image-20240328110159121"></p>
-<p><img src="/images/image-20240328110333591.png" alt="image-20240328110333591"></p>
         
           <p class="article-more-link">
             <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/#more">Read More</a>
@@ -183,7 +170,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-2/" data-id="cluavlnkj0003z8vdbiksg8h8" data-title="CTF-ctfshow-misc-introduction-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-2/" data-id="cluavwuo500032hvdb9sf6qqo" data-title="CTF-ctfshow-misc-introduction-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -229,7 +216,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-1/" data-id="cluavlnkf0001z8vdcaak56vz" data-title="CTF-ctfshow-misc-introduction-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-1/" data-id="cluavwuo100012hvd0opndl9v" data-title="CTF-ctfshow-misc-introduction-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -275,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/web-RCE-phpstudy-JS2RCE/" data-id="cluavlnlv001gz8vdba1qdnhy" data-title="web-RCE-phpstudy-JS2RCE" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/web-RCE-phpstudy-JS2RCE/" data-id="cluavwupb001g2hvd6dvy7eni" data-title="web-RCE-phpstudy-JS2RCE" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -340,7 +327,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/reverse-RCE-phpstudy-xmlrpc/" data-id="cluavlnku000fz8vdecuwe7fa" data-title="reverse-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/reverse-RCE-phpstudy-xmlrpc/" data-id="cluavwuog000f2hvdfqpbce1b" data-title="reverse-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -385,7 +372,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/web-RCE-phpstudy-xmlrpc/" data-id="cluavlnlx001iz8vdala6614b" data-title="web-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/web-RCE-phpstudy-xmlrpc/" data-id="cluavwuph001i2hvd13y73mkk" data-title="web-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -430,7 +417,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-SHELL-return-shell/" data-id="cluavlnl5000qz8vd3yea7rta" data-title="tools-SHELL-return-shell" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-SHELL-return-shell/" data-id="cluavwuon000q2hvd7h5me7zm" data-title="tools-SHELL-return-shell" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -475,7 +462,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="cluavlnlc000zz8vd64gzbp26" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="cluavwuov000z2hvdccvsd3v2" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -521,7 +508,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-1/" data-id="cluavlnlb000yz8vdcvse9ua6" data-title="tools-windows-fs-ntfs-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-1/" data-id="cluavwuou000y2hvdhynuasou" data-title="tools-windows-fs-ntfs-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -566,7 +553,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/program-Python-calling-multiprocessing-intial-error/" data-id="cluavlnko0007z8vd8cexd49h" data-title="program-Python-calling-multiprocessing-intial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/program-Python-calling-multiprocessing-intial-error/" data-id="cluavwuoa00072hvd0jjaad97" data-title="program-Python-calling-multiprocessing-intial-error" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
