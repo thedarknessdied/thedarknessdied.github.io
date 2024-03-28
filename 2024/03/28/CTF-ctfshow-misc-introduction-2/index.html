@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>CTF-ctfshow-misc-introduction-2 | thedarknessdied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="CTFshow-misc入门 11-201. MISC 11 binwalk misc11.png  ​	查看文件发现有隐藏内容  ​	但是直接使用binwalk -e [:filename] 获取到的文件并不能正常打开  ​	在不直接分离数据的情况下可以猜测是存在多段数据段，所以使用TweakPNG查看PNG数据段，发现确实如分析那样存在多个数据段，删除第一个数据段就可以获取到flag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF-ctfshow-misc-introduction-2">
+<meta property="og:url" content="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-2/index.html">
+<meta property="og:site_name" content="thedarknessdied">
+<meta property="og:description" content="CTFshow-misc入门 11-201. MISC 11 binwalk misc11.png  ​	查看文件发现有隐藏内容  ​	但是直接使用binwalk -e [:filename] 获取到的文件并不能正常打开  ​	在不直接分离数据的情况下可以猜测是存在多段数据段，所以使用TweakPNG查看PNG数据段，发现确实如分析那样存在多个数据段，删除第一个数据段就可以获取到flag">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20240328110217990.png">
+<meta property="og:image" content="http://example.com/images/image-20240328110230894.png">
+<meta property="og:image" content="http://example.com/images/image-20240328110159121.png">
+<meta property="og:image" content="http://example.com/images/image-20240328110333591.png">
+<meta property="og:image" content="http://example.com/images/image-20240328111127387.png">
+<meta property="og:image" content="http://example.com/images/image-20240328111309472.png">
+<meta property="og:image" content="http://example.com/images/image-20240328111819796.png">
+<meta property="og:image" content="http://example.com/images/image-20240328112307124.png">
+<meta property="og:image" content="http://example.com/images/image-20240328112325765.png">
+<meta property="og:image" content="http://example.com/images/image-20240328112135254.png">
+<meta property="og:image" content="http://example.com/images/image-20240328112624495.png">
+<meta property="og:image" content="http://example.com/images/image-20240328131358951.png">
+<meta property="og:image" content="http://example.com/images/image-20240328131904795.png">
+<meta property="og:image" content="http://example.com/images/image-20240328132405714.png">
+<meta property="og:image" content="http://example.com/images/image-20240328132519272.png">
+<meta property="og:image" content="http://example.com/images/image-20240328132751298.png">
+<meta property="og:image" content="http://example.com/images/image-20240328133756229.png">
+<meta property="og:image" content="http://example.com/images/image-20240328133851820.png">
+<meta property="og:image" content="http://example.com/images/image-20240328134028092.png">
+<meta property="og:image" content="http://example.com/images/image-20240328134426211.png">
+<meta property="og:image" content="http://example.com/images/image-20240328134636377.png">
+<meta property="og:image" content="http://example.com/images/image-20240328141842776.png">
+<meta property="og:image" content="http://example.com/images/image-20240328135333512.png">
+<meta property="article:published_time" content="2024-03-28T06:41:32.000Z">
+<meta property="article:modified_time" content="2024-03-28T06:42:30.027Z">
+<meta property="article:author" content="R0seK1llere">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20240328110217990.png">
+  
+    <link rel="alternate" href="/atom.xml" title="thedarknessdied" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">thedarknessdied</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">R0seK1ller</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CTF-ctfshow-misc-introduction-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/" class="article-date">
+  <time class="dt-published" datetime="2024-03-28T06:41:32.000Z" itemprop="datePublished">2024-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      CTF-ctfshow-misc-introduction-2
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CTFshow-misc入门-11-20"><a href="#CTFshow-misc入门-11-20" class="headerlink" title="CTFshow-misc入门 11-20"></a>CTFshow-misc入门 11-20</h1><h2 id="1-MISC-11"><a href="#1-MISC-11" class="headerlink" title="1. MISC 11"></a>1. MISC 11</h2><blockquote>
+<p>binwalk misc11.png</p>
+</blockquote>
+<p>​	查看文件发现有隐藏内容</p>
+<p><img src="/images/image-20240328110217990.png" alt="image-20240328110217990"></p>
+<p>​	但是直接使用<code>binwalk -e [:filename]</code> 获取到的文件并不能正常打开</p>
+<p><img src="/images/image-20240328110230894.png" alt="image-20240328110230894"></p>
+<p>​	在不直接分离数据的情况下可以猜测是存在多段数据段，所以使用<strong>TweakPNG</strong>查看PNG数据段，发现确实如分析那样存在多个数据段，删除第一个数据段就可以获取到flag</p>
+<p><img src="/images/image-20240328110159121.png" alt="image-20240328110159121"></p>
+<p><img src="/images/image-20240328110333591.png" alt="image-20240328110333591"></p>
+<h2 id="2-MISC-12"><a href="#2-MISC-12" class="headerlink" title="2. MISC 12"></a>2. MISC 12</h2><p>​	通过<code>binwalk</code>未曾发现有附加数据</p>
+<p><img src="/images/image-20240328111127387.png" alt="image-20240328111127387"></p>
+<p>​	根据题目提示，数据藏在图片里，所以猜测可能又是同类型题目，即多端数据段存储文件，所以使用<code>TweakPNG</code>一次删除数据段，直到出现flag为止</p>
+<p><img src="/images/image-20240328111309472.png" alt="image-20240328111309472"></p>
+<h2 id="3-MISC-13"><a href="#3-MISC-13" class="headerlink" title="3. MISC 13"></a>3. MISC 13</h2><p>​	通过<code>binwalk</code>未曾发现有附加数据</p>
+<p><img src="/images/image-20240328111819796.png" alt="image-20240328111819796"></p>
+<p>​	但是通过winhex等hex编码查看工具可发现在文件末尾处存在多处形如</p>
+<blockquote>
+<p>c.t.f.s.h.o.w.{.*?}</p>
+</blockquote>
+<p><img src="/images/image-20240328112307124.png" alt="image-20240328112307124"></p>
+<p><img src="/images/image-20240328112325765.png" alt="image-20240328112325765"></p>
+<p><img src="/images/image-20240328112135254.png" alt="image-20240328112135254"></p>
+<p>​	依次将上述形式中的flag提取出来，按顺序尝试即可</p>
+<h2 id="4-MISC-14"><a href="#4-MISC-14" class="headerlink" title="4. MISC 14"></a>4. MISC 14</h2><p>​	通过<code>binwalk</code>发现有附加数据，尝试使用<code>binwalk -e</code>分离</p>
+<p><img src="/images/image-20240328112624495.png" alt="image-20240328112624495"></p>
+<p>​	但是不知道为什么，我的Kali就是无法分离这个jpg文件，所以这里我尝试使用dd分离文件</p>
+<blockquote>
+<p>dd if&#x3D;misc14.jpg of&#x3D;flag.jpeg skip&#x3D;2103 bs&#x3D;1</p>
+</blockquote>
+<h2 id="5-MISC-15"><a href="#5-MISC-15" class="headerlink" title="5. MISC 15"></a>5. MISC 15</h2><p>​	通过<code>binwalk</code>未曾发现有附加数据</p>
+<p><img src="/images/image-20240328131358951.png" alt="image-20240328131358951"></p>
+<p>​	但是通过winhex等hex编码查看工具可发现在文件中存在ctfshow(即flag)内容</p>
+<p><img src="/images/image-20240328131904795.png" alt="image-20240328131904795"></p>
+<h2 id="6-MISC-16"><a href="#6-MISC-16" class="headerlink" title="6. MISC 16"></a>6. MISC 16</h2><p>​	通过<code>binwalk</code>发现有附加数据，尝试使用<code>binwalk -e</code>分离</p>
+<p><img src="/images/image-20240328132405714.png" alt="image-20240328132405714"></p>
+<p>​	在分离的文件中成功找到flag文件</p>
+<p><img src="/images/image-20240328132519272.png" alt="image-20240328132519272"></p>
+<h2 id="7-MISC-17"><a href="#7-MISC-17" class="headerlink" title="7. MISC 17"></a>7. MISC 17</h2><p>​	通过<code>binwalk</code>发现有附加数据，尝试使用<code>binwalk -e</code>分离，但是不如意，分离出来的<code>.bz</code>文件不能直接通过<code>tar</code>解压</p>
+<p><img src="/images/image-20240328132751298.png" alt="image-20240328132751298"></p>
+<p>​	使用zsteg观察该文件，发现原来在<code>.bz</code>文件结束后又出现了额外的数据，导致分离出来的文件无法正常解析</p>
+<p><img src="/images/image-20240328133756229.png" alt="image-20240328133756229"></p>
+<p>​	所以尝试使用<code>zsteg -e extradata:0 [:filename]</code>，将额外的数据提取出来，但是并未发现flg相关内容</p>
+<p><img src="/images/image-20240328133851820.png" alt="image-20240328133851820"></p>
+<p>​	这是再通过<code>binwalk</code>发现有附加数据，尝试使用<code>binwalk -e</code>分离，便可成功获取到flag数据</p>
+<p><img src="/images/image-20240328134028092.png" alt="image-20240328134028092"></p>
+<h2 id="8-MISC-18"><a href="#8-MISC-18" class="headerlink" title="8. MISC 18"></a>8. MISC 18</h2><p>​	这道题是对文件的EXIF属性进行获取，这道题考的较为简单，flag相关内容直接存储在属性中</p>
+<p><img src="/images/image-20240328134426211.png" alt="image-20240328134426211"></p>
+<h2 id="9-MISC-19"><a href="#9-MISC-19" class="headerlink" title="9. MISC 19"></a>9. MISC 19</h2><p>​	通过winhex等hex编码查看工具可发现在文件中存在ctfshow(即flag)内容</p>
+<p><img src="/images/image-20240328134636377.png" alt="image-20240328134636377"></p>
+<h2 id="10-MISC-20"><a href="#10-MISC-20" class="headerlink" title="10. MISC 20"></a>10. MISC 20</h2><p>​	通过<code>binwalk</code>发现有附加数据，尝试使用<code>binwalk -e</code>分离，但是不如意，分离出来的<code>.tif</code>文件不能损坏了</p>
+<p><img src="/images/image-20240328141842776.png" alt="image-20240328141842776"></p>
+<p>​	这道题是对文件的EXIF属性进行获取，这道题需要获取到更多的信息，需要使用在线工具或者[在线网站][<a target="_blank" rel="noopener" href="https://exif.tuchong.com/]">https://exif.tuchong.com/]</a></p>
+<p><img src="/images/image-20240328135333512.png" alt="image-20240328135333512"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-2/" data-id="cluavlnkj0003z8vdbiksg8h8" data-title="CTF-ctfshow-misc-introduction-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          vulnhub-LAMPSecurity-CTF6
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/28/CTF-ctfshow-misc-introduction-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CTF-ctfshow-misc-introduction-1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/">CTF-ctfshow-misc-introduction-2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-1/">CTF-ctfshow-misc-introduction-1</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/web-RCE-phpstudy-JS2RCE/">web-RCE-phpstudy-JS2RCE</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/26/reverse-RCE-phpstudy-xmlrpc/">reverse-RCE-phpstudy-xmlrpc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 R0seK1llere<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
