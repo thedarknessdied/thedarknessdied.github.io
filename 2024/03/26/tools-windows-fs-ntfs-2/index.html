@@ -107,15 +107,15 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="windows文件流–NTFS数据流-宿主文件"><a href="#windows文件流–NTFS数据流-宿主文件" class="headerlink" title="windows文件流–NTFS数据流(宿主文件)"></a>windows文件流–NTFS数据流(宿主文件)</h1><h2 id="0-ADS-特性简述"><a href="#0-ADS-特性简述" class="headerlink" title="0. ADS 特性简述"></a>0. ADS 特性简述</h2><p>​	ADS 备用数据流是 Windows 引入的新技术文件系统（NTFS）的产物。传统上引入它是为了提供与 Macintosh 系统的旧分层文件系统（HFS）的文件共享的兼容性，其中数据可以分叉到不同的资源中，并存储称为元数据的文件的附加数据。它允许单独的数据流文件存在，同时也允许一个文件附着多个数据流，即除了主文件流之外还允许许多非主文件流寄生在主文件流之中，它使用资源派生的方式来维持与文件相关信息，并且这些寄生的数据流文件我们使用资源管理器是看不到的。</p>
+        <h1><span id="windows文件流ntfs数据流宿主文件">windows文件流–NTFS数据流(宿主文件)</span></h1><h2><span id="0-ads-特性简述">0. ADS 特性简述</span></h2><p>​	ADS 备用数据流是 Windows 引入的新技术文件系统（NTFS）的产物。传统上引入它是为了提供与 Macintosh 系统的旧分层文件系统（HFS）的文件共享的兼容性，其中数据可以分叉到不同的资源中，并存储称为元数据的文件的附加数据。它允许单独的数据流文件存在，同时也允许一个文件附着多个数据流，即除了主文件流之外还允许许多非主文件流寄生在主文件流之中，它使用资源派生的方式来维持与文件相关信息，并且这些寄生的数据流文件我们使用资源管理器是看不到的。</p>
 <span id="more"></span>
 
-<h2 id="1-指定宿主文件创建ADS数据流文件"><a href="#1-指定宿主文件创建ADS数据流文件" class="headerlink" title="1. 指定宿主文件创建ADS数据流文件"></a>1. 指定宿主文件创建ADS数据流文件</h2><h3 id="1-1-隐藏到文件夹"><a href="#1-1-隐藏到文件夹" class="headerlink" title="1.1 隐藏到文件夹"></a>1.1 隐藏到文件夹</h3><h4 id="1-1-1-基于当前文件夹的ADS数据流文件"><a href="#1-1-1-基于当前文件夹的ADS数据流文件" class="headerlink" title="1.1.1 基于当前文件夹的ADS数据流文件"></a>1.1.1 基于当前文件夹的ADS数据流文件</h4><blockquote>
+<h2><span id="1-指定宿主文件创建ads数据流文件">1. 指定宿主文件创建ADS数据流文件</span></h2><h3><span id="11-隐藏到文件夹">1.1 隐藏到文件夹</span></h3><h4><span id="111-基于当前文件夹的ads数据流文件">1.1.1 基于当前文件夹的ADS数据流文件</span></h4><blockquote>
 <p>echo hello &gt;&gt; &#x2F;:test.txt</p>
 </blockquote>
 <p>​	在其中 “&#x2F;“ 表示当前路径，这样可以创建一个基于当前路径的ADS文件</p>
 <p><img src="/images/image-20240326002159222.png" alt="image-20240326002159222"></p>
-<h4 id="1-1-2-基于上级文件夹的ADS数据流文件"><a href="#1-1-2-基于上级文件夹的ADS数据流文件" class="headerlink" title="1.1.2 基于上级文件夹的ADS数据流文件"></a>1.1.2 基于上级文件夹的ADS数据流文件</h4><blockquote>
+<h4><span id="112-基于上级文件夹的ads数据流文件">1.1.2 基于上级文件夹的ADS数据流文件</span></h4><blockquote>
 <p>echo hello world &gt; :test.txt</p>
 </blockquote>
 <p>​	创建之后在目录下无文件，也没有依赖的宿主文件</p>
@@ -130,21 +130,21 @@
 <p>cd ..&#x2F;<br>notepad test:mo.txt</p>
 </blockquote>
 <p><img src="/images/image-20240326005859980.png" alt="image-20240326005859980"></p>
-<h3 id="1-2-文本文件中隐藏其他类型文件"><a href="#1-2-文本文件中隐藏其他类型文件" class="headerlink" title="1.2 文本文件中隐藏其他类型文件"></a>1.2 文本文件中隐藏其他类型文件</h3><h4 id="1-2-1-文本文件中隐藏图像"><a href="#1-2-1-文本文件中隐藏图像" class="headerlink" title="1.2.1 文本文件中隐藏图像"></a>1.2.1 文本文件中隐藏图像</h4><blockquote>
+<h3><span id="12-文本文件中隐藏其他类型文件">1.2 文本文件中隐藏其他类型文件</span></h3><h4><span id="121-文本文件中隐藏图像">1.2.1 文本文件中隐藏图像</span></h4><blockquote>
 <p>echo helloworld &gt; 1.txt<br>type hong.jpg &gt; 1.txt:hong.jpg<br>del hong.jpg<br>dir &#x2F;r</p>
 </blockquote>
-<h4 id="1-2-2-文本文件中隐藏音频"><a href="#1-2-2-文本文件中隐藏音频" class="headerlink" title="1.2.2 文本文件中隐藏音频"></a>1.2.2 文本文件中隐藏音频</h4><blockquote>
+<h4><span id="122-文本文件中隐藏音频">1.2.2 文本文件中隐藏音频</span></h4><blockquote>
 <p>echo Jay &gt; 1.txt<br>type Jay-baisefengche.mp3 &gt; 1.txt:Jay-baisefengche.mp3<br>del Jay-baisefengche.mp3<br>dir &#x2F;r</p>
 </blockquote>
 <p>​	还可以在文本文件中隐藏exe、vbs、ps1等类型文件</p>
-<h4 id="1-2-3-文本文件中隐藏exe"><a href="#1-2-3-文本文件中隐藏exe" class="headerlink" title="1.2.3 文本文件中隐藏exe"></a>1.2.3 文本文件中隐藏exe</h4><p>​	微软为了安全性，在windows-xp以后的操作系统(从win7开始)就不允许直接使用 start 打开 ntfs 数据流文件，而必须使用 mklink 命令来为流文件建立一个链接，然后通过这个链接文件来打开流文件,mklink 需要高权限</p>
+<h4><span id="123-文本文件中隐藏exe">1.2.3 文本文件中隐藏exe</span></h4><p>​	微软为了安全性，在windows-xp以后的操作系统(从win7开始)就不允许直接使用 start 打开 ntfs 数据流文件，而必须使用 mklink 命令来为流文件建立一个链接，然后通过这个链接文件来打开流文件,mklink 需要高权限</p>
 <blockquote>
 <p>start a.txt:calc.exe  # 无法直接访问运行，因为不存在符号链接</p>
 <p>mklink 2.exe 1.txt:1.exe # 使用mklink创建符号链接</p>
 <p>start 2.exe   </p>
 </blockquote>
 <p><img src="/images/image-20240326004921494.png" alt="image-20240326004921494"></p>
-<h2 id="2-访问原文件名获取ADS数据流内容"><a href="#2-访问原文件名获取ADS数据流内容" class="headerlink" title="2. 访问原文件名获取ADS数据流内容"></a>2. 访问原文件名获取ADS数据流内容</h2><h3 id="2-1Powershell-通过-Get-Content-获取内容"><a href="#2-1Powershell-通过-Get-Content-获取内容" class="headerlink" title="2.1Powershell  通过 Get-Content 获取内容"></a>2.1Powershell  通过 Get-Content 获取内容</h3><p>​	创建 ADS 文件，添加内容并隐藏</p>
+<h2><span id="2-访问原文件名获取ads数据流内容">2. 访问原文件名获取ADS数据流内容</span></h2><h3><span id="21powershell-通过-get-content-获取内容">2.1Powershell  通过 Get-Content 获取内容</span></h3><p>​	创建 ADS 文件，添加内容并隐藏</p>
 <p>​	如果将 ADS 文件从 NTFS 传输到 FAT32，将自动销毁替代数据流。</p>
 <p>​	就比如将文件传到U盘，一个 ADS 文件是在 NTFS 系统中创建的，但是一旦将它传输到 FAT32 闪存驱动器，就会看提示不允许使用 ADS 复制文件。这是因为 ADS 功能是在 NTFS 中引入的，而 FAT32 并不支持</p>
 <blockquote>
@@ -161,7 +161,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="cluavwuov000z2hvdccvsd3v2" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="clw0dhqtb0012nbvdhtcgg6d1" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -205,7 +205,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -215,7 +215,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a>
     </div>
   </div>
 
@@ -224,7 +224,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
     </div>
   </div>
 
@@ -235,6 +235,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
         
           <li>
             <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
@@ -250,10 +254,6 @@
         
           <li>
             <a href="/2024/03/28/web-RCE-phpstudy-JS2RCE/">web-RCE-phpstudy-JS2RCE</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/26/reverse-RCE-phpstudy-xmlrpc/">reverse-RCE-phpstudy-xmlrpc</a>
           </li>
         
       </ul>

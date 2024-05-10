@@ -98,12 +98,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="批处理命令attrib"><a href="#批处理命令attrib" class="headerlink" title="批处理命令attrib"></a>批处理命令attrib</h1><h2 id="0-概念"><a href="#0-概念" class="headerlink" title="0. 概念"></a>0. 概念</h2><p>​	attrib是attribute的缩写，显示或更改文件（夹）属性的意思，是一个外部命令</p>
+        <h1><span id="批处理命令attrib">批处理命令attrib</span></h1><h2><span id="0-概念">0. 概念</span></h2><p>​	attrib是attribute的缩写，显示或更改文件（夹）属性的意思，是一个外部命令</p>
 <span id="more"></span>
-<h2 id="1-帮助文档"><a href="#1-帮助文档" class="headerlink" title="1. 帮助文档"></a>1. 帮助文档</h2><blockquote>
+<h2><span id="1-帮助文档">1. 帮助文档</span></h2><blockquote>
 <p>ATTRIB [+R | -R] [+A | -A] [+S | -S] [+H | -H] [+O | -O] [+I | -I] [+X | -X] [+P | -P] [+U | -U]<br>[drive:][path][filename] [&#x2F;S [&#x2F;D]] [&#x2F;L]</p>
 </blockquote>
-<h3 id="1-1-属性修改"><a href="#1-1-属性修改" class="headerlink" title="1.1 属性修改"></a>1.1 属性修改</h3><table>
+<h3><span id="11-属性修改">1.1 属性修改</span></h3><table>
 <thead>
 <tr>
 <th>参数</th>
@@ -119,7 +119,7 @@
 <td>清楚属性</td>
 </tr>
 </tbody></table>
-<h3 id="1-2-属性类别"><a href="#1-2-属性类别" class="headerlink" title="1.2 属性类别"></a>1.2 属性类别</h3><table>
+<h3><span id="12-属性类别">1.2 属性类别</span></h3><table>
 <thead>
 <tr>
 <th>参数</th>
@@ -167,13 +167,13 @@
 <td>非固定属性</td>
 </tr>
 </tbody></table>
-<h4 id="1-2-1-存档属性"><a href="#1-2-1-存档属性" class="headerlink" title="1.2.1 存档属性"></a>1.2.1 存档属性</h4><p>​	“存档”属性是用于指示文件是否已被修改或需要进行备份的标志。当文件被修改后，”存档”属性会自动设置为”已修改”状态，表示文件需要进行备份。备份工具通常会根据文件的”存档”属性来确定哪些文件需要备份。</p>
-<h4 id="1-2-2-系统属性"><a href="#1-2-2-系统属性" class="headerlink" title="1.2.2 系统属性"></a>1.2.2 系统属性</h4><p>​	“系统”属性用于标识文件为操作系统的核心文件或系统文件。设置了”系统”属性的文件通常具有特殊的权限和保护级别，防止用户对其进行意外或恶意的更改或删除。</p>
-<h4 id="1-2-3-脱机属性"><a href="#1-2-3-脱机属性" class="headerlink" title="1.2.3 脱机属性"></a>1.2.3 脱机属性</h4><p>​	“脱机”属性用于指示文件是否处于脱机状态，即文件不需要与远程服务器保持同步。文件的”脱机”属性通常与网络文件共享和同步功能一起使用。当文件被标记为”脱机”属性时，表示该文件是网络文件，并且可以在离线状态下访问。这意味着文件可以从远程服务器下载到本地计算机，并在没有网络连接的情况下进行访问和修改。当重新连接到网络时，更改的文件可以与远程服务器同步。</p>
-<h4 id="1-2-4-无内容索引文件属性"><a href="#1-2-4-无内容索引文件属性" class="headerlink" title="1.2.4 无内容索引文件属性"></a>1.2.4 无内容索引文件属性</h4><p>​	“无内容索引”（Sparse）文件属性是一种用于指示文件使用了稀疏文件分配技术的属性。稀疏文件是一种优化技术，用于在文件系统中节省存储空间，特别适用于处理大型文件中的稀疏数据。当文件被标记为”无内容索引”属性时，文件系统会将文件中的连续空白数据块标记为稀疏块，而不会实际分配磁盘空间来存储这些空白数据块。这样可以有效地减少文件的物理大小，节省存储空间。</p>
-<h4 id="1-2-5-无清理文件属性"><a href="#1-2-5-无清理文件属性" class="headerlink" title="1.2.5 无清理文件属性"></a>1.2.5 无清理文件属性</h4><p>​	“无清理文件”属性用于指示文件不应该在进行磁盘清理或优化操作时被清理或处理。通常，磁盘清理工具会扫描磁盘上的文件，并根据一些规则来删除或优化不再需要的文件。但是，如果文件具有”无清理文件”属性，清理工具会跳过对该文件的处理，保留文件不受影响。</p>
-<h4 id="1-2-6-完整性属性"><a href="#1-2-6-完整性属性" class="headerlink" title="1.2.6 完整性属性"></a>1.2.6 完整性属性</h4><p>​	文件完整性是一种安全功能，用于确保文件在存储和传输过程中的完整性。通过启用文件完整性功能，可以在文件或目录上设置一个完整性级别，以保护其内容不被未经授权的修改、篡改或破坏。</p>
-<h3 id="1-3-其他"><a href="#1-3-其他" class="headerlink" title="1.3 其他"></a>1.3 其他</h3><table>
+<h4><span id="121-存档属性">1.2.1 存档属性</span></h4><p>​	“存档”属性是用于指示文件是否已被修改或需要进行备份的标志。当文件被修改后，”存档”属性会自动设置为”已修改”状态，表示文件需要进行备份。备份工具通常会根据文件的”存档”属性来确定哪些文件需要备份。</p>
+<h4><span id="122-系统属性">1.2.2 系统属性</span></h4><p>​	“系统”属性用于标识文件为操作系统的核心文件或系统文件。设置了”系统”属性的文件通常具有特殊的权限和保护级别，防止用户对其进行意外或恶意的更改或删除。</p>
+<h4><span id="123-脱机属性">1.2.3 脱机属性</span></h4><p>​	“脱机”属性用于指示文件是否处于脱机状态，即文件不需要与远程服务器保持同步。文件的”脱机”属性通常与网络文件共享和同步功能一起使用。当文件被标记为”脱机”属性时，表示该文件是网络文件，并且可以在离线状态下访问。这意味着文件可以从远程服务器下载到本地计算机，并在没有网络连接的情况下进行访问和修改。当重新连接到网络时，更改的文件可以与远程服务器同步。</p>
+<h4><span id="124-无内容索引文件属性">1.2.4 无内容索引文件属性</span></h4><p>​	“无内容索引”（Sparse）文件属性是一种用于指示文件使用了稀疏文件分配技术的属性。稀疏文件是一种优化技术，用于在文件系统中节省存储空间，特别适用于处理大型文件中的稀疏数据。当文件被标记为”无内容索引”属性时，文件系统会将文件中的连续空白数据块标记为稀疏块，而不会实际分配磁盘空间来存储这些空白数据块。这样可以有效地减少文件的物理大小，节省存储空间。</p>
+<h4><span id="125-无清理文件属性">1.2.5 无清理文件属性</span></h4><p>​	“无清理文件”属性用于指示文件不应该在进行磁盘清理或优化操作时被清理或处理。通常，磁盘清理工具会扫描磁盘上的文件，并根据一些规则来删除或优化不再需要的文件。但是，如果文件具有”无清理文件”属性，清理工具会跳过对该文件的处理，保留文件不受影响。</p>
+<h4><span id="126-完整性属性">1.2.6 完整性属性</span></h4><p>​	文件完整性是一种安全功能，用于确保文件在存储和传输过程中的完整性。通过启用文件完整性功能，可以在文件或目录上设置一个完整性级别，以保护其内容不被未经授权的修改、篡改或破坏。</p>
+<h3><span id="13-其他">1.3 其他</span></h3><table>
 <thead>
 <tr>
 <th>参数</th>
@@ -193,7 +193,7 @@
 <td>处理符号链接和符号链接目标的属性</td>
 </tr>
 </tbody></table>
-<h2 id="2-隐藏后门文件"><a href="#2-隐藏后门文件" class="headerlink" title="2. 隐藏后门文件"></a>2. 隐藏后门文件</h2><blockquote>
+<h2><span id="2-隐藏后门文件">2. 隐藏后门文件</span></h2><blockquote>
 <p>attrib +s +h +r &#x2F;d &#x2F;s *</p>
 </blockquote>
 <p>​	处理当前文件夹及所有子文件夹中文件和文件夹，使得其只读、隐藏、以系统权限运行</p>
@@ -201,7 +201,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/25/tools-CMD-attrib/" data-id="cluavwuoi000h2hvd5g4u5847" data-title="tools-CMD-attrib" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/25/tools-CMD-attrib/" data-id="clw0dhqsu000inbvd1bza0599" data-title="tools-CMD-attrib" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -245,7 +245,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -255,7 +255,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a>
     </div>
   </div>
 
@@ -264,7 +264,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
     </div>
   </div>
 
@@ -275,6 +275,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
         
           <li>
             <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
@@ -290,10 +294,6 @@
         
           <li>
             <a href="/2024/03/28/web-RCE-phpstudy-JS2RCE/">web-RCE-phpstudy-JS2RCE</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/26/reverse-RCE-phpstudy-xmlrpc/">reverse-RCE-phpstudy-xmlrpc</a>
           </li>
         
       </ul>

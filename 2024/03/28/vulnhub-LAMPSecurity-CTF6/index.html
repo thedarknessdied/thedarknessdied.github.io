@@ -129,7 +129,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>[toc]</p>
-<h1 id="CTF6-靶场"><a href="#CTF6-靶场" class="headerlink" title="CTF6 靶场"></a>CTF6 靶场</h1><h2 id="0-环境配置"><a href="#0-环境配置" class="headerlink" title="0. 环境配置"></a>0. 环境配置</h2><table>
+<h1><span id="ctf6-靶场">CTF6 靶场</span></h1><h2><span id="0-环境配置">0. 环境配置</span></h2><table>
 <thead>
 <tr>
 <th>主机</th>
@@ -147,33 +147,33 @@
 </tbody></table>
 <span id="more"></span>
 
-<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
+<h2><span id="1-netdiscover-同段主机存活主机探测">1. netdiscover 同段主机存活主机探测</span></h2><blockquote>
 <p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
 </blockquote>
 <p><img src="/images/image-20230322103549772.png" alt="image-20230322103549772"></p>
-<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
+<h2><span id="2-nmap主机开放服务探测">2. Nmap主机开放服务探测</span></h2><h3><span id="21-mini-rate-快速探测主机开放服务">2.1  mini-rate 快速探测主机开放服务</span></h3><blockquote>
 <p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.138</p>
 </blockquote>
 <p><img src="/images/image-20230322103904430.png" alt="image-20230322103904430"></p>
 <p>​	可以看到这里开放了22、80、443、3306等端口</p>
-<h3 id="2-2-TCP服务开放性探测"><a href="#2-2-TCP服务开放性探测" class="headerlink" title="2.2 TCP服务开放性探测"></a>2.2 TCP服务开放性探测</h3><blockquote>
+<h3><span id="22-tcp服务开放性探测">2.2 TCP服务开放性探测</span></h3><blockquote>
 <p>sudo nmap -sT -sV -sC -O -p 22,80,110,111,143,443,623,993,995,3306 192.168.134.138 </p>
 </blockquote>
 <p><img src="/images/image-20230322104206494.png" alt="image-20230322104206494"></p>
-<h3 id="2-3-UDP服务开放性探测"><a href="#2-3-UDP服务开放性探测" class="headerlink" title="2.3 UDP服务开放性探测"></a>2.3 UDP服务开放性探测</h3><blockquote>
+<h3><span id="23-udp服务开放性探测">2.3 UDP服务开放性探测</span></h3><blockquote>
 <p>sudo nmap –min-rate 10000 -p- sU -v 192.168.134.152</p>
 </blockquote>
 <p><img src="/images/image-20230322104106530.png" alt="image-20230322104106530"></p>
-<h3 id="2-4-服务端vuln脚本探测"><a href="#2-4-服务端vuln脚本探测" class="headerlink" title="2.4 服务端vuln脚本探测"></a>2.4 服务端vuln脚本探测</h3><blockquote>
+<h3><span id="24-服务端vuln脚本探测">2.4 服务端vuln脚本探测</span></h3><blockquote>
 <p>sudo nmap –script&#x3D;vuln -p 22,80,110,111,143,443,623,993,995,3306 192.168.134.138</p>
 </blockquote>
 <p><img src="/images/image-20230322104602303.png" alt="image-20230322104602303"></p>
-<h2 id="3-渗透测试"><a href="#3-渗透测试" class="headerlink" title="3. 渗透测试"></a>3. 渗透测试</h2><h3 id="3-1-根据Nmap扫描结果，对80端口web服务进行测试"><a href="#3-1-根据Nmap扫描结果，对80端口web服务进行测试" class="headerlink" title="3.1.  根据Nmap扫描结果，对80端口web服务进行测试"></a>3.1.  根据Nmap扫描结果，对80端口web服务进行测试</h3><p>​	可以看到web服务搭建了一个类似广告新闻投放的站点</p>
+<h2><span id="3-渗透测试">3. 渗透测试</span></h2><h3><span id="31-根据nmap扫描结果对80端口web服务进行测试">3.1.  根据Nmap扫描结果，对80端口web服务进行测试</span></h3><p>​	可以看到web服务搭建了一个类似广告新闻投放的站点</p>
 <p><img src="/images/image-20230322104641237.png" alt="image-20230322104641237"></p>
 <p>​		在页面上累哦看到很多新闻信息，那么点击’Read more’，查看广告详情，发现URL跳转到了一个<code>http://192.168.134.138?id=4</code>上，经测试发现当前显示的新闻内容是通过id参数进行控制的，怀疑此处存在SQL注入，访问<code>http://192.168.134.138?id=4&#39;</code> 页面出现异常，无法加载新闻</p>
 <p><img src="/images/image-20230322104659319.png" alt="image-20230322104659319"></p>
 <p>​	访问 <code>http://192.168.134.138?id=4&#39; or &#39;1&#39;=&#39;1</code>页面又重新再加新闻</p>
-<h3 id="3-2-News-Announcements-处存在-sql注入"><a href="#3-2-News-Announcements-处存在-sql注入" class="headerlink" title="3.2 News &amp; Announcements 处存在 sql注入"></a>3.2 News &amp; Announcements 处存在 sql注入</h3><p>​	对id进行简单的SQL注入测试，页面不回显，我们直接sqlmap一把梭哈：</p>
+<h3><span id="32-news-amp-announcements-处存在-sql注入">3.2 News &amp; Announcements 处存在 sql注入</span></h3><p>​	对id进行简单的SQL注入测试，页面不回显，我们直接sqlmap一把梭哈：</p>
 <blockquote>
 <p>sqlmap -u “<a target="_blank" rel="noopener" href="http://192.168.134.138/?id=4">http://192.168.134.138/?id=4</a>*” –banner </p>
 <p>sqlmap -u “<a target="_blank" rel="noopener" href="http://192.168.134.138/?id=4">http://192.168.134.138/?id=4</a>*” –dbms mysql –dbs</p>
@@ -189,23 +189,23 @@
 <p>user_password: adminpass</p>
 </blockquote>
 <p><img src="/images/image-20230322105546151.png" alt="image-20230322105546151"></p>
-<h3 id="3-3-通过账号-密码登陆"><a href="#3-3-通过账号-密码登陆" class="headerlink" title="3.3 通过账号&#x2F;密码登陆"></a>3.3 通过账号&#x2F;密码登陆</h3><p>​		点击<code>Log In</code>，使用刚刚爆破出来的账号密码进行登录，成功登录，但是用firefox打开页面会存在回显问题，不过不影响渗透</p>
+<h3><span id="33-通过账号x2f密码登陆">3.3 通过账号&#x2F;密码登陆</span></h3><p>​		点击<code>Log In</code>，使用刚刚爆破出来的账号密码进行登录，成功登录，但是用firefox打开页面会存在回显问题，不过不影响渗透</p>
 <p><img src="/images/image-20230322105659995.png" alt="image-20230322105659995"></p>
 <p><img src="/images/image-20230322105741140.png" alt="image-20230322105741140"></p>
 <p>​	发现登录成功后并没有有效的功能点让我get shell</p>
-<h3 id="3-4-dirsearch-站点路径爆破"><a href="#3-4-dirsearch-站点路径爆破" class="headerlink" title="3.4 dirsearch 站点路径爆破"></a>3.4 dirsearch 站点路径爆破</h3><p>​	换个思路，先进行路径爆破，查看是否有敏感路径泄露</p>
+<h3><span id="34-dirsearch-站点路径爆破">3.4 dirsearch 站点路径爆破</span></h3><p>​	换个思路，先进行路径爆破，查看是否有敏感路径泄露</p>
 <blockquote>
 <p>dirsearch -u “<a target="_blank" rel="noopener" href="http://192.168.134.138/">http://192.168.134.138/</a>“</p>
 </blockquote>
 <p><img src="/images/image-20230322110220410.png" alt="image-20230322110220410"></p>
 <p>​	可以看见这里暴露出了PHPMyadmin软件的web端管理路径</p>
-<h3 id="3-5-SQL注入获取mysql用户的账号-密码"><a href="#3-5-SQL注入获取mysql用户的账号-密码" class="headerlink" title="3.5 SQL注入获取mysql用户的账号&#x2F;密码"></a>3.5 SQL注入获取mysql用户的账号&#x2F;密码</h3><p>​	可以看见当前站点存在PHPMyadmin这个管理工具，但是我们不知道账号密码怎么办，可以使用上面的SQL注入点进行获取，因为一般情况下mysql数据库的用户名密码都是保存在软件中的(保存路径为mysql数据库下的user表中)</p>
+<h3><span id="35-sql注入获取mysql用户的账号x2f密码">3.5 SQL注入获取mysql用户的账号&#x2F;密码</span></h3><p>​	可以看见当前站点存在PHPMyadmin这个管理工具，但是我们不知道账号密码怎么办，可以使用上面的SQL注入点进行获取，因为一般情况下mysql数据库的用户名密码都是保存在软件中的(保存路径为mysql数据库下的user表中)</p>
 <blockquote>
 <p>sqlmap -u “<a target="_blank" rel="noopener" href="http://192.168.134.138/?id=4">http://192.168.134.138/?id=4</a>*” –dbms mysql -D mysql -T user –dump </p>
 </blockquote>
 <p><img src="/images/image-20230322110639810.png" alt="image-20230322110639810"></p>
 <p>​	但因为其都是采用加密方式存储的，运气好的情况下可以将密文解开</p>
-<h3 id="3-6-站点PHPMyadmin登录"><a href="#3-6-站点PHPMyadmin登录" class="headerlink" title="3.6 站点PHPMyadmin登录"></a>3.6 站点PHPMyadmin登录</h3><p>​		访问PHPMyadmin管理路径<code>http://192.168.134.138/phpmyadmin/</code>,使用上述爆破出来的用户名密码进行登录，成功!</p>
+<h3><span id="36-站点phpmyadmin登录">3.6 站点PHPMyadmin登录</span></h3><p>​		访问PHPMyadmin管理路径<code>http://192.168.134.138/phpmyadmin/</code>,使用上述爆破出来的用户名密码进行登录，成功!</p>
 <p><img src="/images/image-20230322110707911.png" alt="image-20230322110707911"></p>
 <p>​		经过测试发现，存在<code>secure_file_priv</code>限制，无法直接通过备份写shell获取权限，那么眼下可以考虑下面两种方法:</p>
 <ul>
@@ -213,7 +213,7 @@
 <li>日志备份绕过限制</li>
 </ul>
 <p><img src="/images/image-20230322110813732.png" alt="image-20230322110813732"></p>
-<h3 id="3-7-PHPMyAdmin-命令注入"><a href="#3-7-PHPMyAdmin-命令注入" class="headerlink" title="3.7. PHPMyAdmin 命令注入"></a>3.7. PHPMyAdmin 命令注入</h3><p>​	这里我们使用集成化环境<code>metasploit</code>进行渗透，使用<code>search</code>模块搜索<code>phpmyadmin</code>相关漏洞</p>
+<h3><span id="37-phpmyadmin-命令注入">3.7. PHPMyAdmin 命令注入</span></h3><p>​	这里我们使用集成化环境<code>metasploit</code>进行渗透，使用<code>search</code>模块搜索<code>phpmyadmin</code>相关漏洞</p>
 <p><img src="/images/image-20230322111720044.png" alt="image-20230322111720044"></p>
 <p>​	发现低版本的PHPMyadmin存在命令注入漏洞，那么我们填写所需参数，并执行</p>
 <p><img src="/images/image-20230322111705752.png" alt="image-20230322111705752"></p>
@@ -221,9 +221,9 @@
 <p><img src="/images/image-20230322111909882.png" alt="image-20230322111909882"></p>
 <p>​	攻击成功，成功反弹shell</p>
 <p><img src="/images/image-20230322112024380.png" alt="image-20230322112024380"></p>
-<h3 id="3-8-上传内核漏洞扫描脚本"><a href="#3-8-上传内核漏洞扫描脚本" class="headerlink" title="3.8 上传内核漏洞扫描脚本"></a>3.8 上传内核漏洞扫描脚本</h3><p>​	一开始扫描出来的结果误报率比较高，我几乎都尝试了一遍，但是都是提权失败了</p>
+<h3><span id="38-上传内核漏洞扫描脚本">3.8 上传内核漏洞扫描脚本</span></h3><p>​	一开始扫描出来的结果误报率比较高，我几乎都尝试了一遍，但是都是提权失败了</p>
 <p><img src="/images/image-20230322112957531.png" alt="image-20230322112957531"></p>
-<h3 id="3-9-udev内核提权"><a href="#3-9-udev内核提权" class="headerlink" title="3.9 udev内核提权"></a>3.9 udev内核提权</h3><p>​	后面想着，是我的顺序错了，我应该先查看一下当前系统的内核版本</p>
+<h3><span id="39-udev内核提权">3.9 udev内核提权</span></h3><p>​	后面想着，是我的顺序错了，我应该先查看一下当前系统的内核版本</p>
 <blockquote>
 <p>uanme -a </p>
 </blockquote>
@@ -238,13 +238,13 @@
 <p>​		<img src="/images/image-20230322121025851.png" alt="image-20230322121025851"></p>
 <p>​	上传脚本到环境中，给予脚本可执行权限，并执行(能够成功，但是需要多次尝试)</p>
 <blockquote>
-<h3 id="通过msfconsole上传脚本文件"><a href="#通过msfconsole上传脚本文件" class="headerlink" title="通过msfconsole上传脚本文件"></a>通过msfconsole上传脚本文件</h3><p>upload &#x2F;home&#x2F;kali&#x2F;Desktop&#x2F;8478.sh &#x2F;tmp</p>
+<h3><span id="通过msfconsole上传脚本文件">通过msfconsole上传脚本文件</span></h3><p>upload &#x2F;home&#x2F;kali&#x2F;Desktop&#x2F;8478.sh &#x2F;tmp</p>
 </blockquote>
 <p><img src="/images/image-20230322115437824.png" alt="image-20230322115437824"></p>
 <blockquote>
 <p>ls -al</p>
 <p>chmod +x 8478.sh</p>
-<h3 id="查看udev进程序列号-或者使用-cat-proc-net-netlink"><a href="#查看udev进程序列号-或者使用-cat-proc-net-netlink" class="headerlink" title="查看udev进程序列号 或者使用 cat &#x2F;proc&#x2F;net&#x2F;netlink"></a>查看udev进程序列号 或者使用 cat &#x2F;proc&#x2F;net&#x2F;netlink</h3><p>ps -ef | grep udev </p>
+<h3><span id="查看udev进程序列号-或者使用-cat-x2fprocx2fnetx2fnetlink">查看udev进程序列号 或者使用 cat &#x2F;proc&#x2F;net&#x2F;netlink</span></h3><p>ps -ef | grep udev </p>
 <p>.&#x2F;8478.sh [:替换一个进程pid]</p>
 </blockquote>
 <p><img src="/images/image-20230322122134351.png" alt="image-20230322122134351"></p>
@@ -253,7 +253,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/vulnhub-LAMPSecurity-CTF6/" data-id="cluavwuoz00172hvdad585lh3" data-title="vulnhub-LAMPSecurity-CTF6" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/vulnhub-LAMPSecurity-CTF6/" data-id="clw0dhqtg001anbvd9ghq88g1" data-title="vulnhub-LAMPSecurity-CTF6" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -264,6 +264,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Windows_Post_Infiltration_Permission_Maintenance_lnk
+        
+      </div>
+    </a>
   
   
     <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/" id="article-nav-older" class="article-nav-link-wrap">
@@ -288,7 +297,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -298,7 +307,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a>
     </div>
   </div>
 
@@ -307,7 +316,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
     </div>
   </div>
 
@@ -318,6 +327,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
         
           <li>
             <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
@@ -333,10 +346,6 @@
         
           <li>
             <a href="/2024/03/28/web-RCE-phpstudy-JS2RCE/">web-RCE-phpstudy-JS2RCE</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/26/reverse-RCE-phpstudy-xmlrpc/">reverse-RCE-phpstudy-xmlrpc</a>
           </li>
         
       </ul>

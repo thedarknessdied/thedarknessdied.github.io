@@ -130,7 +130,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>[TOC]</p>
-<h1 id="CTF7靶机"><a href="#CTF7靶机" class="headerlink" title="CTF7靶机"></a>CTF7靶机</h1><h2 id="0-环境配置"><a href="#0-环境配置" class="headerlink" title="0. 环境配置"></a>0. 环境配置</h2><table>
+<h1><span id="ctf7靶机">CTF7靶机</span></h1><h2><span id="0-环境配置">0. 环境配置</span></h2><table>
 <thead>
 <tr>
 <th>主机</th>
@@ -147,31 +147,31 @@
 </tr>
 </tbody></table>
 <span id="more"></span>
-<h2 id="1-netdiscover-同段主机存活主机探测"><a href="#1-netdiscover-同段主机存活主机探测" class="headerlink" title="1. netdiscover 同段主机存活主机探测"></a>1. netdiscover 同段主机存活主机探测</h2><blockquote>
+<h2><span id="1-netdiscover-同段主机存活主机探测">1. netdiscover 同段主机存活主机探测</span></h2><blockquote>
 <p>sudo netdiscover -i eth0 -r 192.168.134.0&#x2F;24</p>
 </blockquote>
 <p><img src="/images/image-20230323104109088.png" alt="image-20230323104109088"></p>
-<h2 id="2-Nmap主机开放服务探测"><a href="#2-Nmap主机开放服务探测" class="headerlink" title="2. Nmap主机开放服务探测"></a>2. Nmap主机开放服务探测</h2><h3 id="2-1-mini-rate-快速探测主机开放服务"><a href="#2-1-mini-rate-快速探测主机开放服务" class="headerlink" title="2.1  mini-rate 快速探测主机开放服务"></a>2.1  mini-rate 快速探测主机开放服务</h3><blockquote>
+<h2><span id="2-nmap主机开放服务探测">2. Nmap主机开放服务探测</span></h2><h3><span id="21-mini-rate-快速探测主机开放服务">2.1  mini-rate 快速探测主机开放服务</span></h3><blockquote>
 <p>sudo nmap –min-rate 10000 -p- -Pn 192.168.134.154</p>
 </blockquote>
 <p><img src="/images/image-20230323104254505.png" alt="image-20230323104254505"></p>
 <p>​	可以看出当前靶场开放较多端口，这里的话重点关注22、80、5900、8080</p>
-<h3 id="2-2-TCP服务开放性探测"><a href="#2-2-TCP服务开放性探测" class="headerlink" title="2.2 TCP服务开放性探测"></a>2.2 TCP服务开放性探测</h3><blockquote>
+<h3><span id="22-tcp服务开放性探测">2.2 TCP服务开放性探测</span></h3><blockquote>
 <p>sudo nmap -sT -sV -sC -O -p 22,80,137,138,139,901,5900,8080,10000 192.168.134.154</p>
 </blockquote>
 <p><img src="/images/1679539633057.png" alt="1679539633057"></p>
 <p>​	可以发现在 8080 端口处存在一个 <code>/login.php</code> 的登录功能点</p>
-<h3 id="2-3-UDP服务开放性探测"><a href="#2-3-UDP服务开放性探测" class="headerlink" title="2.3 UDP服务开放性探测"></a>2.3 UDP服务开放性探测</h3><blockquote>
+<h3><span id="23-udp服务开放性探测">2.3 UDP服务开放性探测</span></h3><blockquote>
 <p>sudo nmap –min-rate 10000 -p- sU -v 192.168.134.154</p>
 </blockquote>
 <p><img src="/images/image-20230323104626260.png" alt="image-20230323104626260"></p>
-<h3 id="2-4-服务端vuln脚本探测"><a href="#2-4-服务端vuln脚本探测" class="headerlink" title="2.4 服务端vuln脚本探测"></a>2.4 服务端vuln脚本探测</h3><blockquote>
+<h3><span id="24-服务端vuln脚本探测">2.4 服务端vuln脚本探测</span></h3><blockquote>
 <p>sudo nmap –script&#x3D;vuln -p 22,80,137,138,139,901,5900,8080,10000 192.168.134.154</p>
 </blockquote>
 <p><img src="/images/image-20230323105141750.png" alt="image-20230323105141750"></p>
-<h2 id="3-渗透测试"><a href="#3-渗透测试" class="headerlink" title="3. 渗透测试"></a>3. 渗透测试</h2><h3 id="3-1-根据Nmap扫描结果，对8080端口admin后台登录界面进行测试"><a href="#3-1-根据Nmap扫描结果，对8080端口admin后台登录界面进行测试" class="headerlink" title="3.1 根据Nmap扫描结果，对8080端口admin后台登录界面进行测试"></a>3.1 根据Nmap扫描结果，对8080端口admin后台登录界面进行测试</h3><p>​		通过前面的资产扫面可以发现在8080端口下存在一个后台登陆界面，简单的来个SQL注入测试</p>
+<h2><span id="3-渗透测试">3. 渗透测试</span></h2><h3><span id="31-根据nmap扫描结果对8080端口admin后台登录界面进行测试">3.1 根据Nmap扫描结果，对8080端口admin后台登录界面进行测试</span></h3><p>​		通过前面的资产扫面可以发现在8080端口下存在一个后台登陆界面，简单的来个SQL注入测试</p>
 <p><img src="/images/image-20230323110553762.png" alt="image-20230323110553762"></p>
-<h3 id="3-2-万能密码登录Admin后台-SQL注入"><a href="#3-2-万能密码登录Admin后台-SQL注入" class="headerlink" title="3.2 万能密码登录Admin后台&#x2F;SQL注入"></a>3.2 万能密码登录Admin后台&#x2F;SQL注入</h3><p>​	在username和password框中各输入一个引号，放包观察页面内容</p>
+<h3><span id="32-万能密码登录admin后台x2fsql注入">3.2 万能密码登录Admin后台&#x2F;SQL注入</span></h3><p>​	在username和password框中各输入一个引号，放包观察页面内容</p>
 <p><img src="/images/image-20240321102646131.png" alt="image-20240321102646131"></p>
 <p>​	页面回显异常:</p>
 <blockquote>
@@ -180,7 +180,7 @@
 <p><img src="/images/image-20230323111254165.png" alt="image-20230323111254165"></p>
 <p>​		说明在登陆端口处存在SQL注入，并且发现当前的SQL语句为:select * from users where username&#x3D;’’ AND password&#x3D;md5(‘’) and is_admin&#x3D;1</p>
 <p>​		</p>
-<h4 id="3-2-1-万能密码登录Admin后台"><a href="#3-2-1-万能密码登录Admin后台" class="headerlink" title="3.2.1 万能密码登录Admin后台"></a>3.2.1 万能密码登录Admin后台</h4><p>​	我们尝试使用万能密码进行登录</p>
+<h4><span id="321-万能密码登录admin后台">3.2.1 万能密码登录Admin后台</span></h4><p>​	我们尝试使用万能密码进行登录</p>
 <blockquote>
 <p>用户名：admin’ or 1&#x3D;1 – wq</p>
 <p>密码：admin’) or 1&#x3D;1 – wq</p>
@@ -188,13 +188,13 @@
 <p><img src="/images/image-20230323111402750.png" alt="image-20230323111402750"></p>
 <p>​		成功登录站点后台 <code>http://192.168.70.197:8080/index.php</code></p>
 <p><img src="/images/image-20230323111419988.png" alt="image-20230323111419988"></p>
-<h4 id="3-2-2-sqlmap后台数据获取"><a href="#3-2-2-sqlmap后台数据获取" class="headerlink" title="3.2.2 sqlmap后台数据获取"></a>3.2.2 sqlmap后台数据获取</h4><p>​	在8080端口SQL注入处使用sqlmap脱下所有的数据看看</p>
+<h4><span id="322-sqlmap后台数据获取">3.2.2 sqlmap后台数据获取</span></h4><p>​	在8080端口SQL注入处使用sqlmap脱下所有的数据看看</p>
 <blockquote>
 <p>sqlmap -r login.txt –banner </p>
 <p>sqlmap -r login.txt –dbms mysql –dbs</p>
-<h3 id="roundcube-库中的user表单数据查询"><a href="#roundcube-库中的user表单数据查询" class="headerlink" title="roundcube 库中的user表单数据查询"></a>roundcube 库中的user表单数据查询</h3><p>sqlmap -r login.txt –dbms mysql -D roundcube –tables</p>
+<h3><span id="roundcube-库中的user表单数据查询">roundcube 库中的user表单数据查询</span></h3><p>sqlmap -r login.txt –dbms mysql -D roundcube –tables</p>
 <p>sqlmap -r login.txt –dbms mysql -D roundcube -T users –dump</p>
-<h3 id="website-库中的user表单数据查询"><a href="#website-库中的user表单数据查询" class="headerlink" title="website 库中的user表单数据查询"></a>website 库中的user表单数据查询</h3><p>sqlmap -r login.txt –dbms mysql -D website –tables</p>
+<h3><span id="website-库中的user表单数据查询">website 库中的user表单数据查询</span></h3><p>sqlmap -r login.txt –dbms mysql -D website –tables</p>
 <p>sqlmap -r login.txt –dbms mysql -D website -T users –dump</p>
 </blockquote>
 <p><img src="/images/image-20230323111908460.png" alt="image-20230323111908460"></p>
@@ -203,7 +203,7 @@
 <p><img src="/images/image-20230323112114743.png" alt="image-20230323112114743"></p>
 <p>​		可以发现roundcube库中的user表单中不存在能够利用的数据</p>
 <p><img src="/images/image-20230323112932532.png" alt="image-20230323112932532"></p>
-<h3 id="3-4-路径爆破"><a href="#3-4-路径爆破" class="headerlink" title="3.4 路径爆破"></a>3.4 路径爆破</h3><p>​	因为服务器端开放22端口，对上面获取到的账号密码尝试使用ssh密码喷射，但是都无法登录SSH，这时候我们只能重新对资产进行一波信息搜集</p>
+<h3><span id="34-路径爆破">3.4 路径爆破</span></h3><p>​	因为服务器端开放22端口，对上面获取到的账号密码尝试使用ssh密码喷射，但是都无法登录SSH，这时候我们只能重新对资产进行一波信息搜集</p>
 <p>​	这里尝试对80端口服务进行探测</p>
 <p><img src="/images/image-20230323131205788.png" alt="image-20230323131205788"></p>
 <p>​	这里我们发现了一个很有趣的文件目录<code>/assets</code>，这个目录存放了一些文件，尝试访问可以发现是一对图标文件</p>
@@ -212,18 +212,18 @@
 <p>​	经过测试发现可以在<code>http://192.168.70.197:8080/readings.php</code>(管理员界面推广的Reading读物的预览)界面上传文件至<code>http://192.168.70.197/assets</code>，那么就可以尝试我们去提交一个恶意文件，然后尝试获取链接</p>
 <p><img src="/images/image-20230323131503469.png" alt="image-20230323131503469"></p>
 <p><img src="/images/image-20230323131449824.png" alt="image-20230323131449824"></p>
-<h3 id="3-5-文件上传GetShell"><a href="#3-5-文件上传GetShell" class="headerlink" title="3.5 文件上传GetShell"></a>3.5 文件上传GetShell</h3><p>​	使用msfvenom创建一个PHP的反弹shell文件，保存并命名为hack.php</p>
+<h3><span id="35-文件上传getshell">3.5 文件上传GetShell</span></h3><p>​	使用msfvenom创建一个PHP的反弹shell文件，保存并命名为hack.php</p>
 <p><img src="/images/image-20230323131420290.png" alt="image-20230323131420290"></p>
 <p>​	将文件通过<code>Add a new Readings</code>上传至<code>/assets</code>文件夹目录</p>
 <p><img src="/images/image-20230323131522965.png" alt="image-20230323131522965"></p>
 <p>​	访问 <code>http://192.168.70.197/assets</code> 成功将木马文件上传至指定地点</p>
 <p><img src="/images/image-20230323131533810.png" alt="image-20230323131533810"></p>
-<h3 id="3-6-建立通信隧道链接"><a href="#3-6-建立通信隧道链接" class="headerlink" title="3.6 建立通信隧道链接"></a>3.6 建立通信隧道链接</h3><p>​		打开msfconsole，建立监听隧道</p>
+<h3><span id="36-建立通信隧道链接">3.6 建立通信隧道链接</span></h3><p>​		打开msfconsole，建立监听隧道</p>
 <p><img src="/images/image-20230323131630163.png" alt="image-20230323131630163"></p>
 <p>​		访问恶意文件，成功反弹shell</p>
 <p><img src="/images/image-20230323131711399.png" alt="image-20230323131711399"></p>
 <p><img src="/images/image-20230323131718925.png" alt="image-20230323131718925"></p>
-<h3 id="3-7-用户提权"><a href="#3-7-用户提权" class="headerlink" title="3.7 用户提权"></a>3.7 用户提权</h3><p>​		一开始获得的用户权限是<code>apache</code>，这个权限无法执行任何操作。这时候我们就需要获取更高权限的用户，首先想到的是<code>/home</code>文件夹下存在几个和我们爆出的数据库用户名同名的文件夹，我们分别切换到这些账号中，发现能够顺利切换用户</p>
+<h3><span id="37-用户提权">3.7 用户提权</span></h3><p>​		一开始获得的用户权限是<code>apache</code>，这个权限无法执行任何操作。这时候我们就需要获取更高权限的用户，首先想到的是<code>/home</code>文件夹下存在几个和我们爆出的数据库用户名同名的文件夹，我们分别切换到这些账号中，发现能够顺利切换用户</p>
 <p><img src="/images/image-20230323132518344.png" alt="image-20230323132518344"></p>
 <p>​		但是其他几个用户都没有权限，无法执行sudo提权</p>
 <p><img src="/images/image-20230323141156139.png" alt="image-20230323141156139"></p>
@@ -238,7 +238,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="cluavwup1001e2hvd188pgu59" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/21/vulnhub-LAMPSecurity-CTF7/" data-id="clw0dhqtw001enbvdauyxckok" data-title="vulnhub-LAMPSecurity-CTF7" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -282,7 +282,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
     </div>
   </div>
 
@@ -292,7 +292,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a>
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a>
     </div>
   </div>
 
@@ -301,7 +301,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
     </div>
   </div>
 
@@ -312,6 +312,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
         
           <li>
             <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
@@ -327,10 +331,6 @@
         
           <li>
             <a href="/2024/03/28/web-RCE-phpstudy-JS2RCE/">web-RCE-phpstudy-JS2RCE</a>
-          </li>
-        
-          <li>
-            <a href="/2024/03/26/reverse-RCE-phpstudy-xmlrpc/">reverse-RCE-phpstudy-xmlrpc</a>
           </li>
         
       </ul>
