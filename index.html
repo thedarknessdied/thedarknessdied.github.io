@@ -97,7 +97,127 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>[toc]</p>
+        <!-- toc -->
+
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-link">第一部分 Link</a><ul>
+<li><a href="#0-%E4%BB%80%E4%B9%88%E6%98%AF-link">0. 什么是 Link ？</a></li>
+<li><a href="#1-link-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8">1. Link 有什么作用 ？</a></li>
+<li><a href="#2-%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA-link">2. 怎么创建 Link ？</a><ul>
+<li><a href="#21-link-%E6%9C%89%E5%93%AA%E4%BA%9B%E7%A7%8D%E7%B1%BB">2.1 Link 有哪些种类？</a><ul>
+<li><a href="#211-%E7%A1%AC%E9%93%BE%E6%8E%A5">2.1.1 硬链接</a><ul>
+<li><a href="#2111-%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9A%84%E5%AE%9A%E4%B9%89">2.1.1.1 硬链接的定义</a></li>
+<li><a href="#2112-%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">2.1.1.2 硬链接的工作原理</a></li>
+<li><a href="#2113-%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9A%84%E7%89%B9%E7%82%B9">2.1.1.3 硬链接的特点</a></li>
+<li><a href="#2114-%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9B%B8%E5%85%B3%E5%AE%9E%E9%AA%8C">2.1.1.4 硬链接相关实验</a><ul>
+<li><a href="#21141-%E6%97%A0%E6%B3%95%E8%B7%A8%E5%88%86%E5%8C%BA-%E8%B7%A8%E8%AE%BE%E5%A4%87%E5%88%9B%E5%BB%BA%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9A%84%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">2.1.1.4.1 无法跨分区、跨设备创建硬链接的原因分析</a></li>
+<li><a href="#21142-%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5%E4%B8%8B%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9A%84%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">2.1.1.4.2 一般情况下无法创建文件夹硬链接的原因分析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#212-%E8%BD%AF%E9%93%BE%E6%8E%A5">2.1.2 软链接</a><ul>
+<li><a href="#2121-%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%9A%84%E5%AE%9A%E4%B9%89">2.1.2.1 软链接的定义</a></li>
+<li><a href="#2122-%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">2.1.2.2 软链接的工作原理</a></li>
+<li><a href="#2123-%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%9A%84%E7%89%B9%E7%82%B9">2.1.2.3 软链接的特点</a></li>
+<li><a href="#2124-%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%9B%B8%E5%85%B3%E5%AE%9E%E9%AA%8C">2.1.2.4 软链接相关实验</a></li>
+</ul>
+</li>
+<li><a href="#213-linux-%E4%B8%AD%E7%9A%84%E7%89%B9%E6%AE%8A%E6%9D%A1%E7%9B%AE">2.1.3 Linux 中的特殊条目</a></li>
+</ul>
+</li>
+<li><a href="#22-link-windows">2.2 Link (Windows)</a><ul>
+<li><a href="#221-command-mklink-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">2.2.1 command: mklink 的使用方法</a></li>
+<li><a href="#222-powershell-mklink-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">2.2.2 powershell: mklink 的使用方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-link-%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F">第二部分 Link &amp; 快捷方式</a><ul>
+<li><a href="#0-%E4%BB%80%E4%B9%88%E6%98%AF%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8Flnk-%E6%96%87%E4%BB%B6">0. 什么是快捷方式（.lnk 文件）？</a></li>
+<li><a href="#1-lnk-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8">1. Lnk 有什么作用 ？</a></li>
+<li><a href="#2-%E6%80%8E%E4%B9%88%E5%88%9B%E5%BB%BA-lnk">2. 怎么创建 Lnk ？</a></li>
+<li><a href="#3-lnk-%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%A7%A3%E6%9E%90">3. Lnk 文件格式解析</a><ul>
+<li><a href="#31-shelllinkheader">3.1 ShellLinkHeader</a><ul>
+<li><a href="#311-slinkflags">3.1.1 sLinkFlags</a><ul>
+<li><a href="#3111-calcexe-%E5%BF%AB%E6%8D%B7%E9%94%AE-shelllinkheader-linkflags-%E5%8C%85%E5%90%AB%E9%A1%B9">3.1.1.1 Calc.exe 快捷键 ShellLinkHeader LinkFlags 包含项</a></li>
+</ul>
+</li>
+<li><a href="#312-sfileattributes">3.1.2 sFileAttributes</a><ul>
+<li><a href="#3121-calcexe-%E5%BF%AB%E6%8D%B7%E9%94%AE-shelllinkheader-fileattributes-%E5%8C%85%E5%90%AB%E9%A1%B9">3.1.2.1 Calc.exe 快捷键 ShellLinkHeader FileAttributes 包含项</a></li>
+</ul>
+</li>
+<li><a href="#313-showcommand">3.1.3 ShowCommand</a></li>
+<li><a href="#313-hotkeyflags">3.1.3 HotKeyFlags</a></li>
+</ul>
+</li>
+<li><a href="#32-linktargetidlist">3.2 LinkTargetIDList</a><ul>
+<li><a href="#321-idlist">3.2.1 IDList</a><ul>
+<li><a href="#3211-itemid">3.2.1.1 ItemID</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#33-linkinfo">3.3 LinkInfo</a><ul>
+<li><a href="#331-linkinfoheadersize">3.3.1 LinkInfoHeaderSize</a></li>
+<li><a href="#332-linkinfoflags">3.3.2 LinkInfoFlags</a></li>
+<li><a href="#333-volumeid">3.3.3 VolumeID</a><ul>
+<li><a href="#3331-drivetype">3.3.3.1 DriveType</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#34-stringdata">3.4 StringData</a><ul>
+<li><a href="#341-stringdata-%E7%B1%BB%E5%9E%8B">3.4.1 StringData 类型</a></li>
+<li><a href="#342-string-data-%E7%BB%93%E6%9E%84">3.4.2 String Data 结构</a></li>
+</ul>
+</li>
+<li><a href="#35-sextradata">3.5 sExtraData</a></li>
+<li><a href="#36-%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90">3.6 辅助工具推荐</a></li>
+</ul>
+</li>
+<li><a href="#4-lnk-%E4%B8%8E-link-%E7%9A%84%E5%8C%BA%E5%88%AB">4. Lnk 与 link 的区别</a><ul>
+<li><a href="#41-%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8Flnk-%E6%96%87%E4%BB%B6">4.1 快捷方式（.lnk 文件）</a></li>
+<li><a href="#42-%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%AC%A6%E5%8F%B7%E9%93%BE%E6%8E%A5symlink">4.2 软链接（符号链接，symlink）</a></li>
+<li><a href="#43-%E7%A1%AC%E9%93%BE%E6%8E%A5hard-link">4.3 硬链接（hard link）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86-windows-%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F%E5%90%8E%E9%97%A8">第三部分 windows 快捷方式后门</a><ul>
+<li><a href="#0-windows%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F%E5%90%8E%E9%97%A8%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F">0. windows快捷方式后门利用方式</a></li>
+<li><a href="#1-%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F%E5%A5%87%E6%B7%AB%E5%B7%A7%E8%AE%A1">1. 快捷方式奇淫巧计</a><ul>
+<li><a href="#11-%E6%9B%B4%E6%94%B9%E5%9B%BE%E6%A0%87">1.1 更改图标</a><ul>
+<li><a href="#111-%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7-%E6%9B%B4%E6%94%B9%E5%9B%BE%E6%A0%87">1.1.1 文件属性-更改图标</a></li>
+<li><a href="#112-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84-string-data-icon-location">1.1.2 文件结构-String Data (ICON LOCATION)</a></li>
+</ul>
+</li>
+<li><a href="#12-%E6%9B%B4%E6%94%B9%E7%9B%AE%E6%A0%87">1.2 更改目标</a><ul>
+<li><a href="#121-%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7-%E7%9B%AE%E6%A0%87">1.2.1 文件属性-目标</a></li>
+<li><a href="#122-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84-sextdatasenvironmentvariabledatablock">1.2.2 文件结构-sExtData(sEnvironmentVariableDataBlock)</a></li>
+</ul>
+</li>
+<li><a href="#13-%E5%AD%97%E7%AC%A6%E9%95%BF%E5%BA%A6%E6%AC%BA%E9%AA%97">1.3 字符长度欺骗</a></li>
+</ul>
+</li>
+<li><a href="#2-%E5%88%9B%E5%BB%BA-windows-%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F%E5%90%8E%E9%97%A8">2. 创建 windows 快捷方式后门</a><ul>
+<li><a href="#21-%E6%96%B9%E6%B3%95%E4%B8%80-%E9%80%9A%E8%BF%87%E6%96%B0%E5%BB%BA%E9%9A%90%E8%97%8F%E5%90%8E%E9%97%A8-vbscript-%E8%84%9A%E6%9C%AC">2.1 方法一： 通过新建隐藏后门 VBScript 脚本</a></li>
+<li><a href="#22-%E6%96%B9%E6%B3%95%E4%BA%8C-%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAlnk%E5%90%8E%E9%97%A8">2.2 方法二： 手动创建Lnk后门</a><ul>
+<li><a href="#221-%E5%AF%BB%E6%89%BE%E4%BC%AA%E8%A3%85%E6%96%87%E4%BB%B6%E5%88%9B%E5%BB%BA%E6%A1%8C%E9%9D%A2%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F">2.2.1 寻找伪装文件，创建桌面快捷方式</a></li>
+<li><a href="#222-%E9%80%9A%E8%BF%87powershell%E8%B0%83%E7%94%A8%E5%8A%A0%E8%BD%BD%E9%99%84%E5%8A%A0%E7%A8%8B%E5%BA%8F">2.2.2 通过Powershell调用加载附加程序</a></li>
+<li><a href="#223-%E4%BF%AE%E6%94%B9%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F%E9%9A%90%E8%97%8F%E8%BF%90%E8%A1%8C%E7%AA%97%E5%8F%A3">2.2.3 修改运行方式隐藏运行窗口</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></li>
+</ul>
+<!-- tocstop -->
+
 <h1 id="第一部分-Link"><a href="#第一部分-Link" class="headerlink" title="第一部分 Link"></a>第一部分 Link</h1><h2 id="0-什么是-Link-？"><a href="#0-什么是-Link-？" class="headerlink" title="0. 什么是 Link ？"></a>0. 什么是 Link ？</h2><p>​	在操作系统中，特别是在文件系统中，”链接”（Link）是一种允许多个路径名指向同一文件或目录的机制。链接主要用于提高文件系统的灵活性，并允许更高效的数据访问。</p>
         
           <p class="article-more-link">
@@ -107,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/" data-id="clw0dlrxp0005eqvdecvu31vn" data-title="Windows_Post_Infiltration_Permission_Maintenance_lnk" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/" data-id="clw0dr1wj0005fhvd56h45wuh" data-title="Windows_Post_Infiltration_Permission_Maintenance_lnk" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -168,7 +288,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/vulnhub-LAMPSecurity-CTF6/" data-id="clw0dlrzk001aeqvd8ho36hnr" data-title="vulnhub-LAMPSecurity-CTF6" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/vulnhub-LAMPSecurity-CTF6/" data-id="clw0dr1xo001afhvdhq2ia4c2" data-title="vulnhub-LAMPSecurity-CTF6" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -216,7 +336,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-2/" data-id="clw0dlrxd0003eqvd4bpmfkje" data-title="CTF-ctfshow-misc-introduction-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-2/" data-id="clw0dr1we0003fhvdeld40knd" data-title="CTF-ctfshow-misc-introduction-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -262,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-1/" data-id="clw0dlrx60001eqvd1l641jwh" data-title="CTF-ctfshow-misc-introduction-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/CTF-ctfshow-misc-introduction-1/" data-id="clw0dr1w40001fhvd30src5n8" data-title="CTF-ctfshow-misc-introduction-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -308,7 +428,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/28/web-RCE-phpstudy-JS2RCE/" data-id="clw0dls01001geqvdc9g29vqj" data-title="web-RCE-phpstudy-JS2RCE" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/28/web-RCE-phpstudy-JS2RCE/" data-id="clw0dr1xw001gfhvdd4hohrer" data-title="web-RCE-phpstudy-JS2RCE" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -373,7 +493,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/reverse-RCE-phpstudy-xmlrpc/" data-id="clw0dlry6000heqvda76gdv9g" data-title="reverse-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/reverse-RCE-phpstudy-xmlrpc/" data-id="clw0dr1ww000hfhvd85tcexn0" data-title="reverse-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -418,7 +538,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/web-RCE-phpstudy-xmlrpc/" data-id="clw0dls02001ieqvdgc6zafis" data-title="web-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/web-RCE-phpstudy-xmlrpc/" data-id="clw0dr1xy001ifhvd61wu58qz" data-title="web-RCE-phpstudy-xmlrpc" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -463,7 +583,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-SHELL-return-shell/" data-id="clw0dlryw000reqvd9gxkfd9e" data-title="tools-SHELL-return-shell" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-SHELL-return-shell/" data-id="clw0dr1xb000rfhvdhgz1720w" data-title="tools-SHELL-return-shell" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -508,7 +628,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="clw0dlrze0012eqvd46re8zni" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-2/" data-id="clw0dr1xj0012fhvdbaxx27fl" data-title="tools-windows-fs-ntfs-2" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -554,7 +674,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-1/" data-id="clw0dlrzb000zeqvd3sq12wpx" data-title="tools-windows-fs-ntfs-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/03/26/tools-windows-fs-ntfs-1/" data-id="clw0dr1xg000zfhvd7iyj1sah" data-title="tools-windows-fs-ntfs-1" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
