@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>tools-CMD-hidden-cmdline | thedarknessdied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="隐藏命令行黑框​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tools-CMD-hidden-cmdline">
+<meta property="og:url" content="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/index.html">
+<meta property="og:site_name" content="thedarknessdied">
+<meta property="og:description" content="隐藏命令行黑框​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20240325141016145.png">
+<meta property="og:image" content="http://example.com/images/image-20240325142222704.png">
+<meta property="og:image" content="http://example.com/images/image-20240325143352718.png">
+<meta property="article:published_time" content="2024-03-25T06:52:31.000Z">
+<meta property="article:modified_time" content="2024-03-26T02:25:47.691Z">
+<meta property="article:author" content="R0seK1llere">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20240325141016145.png">
+  
+    <link rel="alternate" href="/atom.xml" title="thedarknessdied" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">thedarknessdied</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">R0seK1ller</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-tools-CMD-hidden-cmdline" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/25/tools-CMD-hidden-cmdline/" class="article-date">
+  <time class="dt-published" datetime="2024-03-25T06:52:31.000Z" itemprop="datePublished">2024-03-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      tools-CMD-hidden-cmdline
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1><span id="隐藏命令行黑框">隐藏命令行黑框</span></h1><p>​	在windows环境下frp运行时，总会弹出一个黑框框，很容易被人识别，在不改动源码或者重新编译的情况下，可以通过下面的方法让黑框隐藏</p>
+<span id="more"></span>
+<h2><span id="1-基于-wscriptshell-的隐藏命令行黑框方法">1. 基于 Wscript.Shell 的隐藏命令行黑框方法</span></h2><h3><span id="11-使用-vbscript-脚本">1.1 使用 vbscript 脚本</span></h3><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Set</span> objShell = WScript.<span class="built_in">CreateObject</span>(<span class="string">&quot;WScript.Shell&quot;</span>)</span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C frpc.exe -c frpc.ini&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">objShell.Run <span class="string">&quot;cmd.exe /C attrib +s +h +r /s /d *&quot;</span>, <span class="number">0</span>, <span class="literal">False</span></span><br><span class="line">WScript.Quit</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/image-20240325141016145.png" alt="image-20240325141016145"></p>
+<h3><span id="12-使用-powershell-脚本">1.2 使用 powershell 脚本</span></h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$shell</span> = <span class="built_in">New-Object</span> <span class="literal">-ComObject</span> WScript.Shell</span><br><span class="line"><span class="variable">$shell</span>.Run(<span class="string">&quot;frpc.exe -c frpc.ini&quot;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="variable">$shell</span>.Run(<span class="string">&quot;attrib +s +h +r /s /d *&quot;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">Exit</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/image-20240325142222704.png" alt="image-20240325142222704"></p>
+<h3><span id="13-使用批处理脚本">1.3 使用批处理脚本</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">if &quot;%1&quot; == &quot;h&quot; goto begin</span><br><span class="line">mshta vbscript:createobject(&quot;wscript.shell&quot;).run(&quot;&quot;&quot;%~nx0&quot;&quot; h&quot;,0)(window.close)&amp;&amp;exit</span><br><span class="line"></span><br><span class="line">:begin</span><br><span class="line">attrib +s +h +r /d /s *</span><br><span class="line">REM</span><br><span class="line">.\frpc.exe -c .\frpc.ini</span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="2-基于-start-process-的隐藏命令行黑框方法">2. 基于 Start-Process 的隐藏命令行黑框方法</span></h2><h3><span id="21-使用-powershell-脚本">2.1 使用 powershell 脚本</span></h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">programPath = <span class="string">&quot;frpc.exe&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$programArgs</span> = <span class="string">&quot;-c frpc.ini&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$processArgs</span> = <span class="selector-tag">@</span>&#123;</span><br><span class="line">    FilePath = <span class="variable">$programPath</span></span><br><span class="line">    ArgumentList = <span class="variable">$programArgs</span></span><br><span class="line">    WindowStyle = <span class="string">&#x27;Hidden&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Start-Process</span> @processArgs</span><br><span class="line"></span><br><span class="line"><span class="variable">$hiddenProgram</span> = <span class="string">&quot;attrib.exe&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$hiddenArgs</span> = <span class="string">&quot;+s +r +h *&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$hiddenprocessArgs</span> = <span class="selector-tag">@</span>&#123;</span><br><span class="line">    FilePath = <span class="variable">$hiddenProgram</span></span><br><span class="line">    ArgumentList = <span class="variable">$hiddenArgs</span></span><br><span class="line">    WindowStyle = <span class="string">&#x27;Hidden&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Start-Process</span> @hiddenprocessArgs</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/image-20240325143352718.png" alt="image-20240325143352718"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/25/tools-CMD-hidden-cmdline/" data-id="clw8opywe000pbuvd25g4ef3z" data-title="tools-CMD-hidden-cmdline" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/03/25/tools-CMD-net-user/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          tools-CMD-net-user
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/25/tools-CMD-attrib/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">tools-CMD-attrib</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ipc/" rel="tag">ipc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/ipc/" style="font-size: 10px;">ipc</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/16/Windows-Post-Infiltration-IPC/">Windows_Post_Infiltration_IPC</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/">CTF-ctfshow-misc-introduction-2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-1/">CTF-ctfshow-misc-introduction-1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 R0seK1llere<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

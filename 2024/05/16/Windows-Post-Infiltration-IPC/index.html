@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Windows_Post_Infiltration_IPC | thedarknessdied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="第一部分 IPC 1 什么是 IPC ？ 1.1 IPC 通信 1.2 Windows 上常见的 IPC 机制有哪些？   2 IPC 的主要作用有哪些？ 3 IPC 的利用 3.1 IPC 链接 3.1.1 建立 IPC 链接 3.1.2 删除 IPC 链接   3.2 IPC 空会话登录 3.2.1 什么是 IPC$ 空链接 3.2.2 关于  ANONYMOUS LOGON 3.2.3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows_Post_Infiltration_IPC">
+<meta property="og:url" content="http://example.com/2024/05/16/Windows-Post-Infiltration-IPC/index.html">
+<meta property="og:site_name" content="thedarknessdied">
+<meta property="og:description" content="第一部分 IPC 1 什么是 IPC ？ 1.1 IPC 通信 1.2 Windows 上常见的 IPC 机制有哪些？   2 IPC 的主要作用有哪些？ 3 IPC 的利用 3.1 IPC 链接 3.1.1 建立 IPC 链接 3.1.2 删除 IPC 链接   3.2 IPC 空会话登录 3.2.1 什么是 IPC$ 空链接 3.2.2 关于  ANONYMOUS LOGON 3.2.3">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20240511163339255.png">
+<meta property="og:image" content="http://example.com/images/image-20240513112440828.png">
+<meta property="og:image" content="http://example.com/images/image-20240511163445330.png">
+<meta property="og:image" content="http://example.com/images/image-20240513113520539.png">
+<meta property="og:image" content="http://example.com/images/image-20240515185133965.png">
+<meta property="og:image" content="http://example.com/images/image-20240515185423206.png">
+<meta property="og:image" content="http://example.com/images/image-20240515185329129.png">
+<meta property="og:image" content="http://example.com/images/image-20240515190919728.png">
+<meta property="og:image" content="http://example.com/images/image-20240416193346282.png">
+<meta property="og:image" content="http://example.com/images/image-20240416193555386.png">
+<meta property="og:image" content="http://example.com/images/image-20240416193536275.png">
+<meta property="og:image" content="http://example.com/images/image-20240416193623412.png">
+<meta property="og:image" content="http://example.com/images/image-20240513160743823.png">
+<meta property="og:image" content="http://example.com/images/image-20240514100853624.png">
+<meta property="og:image" content="http://example.com/images/image-20240513161140517.png">
+<meta property="og:image" content="http://example.com/images/image-20240513162608327.png">
+<meta property="og:image" content="http://example.com/images/image-20240513162843425.png">
+<meta property="og:image" content="http://example.com/images/image-20240513162913102.png">
+<meta property="og:image" content="http://example.com/images/image-20240513163418669.png">
+<meta property="og:image" content="http://example.com/images/image-20240513165309866.png">
+<meta property="og:image" content="http://example.com/images/image-20240513165503963.png">
+<meta property="og:image" content="http://example.com/images/image-20240513165659187.png">
+<meta property="og:image" content="http://example.com/images/image-20240513170030275.png">
+<meta property="og:image" content="http://example.com/images/image-20240513170232089.png">
+<meta property="og:image" content="http://example.com/images/image-20240513170316972.png">
+<meta property="og:image" content="http://example.com/images/image-20240513170432753.png">
+<meta property="og:image" content="http://example.com/images/image-20240515091405962.png">
+<meta property="og:image" content="http://example.com/images/image-20240515170904378.png">
+<meta property="og:image" content="http://example.com/images/image-20240516105300323.png">
+<meta property="og:image" content="http://example.com/images/image-20240516105136994.png">
+<meta property="og:image" content="http://example.com/images/image-20240515093810510.png">
+<meta property="og:image" content="http://example.com/images/image-20240515093839540.png">
+<meta property="og:image" content="http://example.com/images/image-20240515100739287.png">
+<meta property="og:image" content="http://example.com/images/image-20240515102743633.png">
+<meta property="og:image" content="http://example.com/images/image-20240515103150360.png">
+<meta property="og:image" content="http://example.com/images/image-20240515103504032.png">
+<meta property="og:image" content="http://example.com/images/image-20240515121850491.png">
+<meta property="og:image" content="http://example.com/images/image-20240515121905626.png">
+<meta property="og:image" content="http://example.com/images/image-20240515122930776.png">
+<meta property="og:image" content="http://example.com/images/image-20240515122914190.png">
+<meta property="og:image" content="http://example.com/images/image-20240515123202441.png">
+<meta property="og:image" content="http://example.com/images/image-20240515123302709.png">
+<meta property="og:image" content="http://example.com/images/image-20240515124253678.png">
+<meta property="og:image" content="http://example.com/images/image-20240515124345070.png">
+<meta property="og:image" content="http://example.com/images/image-20240515124440193.png">
+<meta property="og:image" content="http://example.com/images/image-20240515141343477.png">
+<meta property="og:image" content="http://example.com/images/image-20240515141436534.png">
+<meta property="og:image" content="http://example.com/images/image-20240515141450374.png">
+<meta property="og:image" content="http://example.com/images/image-20240515141646621.png">
+<meta property="og:image" content="http://example.com/images/image-20240515130117270.png">
+<meta property="og:image" content="http://example.com/images/image-20240515130146681.png">
+<meta property="og:image" content="http://example.com/images/image-20240515130539899.png">
+<meta property="og:image" content="http://example.com/images/image-20240515142813038.png">
+<meta property="og:image" content="http://example.com/images/image-20240515130850385.png">
+<meta property="og:image" content="http://example.com/images/image-20240515144149458.png">
+<meta property="og:image" content="http://example.com/images/image-20240515144406681.png">
+<meta property="og:image" content="http://example.com/images/image-20240515145620257.png">
+<meta property="og:image" content="http://example.com/images/image-20240515145808260.png">
+<meta property="og:image" content="http://example.com/images/image-20240515134627657.png">
+<meta property="og:image" content="http://example.com/images/image-20240515134637848.png">
+<meta property="og:image" content="http://example.com/images/image-20240515134649009.png">
+<meta property="og:image" content="http://example.com/images/image-20240515163030015.png">
+<meta property="og:image" content="http://example.com/images/image-20240515163323682.png">
+<meta property="og:image" content="http://example.com/images/image-20240515131321967.png">
+<meta property="og:image" content="http://example.com/images/image-20240515131410947.png">
+<meta property="og:image" content="http://example.com/images/image-20240515154546238.png">
+<meta property="og:image" content="http://example.com/images/image-20240515154744238.png">
+<meta property="og:image" content="http://example.com/images/image-20240515155912529.png">
+<meta property="og:image" content="http://example.com/images/image-20240515161137198.png">
+<meta property="og:image" content="http://example.com/images/image-20240515132857553.png">
+<meta property="og:image" content="http://example.com/images/image-20240515162418112.png">
+<meta property="og:image" content="http://example.com/images/image-20240515180504039.png">
+<meta property="og:image" content="http://example.com/images/image-20240515161654429.png">
+<meta property="og:image" content="http://example.com/images/image-20240515131835779.png">
+<meta property="og:image" content="http://example.com/images/image-20240515131930722.png">
+<meta property="og:image" content="http://example.com/images/image-20240515165020263.png">
+<meta property="og:image" content="http://example.com/images/image-20240515163928404.png">
+<meta property="og:image" content="http://example.com/images/image-20240515164227393.png">
+<meta property="og:image" content="http://example.com/images/image-20240515164744787.png">
+<meta property="og:image" content="http://example.com/images/image-20240515165228828.png">
+<meta property="og:image" content="http://example.com/images/image-20240516091354123.png">
+<meta property="og:image" content="http://example.com/images/image-20240516091841969.png">
+<meta property="og:image" content="http://example.com/images/image-20240516092657104.png">
+<meta property="og:image" content="http://example.com/images/image-20240516093331032.png">
+<meta property="og:image" content="http://example.com/images/image-20240516093425807.png">
+<meta property="og:image" content="http://example.com/images/image-20240516093514117.png">
+<meta property="og:image" content="http://example.com/images/image-20240516093712826.png">
+<meta property="og:image" content="http://example.com/images/image-20240516093804903.png">
+<meta property="og:image" content="http://example.com/images/image-20240516093833176.png">
+<meta property="og:image" content="http://example.com/images/image-20240516093914442.png">
+<meta property="og:image" content="http://example.com/images/image-20240516095906620.png">
+<meta property="og:image" content="http://example.com/images/image-20240516102935733.png">
+<meta property="og:image" content="http://example.com/images/image-20240516102917788.png">
+<meta property="og:image" content="http://example.com/images/image-20240516103132664.png">
+<meta property="og:image" content="http://example.com/images/image-20240516103332504.png">
+<meta property="og:image" content="http://example.com/images/image-20240516103454902.png">
+<meta property="og:image" content="http://example.com/images/image-20240516103609778.png">
+<meta property="og:image" content="http://example.com/images/image-20240516103812113.png">
+<meta property="og:image" content="http://example.com/images/image-20240516101043649.png">
+<meta property="og:image" content="http://example.com/images/image-20240511090800319.png">
+<meta property="og:image" content="http://example.com/images/image-20240511093159761.png">
+<meta property="og:image" content="http://example.com/images/image-20240511091344906.png">
+<meta property="og:image" content="http://example.com/images/image-20240511091551228.png">
+<meta property="og:image" content="http://example.com/images/image-20240511092133593.png">
+<meta property="og:image" content="http://example.com/images/image-20240511092230539.png">
+<meta property="og:image" content="http://example.com/images/image-20240511092346629.png">
+<meta property="og:image" content="http://example.com/images/image-20240511092422525.png">
+<meta property="og:image" content="http://example.com/images/image-20240511092747378.png">
+<meta property="og:image" content="http://example.com/images/image-20240511092815935.png">
+<meta property="og:image" content="http://example.com/images/image-20240511094655574.png">
+<meta property="og:image" content="http://example.com/images/image-20240511095009015.png">
+<meta property="og:image" content="http://example.com/images/image-20240511095851319.png">
+<meta property="og:image" content="http://example.com/images/image-20240511100041025.png">
+<meta property="og:image" content="http://example.com/images/image-20240515203132640.png">
+<meta property="og:image" content="http://example.com/images/image-20240511112055300.png">
+<meta property="og:image" content="http://example.com/images/image-20240511125554305.png">
+<meta property="og:image" content="http://example.com/images/image-20240511113226418.png">
+<meta property="og:image" content="http://example.com/images/image-20240511115915406.png">
+<meta property="og:image" content="http://example.com/images/image-20240511122324350.png">
+<meta property="og:image" content="http://example.com/images/image-20240511124801233.png">
+<meta property="og:image" content="http://example.com/images/image-20240511124843623.png">
+<meta property="og:image" content="http://example.com/images/image-20240511130204968.png">
+<meta property="og:image" content="http://example.com/images/image-20240511130534537.png">
+<meta property="og:image" content="http://example.com/images/image-20240511132724622.png">
+<meta property="og:image" content="http://example.com/images/image-20240511132901729.png">
+<meta property="og:image" content="http://example.com/images/image-20240511133022638.png">
+<meta property="og:image" content="http://example.com/images/image-20240511133319390.png">
+<meta property="og:image" content="http://example.com/images/image-20240511133139362.png">
+<meta property="og:image" content="http://example.com/images/image-20240513085205545.png">
+<meta property="og:image" content="http://example.com/images/image-20240513104850712.png">
+<meta property="og:image" content="http://example.com/images/image-20240513105200159.png">
+<meta property="article:published_time" content="2024-05-16T03:11:14.000Z">
+<meta property="article:modified_time" content="2024-05-16T03:14:41.521Z">
+<meta property="article:author" content="R0seK1llere">
+<meta property="article:tag" content="windows">
+<meta property="article:tag" content="ipc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20240511163339255.png">
+  
+    <link rel="alternate" href="/atom.xml" title="thedarknessdied" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">thedarknessdied</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">R0seK1ller</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Windows-Post-Infiltration-IPC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/16/Windows-Post-Infiltration-IPC/" class="article-date">
+  <time class="dt-published" datetime="2024-05-16T03:11:14.000Z" itemprop="datePublished">2024-05-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Windows_Post_Infiltration_IPC
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-ipc">第一部分 IPC</a><ul>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-ipc">1 什么是 IPC ？</a><ul>
+<li><a href="#11-ipc-%E9%80%9A%E4%BF%A1">1.1 IPC 通信</a></li>
+<li><a href="#12-windows-%E4%B8%8A%E5%B8%B8%E8%A7%81%E7%9A%84-ipc-%E6%9C%BA%E5%88%B6%E6%9C%89%E5%93%AA%E4%BA%9B">1.2 Windows 上常见的 IPC 机制有哪些？</a></li>
+</ul>
+</li>
+<li><a href="#2-ipc-%E7%9A%84%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8%E6%9C%89%E5%93%AA%E4%BA%9B">2 IPC 的主要作用有哪些？</a></li>
+<li><a href="#3-ipc-%E7%9A%84%E5%88%A9%E7%94%A8">3 IPC 的利用</a><ul>
+<li><a href="#31-ipc-%E9%93%BE%E6%8E%A5">3.1 IPC 链接</a><ul>
+<li><a href="#311-%E5%BB%BA%E7%AB%8B-ipc-%E9%93%BE%E6%8E%A5">3.1.1 建立 IPC 链接</a></li>
+<li><a href="#312-%E5%88%A0%E9%99%A4-ipc-%E9%93%BE%E6%8E%A5">3.1.2 删除 IPC 链接</a></li>
+</ul>
+</li>
+<li><a href="#32-ipc-%E7%A9%BA%E4%BC%9A%E8%AF%9D%E7%99%BB%E5%BD%95">3.2 IPC 空会话登录</a><ul>
+<li><a href="#321-%E4%BB%80%E4%B9%88%E6%98%AF-ipc-%E7%A9%BA%E9%93%BE%E6%8E%A5">3.2.1 什么是 IPC$ 空链接</a></li>
+<li><a href="#322-%E5%85%B3%E4%BA%8E-anonymous-logon">3.2.2 关于  ANONYMOUS LOGON</a></li>
+<li><a href="#323-%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B-ipc-%E7%A9%BA%E9%93%BE%E6%8E%A5">3.2.3 如何建立 IPC$ 空链接</a></li>
+<li><a href="#324-ipc-%E7%A9%BA%E9%93%BE%E6%8E%A5%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%80%A0%E6%88%90%E7%9A%84%E5%8D%B1%E5%AE%B3">3.2.4 IPC$ 空链接可能会造成的危害</a><ul>
+<li><a href="#3241-%E6%9F%A5%E7%9C%8B%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA%E7%9A%84%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90">3.2.4.1 查看远程主机的共享资源</a></li>
+<li><a href="#3242-%E6%9F%A5%E7%9C%8B%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA%E7%9A%84%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4">3.2.4.2 查看远程主机的当前时间</a></li>
+<li><a href="#3243-%E5%BE%97%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA%E7%9A%84-netbios-%E7%94%A8%E6%88%B7%E5%90%8D%E5%88%97%E8%A1%A8">3.2.4.3 得到远程主机的 NetBIOS 用户名列表</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#33-ipc-smb-protocol">3.3 IPC$ &amp; SMB Protocol</a><ul>
+<li><a href="#331-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%88%97%E8%A1%A8">3.3.1 查看文件列表</a></li>
+<li><a href="#332-%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6">3.3.2 上传文件</a></li>
+<li><a href="#333-%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6">3.3.3 下载文件</a></li>
+<li><a href="#334-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9">3.3.4 查看文件内容</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#4-ipc%E5%85%B1%E4%BA%AB-%E9%BB%98%E8%AE%A4%E5%85%B1%E4%BA%AB-%E6%99%AE%E9%80%9A%E5%85%B1%E4%BA%AB">4 IPC共享、默认共享、普通共享</a><ul>
+<li><a href="#41-ipc%E5%85%B1%E4%BA%ABinter-process-communication">4.1 IPC共享（Inter-Process Communication）</a></li>
+<li><a href="#42-%E9%BB%98%E8%AE%A4%E5%85%B1%E4%BA%AB">4.2 默认共享</a></li>
+<li><a href="#43-%E6%99%AE%E9%80%9A%E5%85%B1%E4%BA%AB">4.3 普通共享</a></li>
+</ul>
+</li>
+<li><a href="#5-ipc%E8%BF%9E%E6%8E%A5%E6%97%A5%E5%BF%97%E6%9F%A5%E8%AF%A2">5 IPC连接日志查询</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-psexec">第二部分 PsExec</a><ul>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-psexec">1 什么是 PsExec</a></li>
+<li><a href="#2-psexec-%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E6%B5%81%E7%A8%8B">2 PsExec 建立连接流程</a><ul>
+<li><a href="#21-%E5%BB%BA%E7%AB%8B-tcp-%E8%BF%9E%E6%8E%A5">2.1 建立 TCP 连接</a></li>
+<li><a href="#22-%E5%8D%8F%E5%95%86smb%E5%8D%8F%E8%AE%AE%E9%80%9A%E4%BF%A1%E7%89%88%E6%9C%AC">2.2 协商SMB协议通信版本</a></li>
+<li><a href="#23-ntlm-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81">2.3 NTLM 身份验证</a></li>
+<li><a href="#24-%E6%9E%9A%E4%B8%BE%E5%85%B1%E4%BA%AB%E7%BD%91%E7%BB%9C%E8%B5%84%E6%BA%90%E5%90%8D%E7%A7%B0%E5%8F%8A%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90">2.4 枚举共享网络资源名称及访问权限</a></li>
+<li><a href="#25-%E5%90%91-admin-%E5%86%99%E5%85%A5-psexesvcexe-%E6%96%87%E4%BB%B6">2.5 向 admin$ 写入 PSEXESVC.exe 文件</a></li>
+<li><a href="#26-%E5%88%9B%E5%BB%BA%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1">2.6 创建系统服务</a><ul>
+<li><a href="#261-smb-%E5%8D%8F%E8%AE%AE%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%AE%A1%E9%81%93">2.6.1 SMB 协议中常见管道</a></li>
+</ul>
+</li>
+<li><a href="#27-%E6%95%B0%E6%8D%AE%E6%B5%81%E9%87%8D%E5%AE%9A%E5%90%91">2.7 数据流重定向</a></li>
+<li><a href="#28-%E5%BF%83%E8%B7%B3%E6%95%B0%E6%8D%AE%E5%8C%85">2.8 心跳数据包</a></li>
+<li><a href="#29-%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5">2.9 断开连接</a></li>
+</ul>
+</li>
+<li><a href="#3-psexec-%E9%83%A8%E5%88%86assembly%E5%88%86%E6%9E%90">3 PsExec 部分Assembly分析</a><ul>
+<li><a href="#31-ntlm-%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E9%98%B6%E6%AE%B5">3.1 NTLM 身份认证阶段</a></li>
+<li><a href="#32-psexesvc-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E9%98%B6%E6%AE%B5">3.2 PSEXESVC 文件上传阶段</a></li>
+<li><a href="#33-psexev%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%90%AF%E9%98%B6%E6%AE%B5">3.3 PSEXEV服务开启阶段</a></li>
+<li><a href="#34-%E5%86%99%E5%85%A5%E4%B8%B4%E6%97%B6-key-%E5%87%AD%E6%8D%AE%E6%96%87%E4%BB%B6">3.4 写入临时 .key 凭据文件</a></li>
+<li><a href="#35-%E7%AE%A1%E9%81%93%E9%80%9A%E4%BF%A1">3.5 管道通信</a></li>
+<li><a href="#36-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%8A%A0%E5%AF%86">3.6 数据流加密</a><ul>
+<li><a href="#361-%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90">3.6.1 密钥生成</a></li>
+<li><a href="#362-%E9%80%9A%E4%BF%A1%E5%8A%A0%E8%A7%A3%E5%AF%86">3.6.2 通信加&#x2F;解密</a></li>
+</ul>
+</li>
+<li><a href="#37-%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1">3.7 数据通信</a><ul>
+<li><a href="#371-%E5%A4%84%E7%90%86%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5">3.7.1 处理标准输入</a></li>
+<li><a href="#372-%E5%A4%84%E7%90%86%E6%A0%87%E5%87%86%E9%94%99%E8%AF%AF">3.7.2 处理标准错误</a></li>
+<li><a href="#373-%E5%A4%84%E7%90%86%E6%A0%87%E5%87%86%E8%BE%93%E5%87%BA">3.7.3 处理标准输出</a></li>
+</ul>
+</li>
+<li><a href="#38-%E6%9C%8D%E5%8A%A1%E5%85%B3%E9%97%AD">3.8 服务关闭</a><ul>
+<li><a href="#381-%E5%88%A0%E9%99%A4-csp-%E9%80%9A%E4%BF%A1%E5%8A%A0%E8%A7%A3%E5%AF%86%E7%9B%B8%E5%85%B3%E5%86%85%E5%AD%98">3.8.1 删除 CSP 通信加&#x2F;解密相关内存</a></li>
+<li><a href="#382-%E5%88%A0%E9%99%A4-psexesvc-%E6%9C%8D%E5%8A%A1">3.8.2 删除 PSEXESVC 服务</a></li>
+<li><a href="#383-%E5%88%A0%E9%99%A4-psexesvcexe-%E6%96%87%E4%BB%B6">3.8.3 删除 PSEXESVC.EXE 文件</a></li>
+<li><a href="#384-%E5%88%A0%E9%99%A4-ipc-%E9%93%BE%E6%8E%A5">3.8.4 删除 IPC 链接</a></li>
+<li><a href="#385-%E5%88%A0%E9%99%A4-key-%E6%96%87%E4%BB%B6">3.8.5 删除 .key 文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86-%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98">第三部分 连接过程可能出现的问题</a><ul>
+<li><a href="#1-errno-connection-error-19216870210445-winerror-10060-%E7%94%B1%E4%BA%8E%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%9C%A8%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%90%8E%E6%B2%A1%E6%9C%89%E6%AD%A3%E7%A1%AE%E7%AD%94%E5%A4%8D%E6%88%96%E8%BF%9E%E6%8E%A5%E7%9A%84%E4%B8%BB%E6%9C%BA%E6%B2%A1%E6%9C%89%E5%8F%8D%E5%BA%94%E8%BF%9E%E6%8E%A5%E5%B0%9D%E8%AF%95%E5%A4%B1%E8%B4%A5">1 [-] [Errno Connection error (192.168.70.210:445)] [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败</a><ul>
+<li><a href="#11-%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0">1.1 出现问题的原因</a></li>
+<li><a href="#12-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">1.2 解决方法</a><ul>
+<li><a href="#121-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1 关闭防火墙</a><ul>
+<li><a href="#1211-%E5%9F%9F%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.1 域网络防火墙</a><ul>
+<li><a href="#12111-%E5%85%B3%E9%97%AD%E5%9F%9F%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.1.1 关闭域网络防火墙</a></li>
+<li><a href="#12112-%E5%BC%80%E5%90%AF%E5%9F%9F%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.1.2 开启域网络防火墙</a></li>
+</ul>
+</li>
+<li><a href="#1212-%E4%B8%93%E7%94%A8%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.2 专用网络防火墙</a><ul>
+<li><a href="#12121-%E5%85%B3%E9%97%AD%E4%B8%93%E7%94%A8%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.2.1 关闭专用网络防火墙</a></li>
+<li><a href="#12122-%E5%BC%80%E5%90%AF%E4%B8%93%E7%94%A8%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.2.2 开启专用网络防火墙</a></li>
+</ul>
+</li>
+<li><a href="#1213-%E5%85%AC%E7%94%A8%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.3 公用网络防火墙</a><ul>
+<li><a href="#12131-%E5%85%B3%E9%97%AD%E5%85%AC%E7%94%A8%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.3.1 关闭公用网络防火墙</a></li>
+<li><a href="#12132-%E5%BC%80%E5%90%AF%E5%85%AC%E7%94%A8%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.3.2 开启公用网络防火墙</a></li>
+</ul>
+</li>
+<li><a href="#1214-%E6%89%80%E6%9C%89%E7%BD%91%E7%BB%9C">1.2.1.4 所有网络</a><ul>
+<li><a href="#12141-%E5%85%B3%E9%97%AD%E6%89%80%E6%9C%89%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.4.1 关闭所有网络防火墙</a></li>
+<li><a href="#12142-%E6%89%93%E5%BC%80%E6%89%80%E6%9C%89%E7%BD%91%E7%BB%9C%E9%98%B2%E7%81%AB%E5%A2%99">1.2.1.4.2 打开所有网络防火墙</a></li>
+</ul>
+</li>
+<li><a href="#1215-%E9%98%B2%E7%81%AB%E5%A2%99%E9%80%9A%E4%BF%A1%E8%A7%84%E5%88%99">1.2.1.5 防火墙通信规则</a><ul>
+<li><a href="#12151-%E7%A6%81%E7%94%A8%E9%98%B2%E7%81%AB%E5%A2%99%E9%80%9A%E4%BF%A1%E8%A7%84%E5%88%99">1.2.1.5.1 禁用防火墙通信规则</a></li>
+<li><a href="#12152-%E5%90%AF%E7%94%A8%E9%98%B2%E7%81%AB%E5%A2%99%E9%80%9A%E4%BF%A1%E8%A7%84%E5%88%99">1.2.1.5.2 启用防火墙通信规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#122-%E6%B7%BB%E5%8A%A0%E5%87%BA%E7%AB%99%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99">1.2.2 添加出站&#x2F;入站规则</a><ul>
+<li><a href="#1221-%E6%B7%BB%E5%8A%A0%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99">1.2.2.1 添加入站规则</a><ul>
+<li><a href="#12211-%E5%85%81%E8%AE%B8%E7%89%B9%E5%AE%9A%E7%AB%AF%E5%8F%A3%E7%9A%84%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99">1.2.2.1.1 允许特定端口的入站规则</a></li>
+<li><a href="#12212-%E5%85%81%E8%AE%B8%E7%89%B9%E5%AE%9A%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99">1.2.2.1.2 允许特定可执行文件的入站规则</a></li>
+</ul>
+</li>
+<li><a href="#1222-%E6%B7%BB%E5%8A%A0%E5%87%BA%E7%AB%99%E8%A7%84%E5%88%99">1.2.2.2 添加出站规则</a><ul>
+<li><a href="#12221-%E5%85%81%E8%AE%B8%E7%89%B9%E5%AE%9A%E7%AB%AF%E5%8F%A3%E7%9A%84%E5%87%BA%E7%AB%99%E8%A7%84%E5%88%99">1.2.2.2.1 允许特定端口的出站规则</a></li>
+<li><a href="#12222-%E5%85%81%E8%AE%B8%E7%89%B9%E5%AE%9A%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E5%87%BA%E7%AB%99%E8%A7%84%E5%88%99">1.2.2.2.2 允许特定可执行文件的出站规则</a></li>
+</ul>
+</li>
+<li><a href="#1223-%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E9%98%B2%E7%81%AB%E5%A2%99%E8%A7%84%E5%88%99">1.2.2.3 查看所有防火墙规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#2-smb-sessionerror-status_account_restrictionindicates-a-referenced-user-name-and-authentication-information-are-valid-but-some-user-account-restriction-has-prevented-successful-authentication-such-as-time-of-day-restrictions">2 [-] SMB SessionError: STATUS_ACCOUNT_RESTRICTION(Indicates a referenced user name and authentication information are valid, but some user account restriction has prevented successful authentication (such as time-of-day restrictions).)</a><ul>
+<li><a href="#21-%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0">2.1 出现问题的原因</a></li>
+<li><a href="#22-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">2.2 解决方法</a><ul>
+<li><a href="#221-%E7%BC%96%E8%BE%91%E7%AD%96%E7%95%A5%E6%96%87%E4%BB%B6">2.2.1 编辑策略文件</a></li>
+<li><a href="#222-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AF%BC%E5%85%A5%E4%BF%AE%E6%94%B9%E5%90%8E%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">2.2.2 计算机导入修改后配置文件</a></li>
+<li><a href="#223-%E5%88%B7%E6%96%B0%E7%BB%84%E7%AD%96%E7%95%A5">2.2.3 刷新组策略：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3-requesting-shares-on-19216870210-share-admin-is-not-writable-share-c-is-not-writable">3 [*] Requesting shares on 192.168.70.210…..[-] share ‘ADMIN$’ is not writable.[-] share ‘C$’ is not writable.</a><ul>
+<li><a href="#31-%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0">3.1 出现问题的原因</a></li>
+<li><a href="#32-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">3.2 解决方法</a><ul>
+<li><a href="#321-%E6%8F%90%E5%8D%87%E5%BD%93%E5%89%8D%E8%B4%A6%E5%8F%B7%E7%9A%84%E6%9D%83%E9%99%90">3.2.1 提升当前账号的权限</a><ul>
+<li><a href="#3211-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6">3.2.1.1 查看当前主机共享文件</a></li>
+<li><a href="#3212-%E6%9F%A5%E7%9C%8B%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9-acl-%E6%9D%83%E9%99%90%E8%AE%BF%E9%97%AE%E7%9F%A9%E9%98%B5">3.2.1.2 查看共享文件夹 ACL 权限访问矩阵</a></li>
+<li><a href="#3213-%E6%8F%90%E5%8D%87%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90">3.2.1.3 提升当前用户权限</a></li>
+</ul>
+</li>
+<li><a href="#322-%E7%AA%81%E7%A0%B4-localaccounttokenfilterpolicy">3.2.2 突破 LocalAccountTokenFilterPolicy</a></li>
+<li><a href="#32221-%E4%BF%AE%E6%94%B9-localaccounttokenfilterpolicy-%E8%A1%A8%E9%A1%B9">3.2.2.2.1 修改 LocalAccountTokenFilterPolicy 表项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#4-make-sure-that-the-default-admin-share-is-enabled-on-19216870210">4 Make sure that the default admin$ share is enabled on 192.168.70.210.</a><ul>
+<li><a href="#41-%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0">4.1 出现问题的原因</a></li>
+<li><a href="#42-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">4.2 解决方法</a><ul>
+<li><a href="#421-%E5%BC%80%E5%90%AF-lanmanserver-%E6%9C%8D%E5%8A%A1">4.2.1 开启 lanmanServer  服务</a></li>
+<li><a href="#422-%E6%89%93%E5%BC%80%E9%BB%98%E8%AE%A4%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9">4.2.2 打开默认共享文件夹</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#5-%E5%9B%A0%E4%B8%BA%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB%E4%B8%8D%E5%AE%89%E5%85%A8%E6%89%80%E4%BB%A5%E4%BD%A0%E4%B8%8D%E8%83%BD%E8%BF%9E%E6%8E%A5%E5%88%B0%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB-%E6%AD%A4%E5%85%B1%E4%BA%AB%E9%9C%80%E8%A6%81%E8%BF%87%E6%97%B6%E7%9A%84-smb1-%E5%8D%8F%E8%AE%AE%E8%80%8C%E6%AD%A4%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E4%BC%9A%E4%BD%BF%E4%BD%A0%E7%9A%84%E7%B3%BB%E7%BB%9F%E9%81%AD%E5%8F%97%E6%94%BB%E5%87%BB">5 因为文件共享不安全，所以你不能连接到文件共享。此共享需要过时的 SMB1 协议，而此协议是不安全的，可能会使你的系统遭受攻击</a><ul>
+<li><a href="#51-%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0">5.1 出现问题的原因</a></li>
+<li><a href="#52-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">5.2 解决方法</a><ul>
+<li><a href="#521-%E6%A3%80%E6%9F%A5-smb1-%E6%9C%8D%E5%8A%A1%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85">5.2.1 检查 SMB1 服务是否安装</a></li>
+<li><a href="#522-%E5%BC%80%E5%90%AF-smb1-%E6%9C%8D%E5%8A%A1">5.2.2 开启 SMB1 服务</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></li>
+</ul>
+<!-- tocstop -->
+
+<span id="more"></span>
+<h1><span id="第一部分-ipc">第一部分 IPC</span></h1><h2><span id="1-什么是-ipc">1 什么是 IPC ？</span></h2><p>​	IPC(Inter-Process Communication)，含义为进程间通信或者跨进程通信，指<strong>至少两个进程或线程间传送数据或信号</strong>的一些技术或方法。进程是计算机系统分配资源的最小单位(进程是分配资源最小的单位，而线程是调度的最小单位，线程共用进程资源)。每个进程都有自己的一部分独立的系统资源，彼此是隔离的。为了能使不同的进程互相访问资源并进行协调工作，才有了进程间通信。</p>
+<p>​	任何一个操作系统都需要有相应的IPC机制，比如Windows上可以通过剪贴板、管道和邮槽等来进行进程间通信，而Linux上可以通过命名共享内容、信号量等来进行线程间通信。</p>
+<p>​	通常在渗透测试情况下，我们所说的 IPC 主要针对的是windows中的IPC</p>
+<h3><span id="11-ipc-通信">1.1 IPC 通信</span></h3><p>​	默认情况下，IPC是Windows中的一个默认共享资源，代表IPC服务。它通常用于管理目的，如远程管理计算机。默认情况下，IPC 共享被创建，但不允许匿名访问，这意味着只有具有适当凭据的用户才能使用 IPC$ 进行通信。</p>
+<h3><span id="12-windows-上常见的-ipc-机制有哪些">1.2 Windows 上常见的 IPC 机制有哪些？</span></h3><ul>
+<li><strong>命名管道</strong> (Named Pipes)：允许进程通过一个命名的管道进行通信，这个管道就像一个文件系统对象</li>
+<li><strong>邮件槽</strong> (Mailslots)：一种简单的单向通信机制，适用于无连接的通信</li>
+<li><strong>共享内存</strong> (Shared Memory)：允许多个进程访问同一块内存区域</li>
+<li><strong>远程过程调用</strong> (RPC)：一种网络通信协议，允许一个进程调用另一个进程的函数或方法，就像它们是本地的一样</li>
+<li><strong>组件对象模型</strong> (COM)：一种允许软件组件进行通信的模型，可以在进程间或跨网络使用</li>
+<li><strong>Windows套接字</strong> (Winsock)：基于 TCP&#x2F;IP 协议的网络通信接口</li>
+<li><strong>剪贴板</strong>：一种简单的 IPC 形式，允许不同应用程序之间共享少量数据，如文本或图像</li>
+</ul>
+<h2><span id="2-ipc-的主要作用有哪些">2 IPC 的主要作用有哪些？</span></h2><ol>
+<li><strong>数据交换</strong>：允许不同进程之间交换数据，即使这些进程由不同的用户运行或属于不同的可执行文件。</li>
+<li><strong>资源共享</strong>：进程可以通过 IPC 共享资源，如内存、文件或设备。</li>
+<li><strong>协调操作</strong>：进程可以使用 IPC 来协调它们的行为，同步它们的操作，或请求其他进程提供的服务。</li>
+<li><strong>网络通信</strong>：在网络环境中，IPC 可以跨越网络连接，使得远程计算机上的进程可以像在本地计算机上一样进行通信。</li>
+<li><strong>提高效率</strong>：通过允许进程间直接通信，IPC 减少了数据传输的开销，提高了系统的整体效率。</li>
+</ol>
+<h2><span id="3-ipc-的利用">3 IPC 的利用</span></h2><h3><span id="31-ipc-链接">3.1 IPC 链接</span></h3><h4><span id="311-建立-ipc-链接">3.1.1 建立 IPC 链接</span></h4><blockquote>
+<p>net use \\[:host]\IPC$ [: password] &#x2F;user:[: username]</p>
+</blockquote>
+<h4><span id="312-删除-ipc-链接">3.1.2 删除 IPC 链接</span></h4><blockquote>
+<p>net use \\[:host]\IPC$ &#x2F;del</p>
+</blockquote>
+<h3><span id="32-ipc-空会话登录">3.2 IPC 空会话登录</span></h3><p>​	适用于： Windows 7、Windows Server 2003、Windows Server 2008、Windows Server 2008 R2、Windows Vista、Windows XP</p>
+<h4><span id="321-什么是-ipc-空链接">3.2.1 什么是 IPC$ 空链接</span></h4><p>​	空链接就是不用密码和用户名的IPC连接。空会话是在没有信任的情况下与服务器建立的会话（即未提供用户名与密码），但根据 WIN2000 的访问控制模型，空会话的建立同样需要提供一个令牌，但这并不表示空会话的令牌中不包含 安全标识符SID （它标识了用户和所属组），对于一个空会话， LSA 提供的令牌的 SID 是 S- 1-5-7 ，这就是空会话的 SID ，用户名是： ANONYMOUS LOGON （这个用户名是可以在用户列表中看到的，但是不能在 SAM 数据库中找到，属于系统内置的帐号）</p>
+<h4><span id="322-关于-anonymous-logon">3.2.2 关于  ANONYMOUS LOGON</span></h4><p>​	ANONYMOUS LOGON是指一种网络访问类型，用户无需提供任何身份验证凭据（例如用户名或密码）即可登录系统或网络资源，在Windows中作为一个内置安全主体出现。它主要代表匿名登陆的用户，例如Guest用户。它的全名是：NT AUTHORITY\ANONYMOUS LOGON。</p>
+<p>​	NT Authority 是各种预定义的、特殊用途的 Windows 帐户和组的名称，它们是操作系统功能的一部分，允许核心操作系统服务和功能发挥作用。它们促进资源访问并控制 Windows 系统内的安全边界。</p>
+<p>​	当您在权限或访问控制列表 (ACL) 上下文中看到“NT Authority”时，通常表示权限或特权被授予系统级实体而不是特定用户或组。例如，“NT Authority\SYSTEM”指的是本地系统帐户，该帐户对系统具有较高的权限。</p>
+<p>​	一些常见的 NT Authority 安全原则包括：</p>
+<ol>
+<li>NT Authority\SYSTEM：代表本地系统帐户，该帐户对系统具有完全控制权</li>
+<li>NT Authority\Authenticated Users：表示已通过域身份验证的所有用户</li>
+<li>NT Authority\Network Service：代表Network Service帐户，该帐户是一个具有低级权限的内置帐户</li>
+<li>NT Authority\Local Service：代表Local Service帐户，它是一个内置帐户，具有类似于Network Service的低级权限</li>
+</ol>
+<h4><span id="323-如何建立-ipc-空链接">3.2.3 如何建立 IPC$ 空链接</span></h4><blockquote>
+<p>net use \\[: hostname] “” &#x2F;user:””</p>
+<p>net use \\[: hostname] &#x2F;user:”” “”</p>
+</blockquote>
+<p><img src="/images/image-20240511163339255.png" alt="image-20240511163339255"></p>
+<p>​	具体过程与 windows 登录认证 有关，在后续的文章中会有详细的讲解</p>
+<h4><span id="324-ipc-空链接可能会造成的危害">3.2.4 IPC$ 空链接可能会造成的危害</span></h4><ul>
+<li>枚举用户帐户</li>
+<li>DOS 攻击</li>
+<li>暴力攻击</li>
+<li>未经身份验证访问共享</li>
+</ul>
+<h5><span id="3241-查看远程主机的共享资源">3.2.4.1 查看远程主机的共享资源</span></h5><blockquote>
+<p>net view \\ip</p>
+</blockquote>
+<p>​	此命令不能显示默认共享(IPC$、Admin$、盘符共享)</p>
+<p><img src="/images/image-20240513112440828.png" alt="image-20240513112440828"></p>
+<h5><span id="3242-查看远程主机的当前时间">3.2.4.2 查看远程主机的当前时间</span></h5><blockquote>
+<p>net time \\ip </p>
+</blockquote>
+<p><img src="/images/image-20240511163445330.png" alt="image-20240511163445330"></p>
+<h5><span id="3243-得到远程主机的-netbios-用户名列表">3.2.4.3 得到远程主机的 NetBIOS 用户名列表</span></h5><blockquote>
+<p>nbtstat -A ip</p>
+</blockquote>
+<p><img src="/images/image-20240513113520539.png" alt="image-20240513113520539"></p>
+<h3><span id="33-ipc-amp-smb-protocol">3.3 IPC$ &amp; SMB Protocol</span></h3><p>​	关于这章节的内容IPC横向、Hash传递等将会在后续章节、文章中慢慢为补充</p>
+<h4><span id="331-查看文件列表">3.3.1 查看文件列表</span></h4><blockquote>
+<p>dir \\[: hostname]\path</p>
+</blockquote>
+<p><img src="/images/image-20240515185133965.png" alt="image-20240515185133965"></p>
+<h4><span id="332-上传文件">3.3.2 上传文件</span></h4><blockquote>
+<p>copy [: local_path] \\[: hostname]\[: remote_path]</p>
+</blockquote>
+<p><img src="/images/image-20240515185423206.png" alt="image-20240515185423206"></p>
+<h4><span id="333-下载文件">3.3.3 下载文件</span></h4><blockquote>
+<p>copy \\[: hostname]\[: remote_path] [: local_path]</p>
+</blockquote>
+<p><img src="/images/image-20240515185329129.png" alt="image-20240515185329129"></p>
+<h4><span id="334-查看文件内容">3.3.4 查看文件内容</span></h4><blockquote>
+<p>type \\[: hostname]\[: remote_file_path]</p>
+</blockquote>
+<p><img src="/images/image-20240515190919728.png" alt="image-20240515190919728"></p>
+<h2><span id="4-ipc共享-默认共享-普通共享">4 IPC共享、默认共享、普通共享</span></h2><p>​	在windows上除了上述的 IPC 共享，还有默认共享和普通共享，他们之间又有什么不一样的呢？</p>
+<h3><span id="41-ipc共享inter-process-communication">4.1 IPC共享（Inter-Process Communication）</span></h3><ul>
+<li>IPC共享是一种特殊的共享，它不对应于文件系统中的任何实际文件夹或文件</li>
+<li>它用于进程间的通信，允许网络上的其他计算机访问特定的命名管道</li>
+<li>IPC$共享在Windows中默认开启，用于支持远程管理工具，如远程桌面（RDP）和远程管理（如通过MMC控制台）</li>
+</ul>
+<h3><span id="42-默认共享">4.2 默认共享</span></h3><ul>
+<li>默认共享是Windows系统在安装时自动创建的共享，它们对应于系统上的一些特殊资源</li>
+<li>常见的默认共享包括：<code>ADMIN$</code>（表示系统管理员目录），<code>C$</code>、<code>D$</code>等（分别对应于系统上的C盘、D盘等驱动器）</li>
+<li>默认共享通常只对管理员和系统账户可见，普通用户无法访问</li>
+<li>它们主要用于系统管理，如远程访问系统驱动器进行维护或恢复操作</li>
+</ul>
+<h3><span id="43-普通共享">4.3 普通共享</span></h3><ul>
+<li>普通共享是用户手动创建的共享，可以指向任何文件夹或打印机</li>
+<li>用户可以设置共享名，添加用户或用户组，并为它们分配权限，如读取、更改或完全控制</li>
+<li>普通共享是最常见的共享类型，用于在网络用户之间共享文档、图片、视频等文件</li>
+<li>普通共享可以通过“文件和打印机共享”向导在文件或文件夹的属性中设置</li>
+</ul>
+<h2><span id="5-ipc连接日志查询">5 IPC连接日志查询</span></h2><p>​	IPC连接在Windows系统中用于进程间通信，它涉及到文件和打印服务共享。在IPC连接过程中，Windows系统会记录一些安全事件日志，这些日志具有特定的事件ID，每个ID代表不同的操作或状态。以下是一些常见的与IPC连接相关的Windows日志事件ID及其含义：</p>
+<ol>
+<li><strong>事件ID 5140</strong>：尝试使用密码登录，但密码不正确。</li>
+<li><strong>事件ID 5142</strong>：尝试登录，但用户的账户已锁定。</li>
+<li><strong>事件ID 4624</strong>：成功登录尝试。</li>
+<li><strong>事件ID 4625</strong>：登录尝试失败。</li>
+<li><strong>事件ID 4648</strong>：使用显式凭据尝试登录。</li>
+<li><strong>事件ID 4649</strong>：检测到重放攻击，这可能与IPC连接有关。</li>
+<li><strong>事件ID 4656</strong>：请求了对象的句柄。</li>
+<li><strong>事件ID 4663</strong>：尝试对对象执行操作，可能与IPC连接时的文件或目录访问有关。</li>
+<li><strong>事件ID 4688</strong>：创建了一个新的进程。</li>
+<li><strong>事件ID 4689</strong>：一个进程已经退出。</li>
+<li><strong>事件ID 4672</strong>：分配给新登录的特权。</li>
+<li><strong>事件ID 5137</strong>：Windows 无法刷新应用程序控制策略，可能与IPC连接时的策略执行有关。</li>
+<li><strong>事件ID 5138</strong>：尝试刷新应用程序控制策略，但没有成功激活</li>
+</ol>
+<p><img src="/images/image-20240416193346282.png" alt="image-20240416193346282"></p>
+<h1><span id="第二部分-psexec">第二部分 PsExec</span></h1><h2><span id="1-什么是-psexec">1 什么是 PsExec</span></h2><p>​	psexec 是一个命令行工具，它使用 Windows 的 SMB (Server Message Block) 协议来执行远程命令。SMB 协议主要用于文件共享和打印服务，但也提供了运行远程系统上的程序的能力。</p>
+<p>​	当您使用 PsExec 连接到远程计算机时，它首先会在远程计算机上创建一个名为 PSEXESVC 的服务。</p>
+<img src="/images/image-20240416193555386.png" alt="image-20240416193555386" style="zoom: 33%;">
+
+<img src="/images/image-20240416193536275.png" alt="image-20240416193536275" style="zoom: 33%;">
+
+<img src="/images/image-20240416193623412.png" alt="image-20240416193623412" style="zoom:50%;">
+
+<h2><span id="2-psexec-建立连接流程">2 PsExec 建立连接流程</span></h2><ol>
+<li>TCP三次握手，通过SMB会话进行身份验证。</li>
+<li>连接admin$共享，通过 SMB 访问默认共享文件夹 ADMIN$，写入PSEXESVC.exe文件；</li>
+<li>利用ipc命名管道调用svcctl服务</li>
+<li>利用svcctl服务开启psexesvc服务</li>
+<li>生成4个命名管道以供使用。一个psexesvc管道用于服务本身，另外的管道stdin（输入）、stdout（输出）、stderr（输出）用于重定向进程</li>
+</ol>
+<p>​	(以下将会以数据包的方式生动形象的解释整个连接过程)</p>
+<h3><span id="21-建立-tcp-连接">2.1 建立 TCP 连接</span></h3><p><img src="/images/image-20240513160743823.png" alt="image-20240513160743823"></p>
+<p>​	首先会向目标主机发送TCP三次握手数据包尝试创建连接，如果目标主机拒绝连接或者不在线，则TCP连接失败，退出程序。</p>
+<h3><span id="22-协商smb协议通信版本">2.2 协商SMB协议通信版本</span></h3><p>​	接下来需要协商通信协议版本，PsExec 利用的协议主要是SMB协议。SMB(全称是Server MessageBlock)是一个协议名，可用于在计算机间共享文件、打印机、串口等，电脑上的网上邻居就是靠它实现的，SMB工作原理如下：攻击机向目标机器发送一个SMB negotiate protocol request请求数据包，并列出它所支持的所有SMB协议版本（其中Dialect带有一串16进制的code对应着SMB的不同版本以此分辨准确版本），若无可使用的版本返回0XFFFFH结束通信。</p>
+<img src="/images/image-20240514100853624.png" alt="image-20240514100853624" style="zoom:50%;">
+
+<p>​	目标机器返回NEGTIATE ResponseDialect数据包协商确定使用SMB2.1，至此SMB协商使用SMBv2协议通信过程结束。</p>
+<p><img src="/images/image-20240513161140517.png" alt="image-20240513161140517"></p>
+<h3><span id="23-ntlm-身份验证">2.3 NTLM 身份验证</span></h3><p>​	协商完 SMB 版本过后，就是NTLM身份认证开始，攻击机向目标机器发送SESSION_SETUP_ANDX协商请求，以完成攻击机与目标机器之间的身份验证，该请求包含用户名密码。</p>
+<p><img src="/images/image-20240513162608327.png" alt="image-20240513162608327"></p>
+<h3><span id="24-枚举共享网络资源名称及访问权限">2.4 枚举共享网络资源名称及访问权限</span></h3><p>​	成功通过NTLM身份认证后，攻击机向目标机器发送Tree connect rerquest SMB数据包，并列出想访问网络资源的名称ipc$、admin$，目标机器返回tree connect response响应数据包表示此次连接是否被接受或拒绝</p>
+<p><img src="/images/image-20240513162843425.png" alt="image-20240513162843425"></p>
+<p><img src="/images/image-20240513162913102.png" alt="image-20240513162913102"></p>
+<h3><span id="25-向-admin-写入-psexesvcexe-文件">2.5 向 admin$ 写入 PSEXESVC.exe 文件</span></h3><p>​	连接到相应资源后，通过 SMB 访问默认共享文件夹ADMIN$，写入PSEXESVC.exe文件。路径为 <code>C:\windows\System32\PSEXESVC.exe</code> </p>
+<p><img src="/images/image-20240513163418669.png" alt="image-20240513163418669"></p>
+<p><strong>注意1：C:\windows\System32\PSEXESVC.exe 是微软官方工具默认设定的，一般情况下无法修改</strong></p>
+<p><img src="/images/image-20240513165309866.png" alt="image-20240513165309866"></p>
+<p>​	close request and response 数据包表示PSEXESVC.exe文件完成写入。</p>
+<p><img src="/images/image-20240513165503963.png" alt="image-20240513165503963"></p>
+<h3><span id="26-创建系统服务">2.6 创建系统服务</span></h3><p>​	接着查看openservicew request的数据包，发现攻击机开始远程调用svcctl协议并打开psexesvc服务(psexec必须调用svcctl协议，否则psexesvc服务无法启动)。</p>
+<p><img src="/images/image-20240513165659187.png" alt="image-20240513165659187"></p>
+<p>​	在完成文件上传之后依次使用OpenSCManagerW、OpenServicceW、StartServiceW方法来创建启动服务。</p>
+<p><img src="/images/image-20240513170030275.png" alt="image-20240513170030275"></p>
+<h4><span id="261-smb-协议中常见管道">2.6.1 SMB 协议中常见管道</span></h4><ul>
+<li><code>\.\pipe</code>：这是系统级管道的根目录，包含了许多系统服务和进程使用的命名管道。例如，.\pipe\lsass是Local Security Authority Subsystem Service（LSASS）使用的管道</li>
+<li><code>.\pipe\lsass</code>：用于与本地安全子系统（Local Security Authority SubsystemService，LSASS）通信，LSASS负责处理登录认证、密码策略等安全相关的功能，SMB流量中会经常看见和lsass协议服务通信的流量</li>
+<li><code>.\pipe\winreg</code>：用于与Windows注册表服务（Windows Registry Service）通信，允许应用程序访问和操作系统的注册表，SMB流量中会经常看见和lsass协议服务通信的流量</li>
+<li><code>.\pipe\svcctl</code>：用于与服务控制管理器（Service Control Manager）通信，允许应用程序创建、修改和管理系统服务，SMB流量中会经常看见和svcctl协议服务通信的流量用来远程启动应用和服务</li>
+<li><code>.\pipe\browser</code>：用于与计算机浏览器服务（Computer Browser Service）通信，负责在网络上发现和维护共享资源列，SMB流量中会经常看见和browser协议服务通信的流量</li>
+<li><code>.\pipe\epmapper</code>：用于与终结点映射器（Endpoint Mapper）通信，EPMapper服务负责映射RPC终结点标识符（RPC Endpoint Identifiers，EPI）到网络地址和端口号，SMB流量中会经常看见和epmapper协议服务通信的流量</li>
+</ul>
+<h3><span id="27-数据流重定向">2.7 数据流重定向</span></h3><p>​	后续创建了psexesvc、stdin、stdout、stderr 4个命名管道。用于对程序标准输入流、标准输出流、错误数据流进行重定向。</p>
+<p>​	管道创建成功后，psexec可以正常使用，已成功连上目标机器cmd。</p>
+<p><img src="/images/image-20240513170232089.png" alt="image-20240513170232089"></p>
+<h3><span id="28-心跳数据包">2.8 心跳数据包</span></h3><p>​	在连接过程中，攻击机会每隔30s向目标机器发送一次TCP-keep-alive数据包，保持TCP心跳连接。</p>
+<p><img src="/images/image-20240513170316972.png" alt="image-20240513170316972"></p>
+<h3><span id="29-断开连接">2.9 断开连接</span></h3><p>​	退出远程连接时，tcp四次挥手关闭连接，psexesvc、stdin、stdout、stderr4个管道也会关闭，会话结束。</p>
+<p><img src="/images/image-20240513170432753.png" alt="image-20240513170432753"></p>
+<h2><span id="3-psexec-部分assembly分析">3 PsExec 部分Assembly分析</span></h2><p><img src="/images/image-20240515091405962.png" alt="image-20240515091405962"></p>
+<h3><span id="31-ntlm-身份认证阶段">3.1 NTLM 身份认证阶段</span></h3><p>​	GetComputerNameW 函数来提取本地计算机的 NetBIOS 名称</p>
+<p><img src="/images/image-20240515170904378.png" alt="image-20240515170904378"></p>
+<p>​	LookupPrivilegeValue 函数检索指定系统上用于本地表示指定特权名称 (LUID) 本地唯一标识符</p>
+<p><img src="/images/image-20240516105300323.png" alt="image-20240516105300323"></p>
+<p>​	如果能够IPC链接，那么就使用CreateRestrictedToken 创建一个新的访问令牌</p>
+<p><img src="/images/image-20240516105136994.png" alt="image-20240516105136994"></p>
+<h3><span id="32-psexesvc-文件上传阶段">3.2 PSEXESVC 文件上传阶段</span></h3><p>​	可执行文件通过调用 CreateEventW API 创建一个未命名的事件对象</p>
+<p><img src="/images/image-20240515093810510.png" alt="image-20240515093810510"></p>
+<p>​	并使用SetConsoleCtrlHandler将一个新函数添加到当前进程的处理函数列表中</p>
+<p><img src="/images/image-20240515093839540.png" alt="image-20240515093839540"></p>
+<p>​	显示一条中间消息，提供有关接下来将发生的操作的详细信息(这些消息在正常执行期间几乎看不见，以为每个阶段运行完后控制台数据流缓冲区都会被刷新)</p>
+<p><img src="/images/image-20240515100739287.png" alt="image-20240515100739287"></p>
+<p>​	使用 WNetAddConnection2W API 与远程计算机上的 IPC$ 共享建立连接。</p>
+<p><img src="/images/image-20240515102743633.png" alt="image-20240515102743633"></p>
+<p><img src="/images/image-20240515103150360.png" alt="image-20240515103150360"></p>
+<p>​	使用 FindResourceW 函数调用来确定名为 <code>PSEXESVC.EXE</code> 资源路径，将资源加载到内存中，并通过调用以下函数检索指向内存中指定资源的指针：LoadResource、SizeofResource 和 LockResource</p>
+<p><img src="/images/image-20240515103504032.png" alt="image-20240515103504032"></p>
+<p>​	使用 WNetAddConnection2W API 对远程计算机上的 admin$ 共享资源文件进行访问</p>
+<p><img src="/images/image-20240515121850491.png" alt="image-20240515121850491"></p>
+<p><img src="/images/image-20240515121905626.png" alt="image-20240515121905626"></p>
+<p>​	尝试写入远程计算机上的 系统文件共享路径写入 PSEXESVC.EXE (\\\\192.168.75.133\\ADMIN$\\PSEXESVC.EXE)</p>
+<p><img src="/images/image-20240515122930776.png" alt="image-20240515122930776"></p>
+<p><img src="/images/image-20240515122914190.png" alt="image-20240515122914190"></p>
+<p>​	清空原本控制台的连接信息</p>
+<p><img src="/images/image-20240515123202441.png" alt="image-20240515123202441"></p>
+<h3><span id="33-psexev服务开启阶段">3.3 PSEXEV服务开启阶段</span></h3><p>​	清空控制台缓存内容，打印新的字符</p>
+<p><img src="/images/image-20240515123302709.png" alt="image-20240515123302709"></p>
+<p>​	创建 PSEXESVC服务，通过调用 OpenSCManagerW 例程 (0xF003F &#x3D; SC_MANAGER_ALL_ACCESS ) 建立与远程计算机上的服务控制管理器的连接</p>
+<p><img src="/images/image-20240515124253678.png" alt="image-20240515124253678"></p>
+<p><img src="/images/image-20240515124345070.png" alt="image-20240515124345070"></p>
+<p>​	并远程主机上的进程创建了一个名为“PSEXESVC”的新服务（0xF01FF &#x3D; SERVICE_ALL_ACCESS、0x10 &#x3D; SERVICE_WIN32_OWN_PROCESS、0x3 &#x3D; SERVICE_DEMAND_START）：</p>
+<p><img src="/images/image-20240515124440193.png" alt="image-20240515124440193"></p>
+<p>​	自系统启动以来经过的毫秒数通过对 GetTickCount 的函数调用来提取</p>
+<p><img src="/images/image-20240515141343477.png" alt="image-20240515141343477"></p>
+<p>​	使用  OpenServiceW 获取 PSEXESVC 系统服务句柄</p>
+<p><img src="/images/image-20240515141436534.png" alt="image-20240515141436534"></p>
+<p>​	再使用 StartServiceW 启动 PSEXESVC服务</p>
+<p><img src="/images/image-20240515141450374.png" alt="image-20240515141450374"></p>
+<p>​	并在远端通过调用 QueryServiceStatus 来查看 PSEXESVC 服务的当前状态</p>
+<p><img src="/images/image-20240515141646621.png" alt="image-20240515141646621"></p>
+<h3><span id="34-写入临时-key-凭据文件">3.4 写入临时 .key 凭据文件</span></h3><p>​	会向远端admin$目录写入文件</p>
+<p><img src="/images/image-20240515130117270.png" alt="image-20240515130117270"></p>
+<p><img src="/images/image-20240515130146681.png" alt="image-20240515130146681"></p>
+<p>​	可以在目标机器上看到对应文件(%systemroot%\PSEXEC-WIN-***-.key)</p>
+<p><img src="/images/image-20240515130539899.png" alt="image-20240515130539899"></p>
+<p>​	这个文件只能在 system 以上权限下才能查看</p>
+<p><img src="/images/image-20240515142813038.png" alt="image-20240515142813038"></p>
+<h3><span id="35-管道通信">3.5 管道通信</span></h3><p>​	PsExec.EXE 从远程计算机打开 \pipe\PSEXESVC 管道，并通过调用 SetNamedPipeHandleState API 来修改管道模式（0x2 &#x3D; PIPE_READMODE_MESSAGE）</p>
+<p><img src="/images/image-20240515130850385.png" alt="image-20240515130850385"></p>
+<p>​	根据文献[9]所述，出现了一部分间接调用用于程序方法初始化部分数据及方法，RtlInitUnicodeString函数用于初始化“\Device\LanmanRedirector&lt;计算机名\IP地址&gt;\ipc$”Unicode字符串，但是在新版(我当前测试版本v2.43)的程序中，已经修改成了使用call方法直接调用</p>
+<p><img src="/images/image-20240515144149458.png" alt="image-20240515144149458"></p>
+<p>​	PSEXEC.EXE 使用 NtOpenFile 打开 <code>\\192.168.75.133\ipc$</code> 共享（0x100001 &#x3D; FILE_READ_DATA | SYNCHRONIZE、0x1 &#x3D; FILE_SHARE_READ、0x90 &#x3D; FILE_SYNCHRONOUS_IO_ALERT | FILE_CREATE_TREE_CONNECTION）</p>
+<p><img src="/images/image-20240515144406681.png" alt="image-20240515144406681"></p>
+<p>​	PsExec 通过调用 NtFsControlFile 函数并使用特定的控制代码 0x1401a3 &#x3D; FSCTL_NETWORK_GET_CONNECTION_INFO来获取连接信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">__kernel_entry NTSYSCALLAPI NTSTATUS NtFsControlFile(</span><br><span class="line">  [in]            HANDLE           FileHandle,</span><br><span class="line">  [in, optional]  HANDLE           Event,</span><br><span class="line">  [in, optional]  PIO_APC_ROUTINE  ApcRoutine,</span><br><span class="line">  [in, optional]  PVOID            ApcContext,</span><br><span class="line">  [out]           PIO_STATUS_BLOCK IoStatusBlock,</span><br><span class="line">  [in]            ULONG            FsControlCode,</span><br><span class="line">  [in, optional]  PVOID            InputBuffer,</span><br><span class="line">  [in]            ULONG            InputBufferLength,</span><br><span class="line">  [out, optional] PVOID            OutputBuffer,</span><br><span class="line">  [in]            ULONG            OutputBufferLength</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240515145620257.png" alt="image-20240515145620257"></p>
+<p>​	第二次调用 NtFsControlFile 发送另一个控制代码 0x1401AC &#x3D; FSCTL_NETWORK_DELETE_CONNECTION</p>
+<p><img src="/images/image-20240515145808260.png" alt="image-20240515145808260"></p>
+<p>​	而后又分别建立了 stdin、 stdout、 stderr 三个信道</p>
+<p><img src="/images/image-20240515134627657.png" alt="image-20240515134627657"></p>
+<p><img src="/images/image-20240515134637848.png" alt="image-20240515134637848"></p>
+<p><img src="/images/image-20240515134649009.png" alt="image-20240515134649009"></p>
+<p>​	PsExec 等待 <code>stdin</code> 管道返回可供连接的实例，管道和其他对应于标准输出\错误的管道是由远程主机上启动的 PSEXESVC 进程创建的。</p>
+<p><img src="/images/image-20240515163030015.png" alt="image-20240515163030015"></p>
+<p>​	使用 CreateFileW 打开上述命名管道</p>
+<p><img src="/images/image-20240515163323682.png" alt="image-20240515163323682"></p>
+<h3><span id="36-数据流加密">3.6 数据流加密</span></h3><h4><span id="361-密钥生成">3.6.1 密钥生成</span></h4><p>​	用 GetVersion API 检索操作系统的主要版本号和次要版本号</p>
+<p><img src="/images/image-20240515131321967.png" alt="image-20240515131321967"></p>
+<p>​	之后将会把之前生成的 <code>.key</code> 文件删除</p>
+<p><img src="/images/image-20240515131410947.png" alt="image-20240515131410947"></p>
+<p>​	通过调用 CryptAcquireContextW (0x18 &#x3D; PROV_RSA_AES ) 获取特定 CSP（加密服务提供商）内密钥容器的句柄</p>
+<p><img src="/images/image-20240515154546238.png" alt="image-20240515154546238"></p>
+<p>​	CryptCreateHash 用于创建哈希对象（0x8004 &#x3D; CALG_SHA1）</p>
+<p>​	AES256 密钥是使用 CryptDeriveKey (0x6610 &#x3D;  CALG_AES_256) ，这是一种从 SHA1 哈希算法派生而来</p>
+<p><img src="/images/image-20240515154744238.png" alt="image-20240515154744238"></p>
+<p>​	创建名为 <code>Global\PSEXESVC-&lt;计算机名称\IP 地址&gt;-&lt;进程 ID&gt;</code> 的事件对象</p>
+<p><img src="/images/image-20240515155912529.png" alt="image-20240515155912529"></p>
+<h4><span id="362-通信加x2f解密">3.6.2 通信加&#x2F;解密</span></h4><p>​	数据缓冲区中使用AES256算法进行加密</p>
+<p><img src="/images/image-20240515161137198.png" alt="image-20240515161137198"></p>
+<p><img src="/images/image-20240515132857553.png" alt="image-20240515132857553"></p>
+<p>​	使用WriteFile API 用于从管道写入加密后数据</p>
+<p><img src="/images/image-20240515162418112.png" alt="image-20240515162418112"></p>
+<p><img src="/images/image-20240515180504039.png" alt="image-20240515180504039"></p>
+<p>​	ReadFile API 用于从管道读取加密数据，再通过调用 CryptDecrypt 使用 AES 算法对缓冲区进行解密</p>
+<p><img src="/images/image-20240515161654429.png" alt="image-20240515161654429"></p>
+<p>​	进程标识符是通过调用 GetCurrentProcessId 函数获得的</p>
+<p><img src="/images/image-20240515131835779.png" alt="image-20240515131835779"></p>
+<p>​	并通过进程标识符创建名为“Global\PSEXESVC-&lt;计算机名称\IP 地址&gt;-&lt;进程 ID&gt;”的事件对象</p>
+<p><img src="/images/image-20240515131930722.png" alt="image-20240515131930722"></p>
+<h3><span id="37-数据通信">3.7 数据通信</span></h3><p><img src="/images/image-20240515165020263.png" alt="image-20240515165020263"></p>
+<p>​	CreateThread API 用于创建两个线程，最终将执行 处理标准错误函数 和  处理标准输入函数（0x4 &#x3D; CREATE_SUSPENDED）</p>
+<p><img src="/images/image-20240515163928404.png" alt="image-20240515163928404"></p>
+<p>​	使用 DuplicateHandle (0x10000000 &#x3D; GENERIC_ALL)复制线程句柄</p>
+<p><img src="/images/image-20240515164227393.png" alt="image-20240515164227393"></p>
+<p>​	使用 SetConsoleTitleW 更改控制台窗口的标题，并使用WaitForMultipleObjects 函数，以挂起进程，直到上述线程完成并且上面创建的事件对象处于有信号状态</p>
+<p><img src="/images/image-20240515164744787.png" alt="image-20240515164744787"></p>
+<p>​	使用 SetEvent 将事件对象设置为有信号状态</p>
+<p><img src="/images/image-20240515165228828.png" alt="image-20240515165228828"></p>
+<p>​	第二次调用 WaitForMultipleObjects 会挂起进程，直到上述两个线程完成</p>
+<h4><span id="371-处理标准输入">3.7.1 处理标准输入</span></h4><p>​	线程通过调用 GetStdHandle 例程获取标准输入设备的句柄，调用 WaitForSingleObject 函数来检查事件对象是否处于有信号状态，如果有输入数据流传递过来，使用 ReadConsoleW 函数从控制台输入缓冲区挨个读取字符</p>
+<p><img src="/images/image-20240516091354123.png" alt="image-20240516091354123"></p>
+<p>​	管道实例的服务器端使用 DisconnectNamedPipe 与进程断开连接</p>
+<p><img src="/images/image-20240516091841969.png" alt="image-20240516091841969"></p>
+<h4><span id="372-处理标准错误">3.7.2 处理标准错误</span></h4><p>​	处理标准错误的逻辑与处理标准输入的差不多，就不展开了</p>
+<h4><span id="373-处理标准输出">3.7.3 处理标准输出</span></h4><p>​	(这里我以处理 whoami 结果为例)</p>
+<p>​	使用 ReadFile API 用于从 stdin 管道读取加密数据</p>
+<p><img src="/images/image-20240516092657104.png" alt="image-20240516092657104"></p>
+<p><img src="/images/image-20240516093331032.png" alt="image-20240516093331032"></p>
+<p>​	ReadFile API 用于从上述管道读取加密数据</p>
+<p><img src="/images/image-20240516093425807.png" alt="image-20240516093425807"></p>
+<p>​	通过调用 CryptDecrypt 使用 AES 算法对缓冲区进行解密</p>
+<p><img src="/images/image-20240516093514117.png" alt="image-20240516093514117"></p>
+<p>​	MultiByteToWideChar 用于将字符串映射到 UTF-16（宽字符）字符串</p>
+<p><img src="/images/image-20240516093712826.png" alt="image-20240516093712826"></p>
+<p><img src="/images/image-20240516093804903.png" alt="image-20240516093804903"></p>
+<p>​	使用 GetStdHandle (0xFFFFFFF5 &#x3D; STD_OUTPUT_HANDLE )检索标准输出设备的句柄</p>
+<p><img src="/images/image-20240516093833176.png" alt="image-20240516093833176"></p>
+<p>​	上面解密的缓冲区通过调用 WriteFile 写入标准输出</p>
+<p><img src="/images/image-20240516093914442.png" alt="image-20240516093914442"></p>
+<p><img src="/images/image-20240516095906620.png" alt="image-20240516095906620"></p>
+<h3><span id="38-服务关闭">3.8 服务关闭</span></h3><p>​	具体流程如下所示</p>
+<p><img src="/images/image-20240516102935733.png" alt="image-20240516102935733"></p>
+<h4><span id="381-删除-csp-通信加x2f解密相关内存">3.8.1 删除 CSP 通信加&#x2F;解密相关内存</span></h4><p>​	使用cryptReleaseContext在程序完成 CSP 的使用后调用此函数，释放的 CSP 句柄，灵气不再有效</p>
+<p><img src="/images/image-20240516102917788.png" alt="image-20240516102917788"></p>
+<p>​	继续调用cryptDestroyKey函数将 CSP 引用会话密钥，或已导入加密服务提供程序(CSP) 通过 CryptImportKey的公钥销毁密钥，并释放该密钥使用的内存</p>
+<p><img src="/images/image-20240516103132664.png" alt="image-20240516103132664"></p>
+<h4><span id="382-删除-psexesvc-服务">3.8.2 删除 PSEXESVC 服务</span></h4><p>​	删除PSEXESVC服务相关信息</p>
+<p><img src="/images/image-20240516103332504.png" alt="image-20240516103332504"></p>
+<h4><span id="383-删除-psexesvcexe-文件">3.8.3 删除 PSEXESVC.EXE 文件</span></h4><p>​	DeleteFileW 用于删除之前创建的 PSEXESVC.exe 文件</p>
+<p><img src="/images/image-20240516103454902.png" alt="image-20240516103454902"></p>
+<h4><span id="384-删除-ipc-链接">3.8.4 删除 IPC 链接</span></h4><p>​	WNetCancelConnection2W API 用于取消现有的网络连接(IPC$)</p>
+<p><img src="/images/image-20240516103609778.png" alt="image-20240516103609778"></p>
+<h4><span id="385-删除-key-文件">3.8.5 删除 .key 文件</span></h4><p>​	会尝试删除 .key 文件，因为 .key 文件会在管道正确建立后被删除，但是如果出现不可知情况的话，在退出程序后将会尝试删除这个文件</p>
+<p><img src="/images/image-20240516103812113.png" alt="image-20240516103812113"></p>
+<p><img src="/images/image-20240516101043649.png" alt="image-20240516101043649"></p>
+<h1><span id="第三部分-连接过程可能出现的问题">第三部分 连接过程可能出现的问题</span></h1><h2><span id="1-errno-connection-error-19216870210445-winerror-10060-由于连接方在一段时间后没有正确答复或连接的主机没有反应连接尝试失败">1 [-] [Errno Connection error (192.168.70.210:445)] [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败</span></h2><p><img src="/images/image-20240511090800319.png" alt="image-20240511090800319"></p>
+<p>​	在当前测试环境中，目标对象防火墙策略开启，流量被拦截</p>
+<h3><span id="11-出现问题的原因">1.1 出现问题的原因</span></h3><p>​	因为是 <code>Connection error 由于连接方在一段时间后没有正确答复或连接的主机没有反应</code> ，建立连接过程超时，在排除网络不稳定的可能性外，所以怀疑是流量不放通</p>
+<h3><span id="12-解决方法">1.2 解决方法</span></h3><p>​	所有的结局方案我都是尽量通过命令行完成，因为在渗透环境中获取到一个临时会话还是容易的</p>
+<h4><span id="121-关闭防火墙">1.2.1 关闭防火墙</span></h4><p>​	关闭服务器防火墙后成功获取shell</p>
+<p>​	<img src="/images/image-20240511093159761.png" alt="image-20240511093159761"></p>
+<p>​	(1.2.1.1 - 1.2.1.4 针对的是 windows version 7 及以上高版本windows)</p>
+<h5><span id="1211-域网络防火墙">1.2.1.1 域网络防火墙</span></h5><h6><span id="12111-关闭域网络防火墙">1.2.1.1.1 关闭域网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> domainprofile state off</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511091344906.png" alt="image-20240511091344906"></p>
+<h6><span id="12112-开启域网络防火墙">1.2.1.1.2 开启域网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> domainprofile state on</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511091551228.png" alt="image-20240511091551228"></p>
+<h5><span id="1212-专用网络防火墙">1.2.1.2 专用网络防火墙</span></h5><h6><span id="12121-关闭专用网络防火墙">1.2.1.2.1 关闭专用网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> privateprofile state off</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511092133593.png" alt="image-20240511092133593"></p>
+<h6><span id="12122-开启专用网络防火墙">1.2.1.2.2 开启专用网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> privateprofile state on</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511092230539.png" alt="image-20240511092230539"></p>
+<h5><span id="1213-公用网络防火墙">1.2.1.3 公用网络防火墙</span></h5><h6><span id="12131-关闭公用网络防火墙">1.2.1.3.1 关闭公用网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> publicprofile state off</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511092346629.png" alt="image-20240511092346629"></p>
+<h6><span id="12132-开启公用网络防火墙">1.2.1.3.2 开启公用网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> publicprofile state on</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511092422525.png" alt="image-20240511092422525"></p>
+<h5><span id="1214-所有网络">1.2.1.4 所有网络</span></h5><h6><span id="12141-关闭所有网络防火墙">1.2.1.4.1 关闭所有网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> allprofiles state off</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511092747378.png" alt="image-20240511092747378"></p>
+<h6><span id="12142-打开所有网络防火墙">1.2.1.4.2 打开所有网络防火墙</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall <span class="built_in">set</span> allprofiles state on</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511092815935.png" alt="image-20240511092815935"></p>
+<p>​	(1.2.1.5 针对较旧的Windows版本 – XP &#x2F; Server 2003)</p>
+<h5><span id="1215-防火墙通信规则">1.2.1.5 防火墙通信规则</span></h5><h6><span id="12151-禁用防火墙通信规则">1.2.1.5.1 禁用防火墙通信规则</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh firewall <span class="built_in">set</span> opmode <span class="built_in">mode</span>=DISABLE</span><br></pre></td></tr></table></figure>
+
+<h6><span id="12152-启用防火墙通信规则">1.2.1.5.2 启用防火墙通信规则</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh firewall <span class="built_in">set</span> opmode <span class="built_in">mode</span>=ENABLE</span><br></pre></td></tr></table></figure>
+
+<h4><span id="122-添加出站x2f入站规则">1.2.2 添加出站&#x2F;入站规则</span></h4><p>​	直接关闭防火墙的话动静太大了，在可以的情况下我们应尝试缩小动作影响范围(通常设置规则需要管理员权限)</p>
+<h5><span id="1221-添加入站规则">1.2.2.1 添加入站规则</span></h5><h6><span id="12211-允许特定端口的入站规则">1.2.2.1.1 允许特定端口的入站规则</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=&quot;规则名称&quot; <span class="built_in">dir</span>=<span class="keyword">in</span> action=allow protocol=TCP localport=端口号</span><br></pre></td></tr></table></figure>
+
+<p>​	例如在这里我们建立入站规则 <code>PsExec</code> ：尝试放通445端口，允许445端口流量入站</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=&quot;PsExec&quot; <span class="built_in">dir</span>=<span class="keyword">in</span> action=allow protocol=TCP localport=<span class="number">445</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511094655574.png" alt="image-20240511094655574"></p>
+<h6><span id="12212-允许特定可执行文件的入站规则">1.2.2.1.2 允许特定可执行文件的入站规则</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=&quot;规则名称&quot; <span class="built_in">dir</span>=<span class="keyword">in</span> action=allow program=&quot;程序路径&quot; enable=yes</span><br></pre></td></tr></table></figure>
+
+<h5><span id="1222-添加出站规则">1.2.2.2 添加出站规则</span></h5><p>​	如果想添加的是出站规则，只需将 <code>dir=in</code> 改为 <code>dir=out</code>即可</p>
+<h6><span id="12221-允许特定端口的出站规则">1.2.2.2.1 允许特定端口的出站规则</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=&quot;规则名称&quot; <span class="built_in">dir</span>=out action=allow protocol=TCP localport=端口号</span><br></pre></td></tr></table></figure>
+
+<h6><span id="12222-允许特定可执行文件的出站规则">1.2.2.2.2 允许特定可执行文件的出站规则</span></h6><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=&quot;规则名称&quot; <span class="built_in">dir</span>=out action=allow program=&quot;程序路径&quot; enable=yes</span><br></pre></td></tr></table></figure>
+
+<h5><span id="1223-查看所有防火墙规则">1.2.2.3 查看所有防火墙规则</span></h5><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall show rule name=all</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/images/image-20240511095009015.png" alt="image-20240511095009015"></p>
+<h2><span id="2-smb-sessionerror-status_account_restrictionindicates-a-referenced-user-name-and-authentication-information-are-valid-but-some-user-account-restriction-has-prevented-successful-authentication-such-as-time-of-day-restrictions">2 [-] SMB SessionError: STATUS_ACCOUNT_RESTRICTION(Indicates a referenced user name and authentication information are valid, but some user account restriction has prevented successful authentication (such as time-of-day restrictions).)</span></h2><p><img src="/images/image-20240511095851319.png" alt="image-20240511095851319"></p>
+<p>​	在当前测试环境中，这个建立链接的过程，我们可以看到，<code>authentication</code>认证过程出现了问题</p>
+<h3><span id="21-出现问题的原因">2.1 出现问题的原因</span></h3><p>​	使用 <code>gpedit.msc</code> 打开组策略编辑器，我们在<code>本地计算机 策略</code> -&gt; <code>计算机配置</code> -&gt; <code>Windows 设置</code> -&gt; <code>安全设置</code> -&gt; <code>账号策略</code> -&gt; <code>密码策略</code>中可以看到其中有一项策略：</p>
+<blockquote>
+<p>密码必须符合复杂性要求</p>
+</blockquote>
+<p>这条策略迫使我们的用户密码需要一定的强度。</p>
+<p><img src="/images/image-20240511100041025.png" alt="image-20240511100041025"></p>
+<p>​	但是可能在真实渗透环境中，本地主机用户中就存在空密码或者弱密码用户</p>
+<h3><span id="22-解决方法">2.2 解决方法</span></h3><h4><span id="221-编辑策略文件">2.2.1 编辑策略文件</span></h4><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[Unicode]</span><br><span class="line">Unicode=yes</span><br><span class="line">[Version]</span><br><span class="line">signature=&quot;$CHICAGO$&quot;</span><br><span class="line">Revision=1</span><br><span class="line">[System Access]</span><br><span class="line">PasswordComplexity = 0</span><br><span class="line">MinimumPasswordLength = 0</span><br><span class="line">PasswordHistorySize = 0</span><br></pre></td></tr></table></figure>
+
+<p>PasswordComplexity &#x3D; 0 关闭密码复杂度</p>
+<p>MinimumPasswordLength &#x3D; 0 允许空密码</p>
+<h4><span id="222-计算机导入修改后配置文件">2.2.2 计算机导入修改后配置文件</span></h4><blockquote>
+<p>secedit &#x2F;configure &#x2F;db %windir%\security\local.sdb &#x2F;cfg [: 修改后的配置文件在远程主机的位置] &#x2F;areas SECURITYPOLICY</p>
+</blockquote>
+<h4><span id="223-刷新组策略">2.2.3 刷新组策略：</span></h4><blockquote>
+<p>gpupdate &#x2F;force</p>
+</blockquote>
+<p><img src="/images/image-20240515203132640.png" alt="image-20240515203132640"></p>
+<h2><span id="3-requesting-shares-on-19216870210-share-admin-is-not-writable-share-c-is-not-writable">3 [*] Requesting shares on 192.168.70.210…..[-] share ‘ADMIN$’ is not writable.[-] share ‘C$’ is not writable.</span></h2><p><img src="/images/image-20240511112055300.png" alt="image-20240511112055300"></p>
+<p>​	使用 impacket.py 进行横向时可以发现当前用户对 <code>Admin$</code> 和 <code>C$</code> 共享文件路径并没有写权限</p>
+<p><img src="/images/image-20240511125554305.png" alt="image-20240511125554305"></p>
+<p>​	而如果直接使用 PsExec.exe 建立连接则会提示远端拒绝连接</p>
+<h3><span id="31-出现问题的原因">3.1 出现问题的原因</span></h3><ul>
+<li>当前用户权限过低，对共享文件夹没有”写”权限</li>
+<li>LocalAccountTokenFilterPolicy 限制</li>
+</ul>
+<h3><span id="32-解决方法">3.2 解决方法</span></h3><h4><span id="321-提升当前账号的权限">3.2.1 提升当前账号的权限</span></h4><p>​	共享文件夹仅对部分组成员进行写权限的开放，当前用户权限过低，无法向目标文件夹写入文件。</p>
+<h5><span id="3211-查看当前主机共享文件">3.2.1.1 查看当前主机共享文件</span></h5><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">net</span> share</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511113226418.png" alt="image-20240511113226418"></p>
+<h5><span id="3212-查看共享文件夹-acl-权限访问矩阵">3.2.1.2 查看共享文件夹 ACL 权限访问矩阵</span></h5><blockquote>
+<p>icacls “文件路径”</p>
+</blockquote>
+<p><img src="/images/image-20240511115915406.png" alt="image-20240511115915406"></p>
+<h5><span id="3213-提升当前用户权限">3.2.1.3 提升当前用户权限</span></h5><p>​	在上述 ACL 矩阵中可以看到本地管理员权限对默认共享文件有 Full 权限(Read权限和 Write 权限)，查看本地管理员组用户</p>
+<blockquote>
+<p>net localgroup administrators</p>
+</blockquote>
+<p>发现本地计算机管理员组用户里不存在我们的Mike(测试账号)用户</p>
+<p><img src="/images/image-20240511122324350.png" alt="image-20240511122324350"></p>
+<p>​	尝试将 Mike 加入管理员组，成功 PsExec 获取 shell</p>
+<p><img src="/images/image-20240511124801233.png" alt="image-20240511124801233"></p>
+<p><img src="/images/image-20240511124843623.png" alt="image-20240511124843623"></p>
+<h4><span id="322-突破-localaccounttokenfilterpolicy">3.2.2 突破 LocalAccountTokenFilterPolicy</span></h4><p>​	关于什么是 LocalAccountTokenFilterPolicy 将会在下一个部分展开讲解，这里我们只简略说明</p>
+<h4><span id="32221-修改-localaccounttokenfilterpolicy-表项">3.2.2.2.1 修改 LocalAccountTokenFilterPolicy 表项</span></h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg query &quot;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System&quot; /v LocalAccountTokenFilterPolicy</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511130204968.png" alt="image-20240511130204968"></p>
+<p>​	可以看到这里的表项数值为0，有些计算机上可能也不存在这条表项，使用下面的语句修改&#x2F;添加该表项</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add &quot;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System&quot; /v LocalAccountTokenFilterPolicy /t reg_dword /d <span class="number">1</span> /f</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511130534537.png" alt="image-20240511130534537"></p>
+<h2><span id="4-make-sure-that-the-default-admin-share-is-enabled-on-19216870210">4 Make sure that the default admin$ share is enabled on 192.168.70.210.</span></h2><h3><span id="41-出现问题的原因">4.1 出现问题的原因</span></h3><ul>
+<li>默认共享文件 admin$ 被关闭</li>
+<li>默认共享服务 lanmanServer 被关闭</li>
+</ul>
+<h3><span id="42-解决方法">4.2 解决方法</span></h3><h4><span id="421-开启-lanmanserver-服务">4.2.1 开启 lanmanServer  服务</span></h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">net</span> <span class="built_in">start</span> LanmanServer</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511132724622.png" alt="image-20240511132724622"></p>
+<h4><span id="422-打开默认共享文件夹">4.2.2 打开默认共享文件夹</span></h4><blockquote>
+<p>net share</p>
+</blockquote>
+<p><img src="/images/image-20240511132901729.png" alt="image-20240511132901729"></p>
+<p>​	可以看到当前主机并不开放默认共享的文件夹，这是我们可以手动尝试开启</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters&quot; /v AutoShareServer /t reg_dword /d <span class="number">1</span> /f</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240511133022638.png" alt="image-20240511133022638"></p>
+<p><strong>注意1：部分表项属于系统预定义表项，可以不再注册表中显示</strong></p>
+<p><img src="/images/image-20240511133319390.png" alt="image-20240511133319390"></p>
+<p><strong>注意2： 修改完服务相关配置后，需要重启服务或者重启计算机才能够使得配置生效</strong></p>
+<p><img src="/images/image-20240511133139362.png" alt="image-20240511133139362"></p>
+<h2><span id="5-因为文件共享不安全所以你不能连接到文件共享-此共享需要过时的-smb1-协议而此协议是不安全的可能会使你的系统遭受攻击">5 因为文件共享不安全，所以你不能连接到文件共享。此共享需要过时的 SMB1 协议，而此协议是不安全的，可能会使你的系统遭受攻击</span></h2><p>​	在尝试建立 IPC 通信时发生错误</p>
+<blockquote>
+<p>发生系统错误 384。</p>
+<p>因为文件共享不安全，所以你不能连接到文件共享。此共享需要过时的 SMB1 协议，而此协议是不安全的，可能会使你的系统遭受攻击 。<br>你的系统需要 SMB2 或更高版本。有关如何解决此问题的信息，请参见: <a target="_blank" rel="noopener" href="https://go.microsoft.com/fwlink/?linkid=852747">https://go.microsoft.com/fwlink/?linkid=852747</a></p>
+</blockquote>
+<p><img src="/images/image-20240513085205545.png" alt="image-20240513085205545"></p>
+<h3><span id="51-出现问题的原因">5.1 出现问题的原因</span></h3><p>​	微软已经宣布 SMB1 将不再被支持，并且在未来的 Windows 版本中可能会被完全移除</p>
+<h3><span id="52-解决方法">5.2 解决方法</span></h3><h4><span id="521-检查-smb1-服务是否安装">5.2.1 检查 SMB1 服务是否安装</span></h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-WindowsOptionalFeature</span> <span class="literal">-Online</span> <span class="literal">-FeatureName</span> SMB1Protocol</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240513104850712.png" alt="image-20240513104850712"></p>
+<h4><span id="522-开启-smb1-服务">5.2.2 开启 SMB1 服务</span></h4><p>​	如果 SMB1 已经安装，但是禁用状态，可以使用以下命令启用(但是会重启客户端系统)</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Enable-WindowsOptionalFeature</span> <span class="literal">-Online</span> <span class="literal">-FeatureName</span> SMB1Protocol</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-20240513105200159.png" alt="image-20240513105200159"></p>
+<h1><span id="参考文献">参考文献</span></h1><p>[1] <a target="_blank" rel="noopener" href="https://blog.csdn.net/no1xium/article/details/107358939">https://blog.csdn.net/no1xium/article/details/107358939</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/sysinternals/downloads/psexec">https://learn.microsoft.com/zh-cn/sysinternals/downloads/psexec</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41101173/article/details/79868887">https://blog.csdn.net/weixin_41101173/article/details/79868887</a></p>
+<p>[4] <a target="_blank" rel="noopener" href="https://upimg.baike.so.com/doc/3974871-27398037.html">https://upimg.baike.so.com/doc/3974871-27398037.html</a></p>
+<p>[5] <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45521281/article/details/105820827">https://blog.csdn.net/qq_45521281/article/details/105820827</a></p>
+<p>[6] <a target="_blank" rel="noopener" href="https://www.calcomsoftware.com/nt-authority-anonymous-logon/">https://www.calcomsoftware.com/nt-authority-anonymous-logon/</a></p>
+<p>[7] <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/BZPc8J2_2_SjwX0nepkXLQ">https://mp.weixin.qq.com/s/BZPc8J2_2_SjwX0nepkXLQ</a></p>
+<p>[8] <a target="_blank" rel="noopener" href="https://blog.csdn.net/javajiawei/article/details/138700056">https://blog.csdn.net/javajiawei/article/details/138700056</a></p>
+<p>[9] <a target="_blank" rel="noopener" href="https://cybergeeks.tech/reverse-engineering-psexec-for-fun-and-knowledge/">https://cybergeeks.tech/reverse-engineering-psexec-for-fun-and-knowledge/</a></p>
+<p>[10] <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/api/">https://learn.microsoft.com/zh-cn/windows/win32/api/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/16/Windows-Post-Infiltration-IPC/" data-id="clw8opyvt0005buvddhepfccq" data-title="Windows_Post_Infiltration_IPC" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ipc/" rel="tag">ipc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Windows_Post_Infiltration_Permission_Maintenance_lnk</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ipc/" rel="tag">ipc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/ipc/" style="font-size: 10px;">ipc</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/16/Windows-Post-Infiltration-IPC/">Windows_Post_Infiltration_IPC</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/">CTF-ctfshow-misc-introduction-2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-1/">CTF-ctfshow-misc-introduction-1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 R0seK1llere<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

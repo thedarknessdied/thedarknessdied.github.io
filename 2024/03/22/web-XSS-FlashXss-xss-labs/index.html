@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>web-XSS-FlashXss-xss-labs | thedarknessdied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="[toc] Flash-poc0. 靶场环境访问靶场: http:&#x2F;&#x2F;localhost:8080&#x2F;xss&#x2F;level19.php?arg01&#x3D;a&amp;arg02&#x3D;b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web-XSS-FlashXss-xss-labs">
+<meta property="og:url" content="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/index.html">
+<meta property="og:site_name" content="thedarknessdied">
+<meta property="og:description" content="[toc] Flash-poc0. 靶场环境访问靶场: http:&#x2F;&#x2F;localhost:8080&#x2F;xss&#x2F;level19.php?arg01&#x3D;a&amp;arg02&#x3D;b">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20240321202115815.png">
+<meta property="og:image" content="http://example.com/images/image-20240322104404913.png">
+<meta property="og:image" content="http://example.com/images/image-20240321202220244.png">
+<meta property="og:image" content="http://example.com/images/image-20240321203736853.png">
+<meta property="og:image" content="http://example.com/images/image-20240321204707602.png">
+<meta property="og:image" content="http://example.com/images/image-20240321204840700.png">
+<meta property="og:image" content="http://example.com/images/image-20240322093218253.png">
+<meta property="og:image" content="http://example.com/images/image-20240322094956319.png">
+<meta property="og:image" content="http://example.com/images/image-20240322105506147.png">
+<meta property="article:published_time" content="2024-03-22T03:03:16.000Z">
+<meta property="article:modified_time" content="2024-03-26T02:29:03.355Z">
+<meta property="article:author" content="R0seK1llere">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20240321202115815.png">
+  
+    <link rel="alternate" href="/atom.xml" title="thedarknessdied" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">thedarknessdied</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">R0seK1ller</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-web-XSS-FlashXss-xss-labs" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/22/web-XSS-FlashXss-xss-labs/" class="article-date">
+  <time class="dt-published" datetime="2024-03-22T03:03:16.000Z" itemprop="datePublished">2024-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      web-XSS-FlashXss-xss-labs
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h1><span id="flash-poc">Flash-poc</span></h1><h2><span id="0-靶场环境">0. 靶场环境</span></h2><pre><code>访问靶场: http://localhost:8080/xss/level19.php?arg01=a&amp;arg02=b
+</code></pre>
+<span id="more"></span>
+
+<p><img src="/images/image-20240321202115815.png" alt="image-20240321202115815"></p>
+<h2><span id="1-后端代码审计">1. 后端代码审计</span></h2><p><img src="/images/image-20240322104404913.png" alt="image-20240322104404913"></p>
+<p>​	可以发现URL通过GET请求传入的参数arg01和arg02分别被作为xsf03.swf调用的键和值，访问<code>http://127.0.0.1:8080/xss/level19.php?arg01=a&amp;arg02=b</code>验证，打开控制台，查看内容发现没有突破点</p>
+<p><img src="/images/image-20240321202220244.png" alt="image-20240321202220244"></p>
+<p>​	通过阅读报错信息，可以看到flash报错里面提示sifr.js是没有定义的，不过xsf03.swf在页面显示过程中仅仅以图片的形式展示，所以我们需要对该文件进行反编译查看源码</p>
+<h2><span id="2-flash-反编译">2. flash 反编译</span></h2><p>​	使用 [jpexs-decompiler][<a target="_blank" rel="noopener" href="https://github.com/jindrapetrik/jpexs-decompiler]">https://github.com/jindrapetrik/jpexs-decompiler]</a> 工具反编译xsf03.swf</p>
+<p><img src="/images/image-20240321203736853.png" alt="image-20240321203736853"></p>
+<h3><span id="21-version_warning-变量追踪">2.1 VERSION_WARNING 变量追踪</span></h3><p>​	在其中的代码段，我们搜索报错信息”Movie ..”，可以看见在<code>static var VERSION_WARNING</code> 变量中定义了这串内容</p>
+<p><img src="/images/image-20240321204707602.png" alt="image-20240321204707602"></p>
+<p>​	那么接下来肯定有数据拼接的地方，所以我们按照关键字搜索<code>VERSION_WARNING</code> ，可以发现以下逻辑，首先根据”%s”字符对<code>VERSION_WARNING</code> 进行了分割，然后根据_root.version的内容将分割后的数据拼接起来</p>
+<p><img src="/images/image-20240321204840700.png" alt="image-20240321204840700"></p>
+<p>​	要想执行到这儿，就必须满足:</p>
+<ul>
+<li>_loc5_ 变量的值为真</li>
+<li>_root.version 从文件对象上获取到的 version 数值不等于默认数值</li>
+</ul>
+<p><img src="/images/image-20240322093218253.png" alt="image-20240322093218253"></p>
+<h3><span id="22-_root-预定义全局对象">2.2 _root 预定义全局对象</span></h3><p>​	首先先要搞懂什么是_root</p>
+<p>​	_root 是一个预定义的全局对象，代表舞台（Stage）的根级别。它提供对 Flash 动画中的顶级元素和属性的访问。</p>
+<p>通过 _root 对象，可以访问舞台的属性、变量和方法，以及舞台上的其他对象。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">在 Flash 中，<span class="emphasis">_root 对象通常包含以下一些预定义的变量：</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_width：舞台的宽度（以像素为单位）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_height：舞台的高度（以像素为单位）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_xmouse：鼠标在舞台上的 X 坐标位置（以舞台左上角为原点）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_ymouse：鼠标在舞台上的 Y 坐标位置（以舞台左上角为原点）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_framesloaded：已加载的帧数。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_totalframes：场景中的总帧数。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_url：当前 SWF 文件的 URL 地址。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_parent：舞台的父级对象（通常为空，因为舞台是顶级对象）。</span></span><br><span class="line"><span class="emphasis">+ _</span>root.<span class="emphasis">_global：用于访问全局变量和函数。</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="23-_loc4_-利用条件限制绕过">2.3 _loc4_ 利用条件限制绕过</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">function</span> <span class="title function_">checkDomain</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">    	如果未绑定限制该flash使用域名贼直接返回true </span></span><br><span class="line"><span class="comment">    	因为我们是默认环境，所以直接忽略这个函数就行</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">	<span class="keyword">if</span>(sIFR.<span class="property">domains</span>.<span class="property">length</span> == <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> _loc2_ = <span class="keyword">new</span> <span class="title class_">LocalConnection</span>().<span class="title function_">domain</span>();</span><br><span class="line">    <span class="keyword">var</span> _loc3_ = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(_loc3_ &lt; sIFR.<span class="property">domains</span>.<span class="property">length</span>)&#123;</span><br><span class="line">         <span class="keyword">var</span> _loc4_ = sIFR.<span class="property">domains</span>[_loc3_];</span><br><span class="line">         <span class="keyword">if</span>(_loc4_ == <span class="string">&quot;*&quot;</span> || _loc4_ == _loc2_)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">var</span> _loc5_ = _loc4_.<span class="title function_">lastIndexOf</span>(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">         <span class="keyword">if</span>(_loc5_ &gt; -<span class="number">1</span>)&#123;</span><br><span class="line">            _loc4_ = _loc4_.<span class="title function_">substr</span>(_loc5_ + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">var</span> _loc6_ = _loc2_.<span class="title function_">lastIndexOf</span>(_loc4_);</span><br><span class="line">            <span class="keyword">if</span>(_loc6_ &gt; -<span class="number">1</span> &amp;&amp; _loc6_ + _loc4_.<span class="property">length</span> == _loc2_.<span class="property">length</span>)&#123;</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  			&#125;</span><br><span class="line">        &#125;</span><br><span class="line">		_loc3_ = _loc3_ + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">function</span> <span class="title function_">checkLocation</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	判断在请求swf的文件中是否有存在?</span></span><br><span class="line"><span class="comment">    	因为在一般情况下在URL请求行中出现?，那么在他后面跟着的、形式为&quot;x=x&quot;的、以&quot;&amp;&quot;拼接的就被当做是查询字符串</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">	<span class="keyword">return</span> _root.<span class="property">_url</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;?&quot;</span>) == -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​	那么就需要审计上面的那几个 if 条件判断了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">var _loc4_ = sIFR.DEFAULT_TEXT;</span><br><span class="line">var _loc5_ = true;</span><br><span class="line"></span><br><span class="line">if(sIFR.checkLocation() &amp;&amp; sIFR.checkDomain())&#123;</span><br><span class="line">	_loc4_ = sIFR.unescapeUnicode(_root.content);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(_loc4_ == &quot;undefined&quot; || _loc4_ == &quot;&quot;)&#123;</span><br><span class="line">	var _loc6_ = flash.external.ExternalInterface.call(&quot;sIFR.__resetBrokenMovies&quot;);</span><br><span class="line">    if(_loc6_)&#123;</span><br><span class="line">    	return undefined;</span><br><span class="line">    &#125;</span><br><span class="line">    _loc4_ = sIFR.DEFAULT_TEXT;</span><br><span class="line">    _loc5_ = false;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(_loc5_ &amp;&amp; _root.version != sIFR.VERSION)&#123;</span><br><span class="line">	_loc4_ = sIFR.VERSION_WARNING.split(&quot;%s&quot;).join(_root.version);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">	重新渲染对象，将对象的content属性赋值为 _loc4_</span><br><span class="line">	因为这里调用了new sIRF生成sIRF对象，那么机会重新执行</span><br><span class="line">	this.setupEvents();</span><br><span class="line">    this.write(content);</span><br><span class="line">    this.repaint();</span><br><span class="line">*/</span><br><span class="line">sIFR.instance = new sIFR(_loc3_.txtF,_loc4_);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>要是在请求的swf文件中不存在查询字符串，那么 <code>sIFR.checkLocation()</code> 返回为false，_loc4将会获取到默认值sIFR.DEFAULT_TEXT，但是默认定义中：</p>
+<p><img src="/images/image-20240322094956319.png" alt="image-20240322094956319"></p>
+<p>其数值必然不满足<code>_root.version != sIFR.VERSION</code>，所以无法进入if语句块去格式化字符串</p>
+</li>
+<li><p>所以就需要传入查询字符串，<code>_root.content</code>会获取查询字符串的内容，<code>sIFR.unescapeUnicode</code>将会把字符串内容解码，只要传入了查询字符串，那么<code>_loc4_ == &quot;undefined&quot; || _loc4_ == &quot;&quot;</code>就不会成功，会直接进入第三个if判断</p>
+</li>
+<li><p>第三个就很简单，当你第二个if判断不进入if语句块，就能保证<code>_loc5_ </code>为true，那么接下来就该处理<code>_root.version != sIFR.VERSION</code>，因为我们需要渲染<code>_loc4_</code>使其获得<code>sIFR.VERSION_WARNING.split(&quot;%s&quot;).join(_root.version)</code>拼接结果从而导致xss漏洞，所以传入的参数不能为<code>?version=436</code></p>
+</li>
+</ol>
+<h3><span id="24-事件绑定与数据写入">2.4 事件绑定与数据写入</span></h3><p>​	重新选然后将会执行<code>this.setupEvents();</code>绑定事件</p>
+<p>​	然后再执行 <code>this.write(content);</code>重新写入内容</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">setupEvents</span>(<span class="params"></span>)&#123;</span><br><span class="line">	<span class="keyword">if</span>(_root.<span class="property">fixhover</span> == <span class="string">&quot;true&quot;</span> &amp;&amp; <span class="variable language_">this</span>.<span class="title function_">contentIsLink</span>())&#123;</span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOver</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">			sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOver&quot;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOut</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">            sIFR.<span class="property">instance</span>.<span class="title function_">fixHover</span>();</span><br><span class="line">            sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOut&quot;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">            sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRelease&quot;</span>);</span><br><span class="line">            <span class="title function_">getURL</span>(sIFR.<span class="property">instance</span>.<span class="property">primaryLink</span>,sIFR.<span class="property">instance</span>.<span class="property">primaryLinkTarget</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        sIFR.<span class="property">menu</span>.<span class="property">customItems</span> = sIFR.<span class="property">menuItems</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(_root.<span class="property">events</span> == <span class="string">&quot;true&quot;</span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOver</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOver&quot;</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOut</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRollOut&quot;</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               sIFR.<span class="title function_">call</span>(<span class="string">&quot;fireEvent&quot;</span>,<span class="string">&quot;onRelease&quot;</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(_root.<span class="property">cursor</span> == <span class="string">&quot;pointer&quot;</span>)&#123;</span><br><span class="line">               <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">               &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">            	<span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRelease</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOver</span>;</span><br><span class="line">			<span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">_parent</span>.<span class="property">onRollOut</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		sIFR.<span class="property">menu</span>.<span class="property">customItems</span> = [];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">write</span>(<span class="params">content</span>)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	this.textField.htmlText 控制的是文字组件在html中输出展示的内容</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">textField</span>.<span class="property">htmlText</span> = [<span class="string">&quot;&lt;p class=\&quot;&quot;</span>,sIFR.<span class="property">CSS_ROOT_CLASS</span>,<span class="string">&quot;\&quot;&gt;&quot;</span>,content,<span class="string">&quot;&lt;/p&gt;&quot;</span>].<span class="title function_">join</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​	重点观察<code>this.textField._parent.onRelease</code>:</p>
+<blockquote>
+<p>​	<code>this.textField._parent.onRelease</code> 是一个事件处理代码，用于处理 Flash 中的按钮或可交互对象的释放（release）事件。</p>
+<p>具体作用如下：</p>
+<ul>
+<li><code>this.textField</code> 是一个文本字段对象。</li>
+<li><code>_parent</code> 是该文本字段对象的父级对象，也就是包含它的容器对象。</li>
+<li><code>onRelease</code> 是一个事件处理函数，它会在用户释放（点击并释放）与该按钮或可交互对象关联的区域时触发。</li>
+</ul>
+<p>​	通过将代码 <code>this.textField._parent.onRelease</code> 与按钮或可交互对象关联，当用户释放该对象时，相关的操作或代码块将被执行。在这个特定的代码中，<code>this.textField._parent.onRelease</code> 被用作按钮或可交互对象的释放事件处理程序，可能会触发一些交互行为或执行其他相关的功能。</p>
+</blockquote>
+<p>​	具体的页面生命周期可能会因不同的实现方式和技术而有所不同，但通常情况下，包含SWF文件的网页在加载时会创建一个SWF对象并将其嵌入到网页的指定位置。SWF对象会被浏览器解析、渲染和执行，呈现给用户。用户与SWF对象进行交互时，事件处理代码会被触发执行相应的逻辑。</p>
+<p>​	当用户离开该页面或浏览器关闭页面时，浏览器会销毁SWF对象，释放相关的内存和资源。这确保了页面加载和交互的正常进行，并避免了内存泄漏和资源浪费的问题。</p>
+<p>​	所以要想在浏览过程中正确的触发加载swf文件，需要让<code>this.textField._parent.onRelease = function()&#123;sIFR.call(&quot;fireEvent&quot;,&quot;onRelease&quot;);&#125;;</code>这段内容生效，所以我们需使得<code>_root.fixhover == &quot;true&quot; &amp;&amp; this.contentIsLink())</code>成真</p>
+<ol>
+<li><p><code>_root.fixhover</code> 估计是页面的某个cursor操作，正常情况下是true的</p>
+</li>
+<li><p>那么就需要观察<code>this.contentIsLink())</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">contentIsLink</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	其实判断内容是否是链接就是判断是不是用&lt;a&gt;标签传输的</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;&lt;a &quot;</span>) == <span class="number">0</span> &amp;&amp; (<span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;&lt;a &quot;</span>) == <span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">lastIndexOf</span>(<span class="string">&quot;&lt;a &quot;</span>) &amp;&amp; <span class="variable language_">this</span>.<span class="property">content</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;&lt;/a&gt;&quot;</span>) == <span class="variable language_">this</span>.<span class="property">content</span>.<span class="property">length</span> - <span class="number">4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>​	至此分析结束，</p>
+<h2><span id="3-poc构造">3. POC构造</span></h2><blockquote>
+<p>?version&#x3D;&lt;a href&#x3D;”javascript:alert(1)”&gt;123</p>
+</blockquote>
+<p><img src="/images/image-20240322105506147.png" alt="image-20240322105506147"></p>
+<h2><span id="补充">补充:</span></h2><h3><span id="关于-geturlsifrinstanceprimarylinksifrinstanceprimarylinktarget">关于 getURL(sIFR.instance.primaryLink,sIFR.instance.primaryLinkTarget)</span></h3><p>​	<code>getURL(sIFR.instance.primaryLink,sIFR.instance.primaryLinkTarget);</code>	</p>
+<blockquote>
+<p>​	<code>getURL(sIFR.instance.primaryLink, sIFR.instance.primaryLinkTarget)</code>是一个已被废弃的 ActionScript 2 函数，用于在 Flash 应用程序中执行页面导航操作。</p>
+<p>具体作用如下：</p>
+<ul>
+<li><code>sIFR.instance.primaryLink</code> 是一个字符串，表示要导航到的目标 URL。</li>
+<li><code>sIFR.instance.primaryLinkTarget</code> 是一个字符串，指定了链接应如何在浏览器中打开，例如 <code>_self</code> 表示在当前窗口打开，<code>_blank</code> 表示在新窗口打开。</li>
+</ul>
+<p><code>getURL()</code> 函数将根据提供的 URL 和目标参数执行相应的页面导航操作。在这个特定的代码中，它被用于根据 <code>sIFR.instance.primaryLink</code> 和 <code>sIFR.instance.primaryLinkTarget</code> 的值执行一个页面跳转操作，可能会打开一个新的浏览器窗口或在当前窗口中加载新的 URL。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/22/web-XSS-FlashXss-xss-labs/" data-id="clw8opyx9001pbuvd13b1gq1w" data-title="web-XSS-FlashXss-xss-labs" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/03/22/web-XSS-FlashXss-xss-labs20/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          web-XSS-FlashXss-xss-labs20
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/22/tools-Chrome-OldVersion/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">tools-Chrome-OldVersion</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Permission/" rel="tag">Permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Post/" rel="tag">Post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ipc/" rel="tag">ipc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/" rel="tag">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse/" rel="tag">reverse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scanner/" rel="tag">scanner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vulnhub/" rel="tag">vulnhub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Permission/" style="font-size: 10px;">Permission</a> <a href="/tags/Post/" style="font-size: 10px;">Post</a> <a href="/tags/ctf/" style="font-size: 14px;">ctf</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/ipc/" style="font-size: 10px;">ipc</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/pwn/" style="font-size: 12px;">pwn</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/reverse/" style="font-size: 10px;">reverse</a> <a href="/tags/scanner/" style="font-size: 10px;">scanner</a> <a href="/tags/tools/" style="font-size: 18px;">tools</a> <a href="/tags/vulnhub/" style="font-size: 16px;">vulnhub</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/windows/" style="font-size: 12px;">windows</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/16/Windows-Post-Infiltration-IPC/">Windows_Post_Infiltration_IPC</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/10/Windows-Post-Infiltration-Permission-Maintenance-lnk/">Windows_Post_Infiltration_Permission_Maintenance_lnk</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/vulnhub-LAMPSecurity-CTF6/">vulnhub-LAMPSecurity-CTF6</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-2/">CTF-ctfshow-misc-introduction-2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/28/CTF-ctfshow-misc-introduction-1/">CTF-ctfshow-misc-introduction-1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 R0seK1llere<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
